@@ -20,10 +20,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class banio extends servicio{
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+   
     private float precio;
     @ManyToOne
     private tipoBanio tipoDeBanio;
@@ -31,14 +28,7 @@ public class banio extends servicio{
     public banio() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+   
     public float getPrecio() {
         return precio;
     }
@@ -57,10 +47,9 @@ public class banio extends servicio{
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 79 * hash + Objects.hashCode(this.id);
-        hash = 79 * hash + Float.floatToIntBits(this.precio);
-        hash = 79 * hash + Objects.hashCode(this.tipoDeBanio);
+        int hash = 7;
+        hash = 73 * hash + Float.floatToIntBits(this.precio);
+        hash = 73 * hash + Objects.hashCode(this.tipoDeBanio);
         return hash;
     }
 
@@ -79,9 +68,6 @@ public class banio extends servicio{
         if (Float.floatToIntBits(this.precio) != Float.floatToIntBits(other.precio)) {
             return false;
         }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
         if (!Objects.equals(this.tipoDeBanio, other.tipoDeBanio)) {
             return false;
         }
@@ -90,8 +76,9 @@ public class banio extends servicio{
 
     @Override
     public String toString() {
-        return "banio{" + "id=" + id + ", precio=" + precio + ", tipoDeBanio=" + tipoDeBanio + '}';
+        return "banio{" + "precio=" + precio + ", tipoDeBanio=" + tipoDeBanio + '}';
     }
+
     
     
 }

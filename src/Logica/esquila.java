@@ -18,12 +18,9 @@ import javax.persistence.ManyToOne;
  * @author jp
  */
 @Entity
-public class esquila implements Serializable {
+public class esquila  extends servicio{
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    
     private float precio;
     @ManyToOne
     private tipoEsquila tipoDeEsquila;
@@ -31,14 +28,7 @@ public class esquila implements Serializable {
     public esquila() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    
     public float getPrecio() {
         return precio;
     }
@@ -57,10 +47,9 @@ public class esquila implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + Objects.hashCode(this.id);
-        hash = 41 * hash + Float.floatToIntBits(this.precio);
-        hash = 41 * hash + Objects.hashCode(this.tipoDeEsquila);
+        int hash = 5;
+        hash = 59 * hash + Float.floatToIntBits(this.precio);
+        hash = 59 * hash + Objects.hashCode(this.tipoDeEsquila);
         return hash;
     }
 
@@ -79,9 +68,6 @@ public class esquila implements Serializable {
         if (Float.floatToIntBits(this.precio) != Float.floatToIntBits(other.precio)) {
             return false;
         }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
         if (!Objects.equals(this.tipoDeEsquila, other.tipoDeEsquila)) {
             return false;
         }
@@ -90,8 +76,9 @@ public class esquila implements Serializable {
 
     @Override
     public String toString() {
-        return "esquila{" + "id=" + id + ", precio=" + precio + ", tipoDeEsquila=" + tipoDeEsquila + '}';
+        return "esquila{" + "precio=" + precio + ", tipoDeEsquila=" + tipoDeEsquila + '}';
     }
+
     
     
 }

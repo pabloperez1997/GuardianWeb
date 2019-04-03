@@ -14,28 +14,22 @@ import javax.persistence.Persistence;
  * @author jp
  */
 public class controladorCliente {
-    private static final  EntityManagerFactory emf = Persistence.createEntityManagerFactory("elGuardianServidorPU");
-      private static final EntityManager em = emf.createEntityManager();
+   private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("elGuardianServidorPU");
+    private static final EntityManager em = emf.createEntityManager();
 
     public static EntityManager getEm() {
         return em;
     }
+    private static controladorCliente instance;
 
-   
-    private controladorCliente() {
-    }
-    
     public static controladorCliente getInstance() {
-        return controladorClienteHolder.INSTANCE;
-    }
-    
-    private static class controladorClienteHolder {
-
-        private static final controladorCliente INSTANCE = new controladorCliente();
+        if (instance == null) {
+            instance = new controladorCliente();
+        }
+        return instance;
     }
 
     public void persist(Object object) {
-       
         em.getTransaction().begin();
         try {
             em.persist(object);
@@ -45,5 +39,5 @@ public class controladorCliente {
             em.getTransaction().rollback();
         } 
     }
-    
+
 }

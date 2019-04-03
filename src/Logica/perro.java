@@ -5,12 +5,8 @@
  */
 package Logica;
 
-import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  *
@@ -19,25 +15,14 @@ import javax.persistence.Id;
 @Entity
 public class perro extends mascota{
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  
     private String descripcion;
     private String foto;
 
     public perro() {
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
+  
 
     public String getDescripcion() {
         return descripcion;
@@ -57,10 +42,9 @@ public class perro extends mascota{
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.id);
-        hash = 29 * hash + Objects.hashCode(this.descripcion);
-        hash = 29 * hash + Objects.hashCode(this.foto);
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.descripcion);
+        hash = 37 * hash + Objects.hashCode(this.foto);
         return hash;
     }
 
@@ -82,14 +66,14 @@ public class perro extends mascota{
         if (!Objects.equals(this.foto, other.foto)) {
             return false;
         }
-        return Objects.equals(this.id, other.id);
+        return true;
     }
 
     @Override
     public String toString() {
-        return "perro{" + "id=" + id + ", descripcion=" + descripcion + ", foto=" + foto + '}';
+        return "perro{" + "descripcion=" + descripcion + ", foto=" + foto + '}';
     }
-    
-    
+
+
     
 }

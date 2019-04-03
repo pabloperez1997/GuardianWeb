@@ -13,17 +13,14 @@ import javax.persistence.EntityManager;
  * @author jp
  */
 public class Principal extends javax.swing.JFrame {
-private static EntityManager eM;
+private EntityManager eM;
 
-    public static void seteM(EntityManager aeM) {
-        eM = aeM;
-    }
     /**
      * Creates new form Principal
      */
     public Principal() {
         initComponents();
-        seteM((EntityManager)controladorCliente.getEm());
+       eM= controladorCliente.getEm();
     }
 
     /**

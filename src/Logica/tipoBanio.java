@@ -17,23 +17,33 @@ import javax.persistence.*;
 @Entity
 public class tipoBanio implements Serializable {
     @Id
-    private String tipoBaño;
-
+    @Column(length = 150)
+    private String tipoBanio;
+    private String descripcion;
     public tipoBanio() {
     }
 
-    public String getTipoBaño() {
-        return tipoBaño;
+    public String getTipoBanio() {
+        return tipoBanio;
     }
 
-    public void setTipoBaño(String tipoBaño) {
-        this.tipoBaño = tipoBaño;
+    public void setTipoBanio(String tipoBaño) {
+        this.tipoBanio = tipoBaño;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.tipoBaño);
+        hash = 31 * hash + Objects.hashCode(this.tipoBanio);
+        hash = 31 * hash + Objects.hashCode(this.descripcion);
         return hash;
     }
 
@@ -49,7 +59,10 @@ public class tipoBanio implements Serializable {
             return false;
         }
         final tipoBanio other = (tipoBanio) obj;
-        if (!Objects.equals(this.tipoBaño, other.tipoBaño)) {
+        if (!Objects.equals(this.tipoBanio, other.tipoBanio)) {
+            return false;
+        }
+        if (!Objects.equals(this.descripcion, other.descripcion)) {
             return false;
         }
         return true;
@@ -57,7 +70,9 @@ public class tipoBanio implements Serializable {
 
     @Override
     public String toString() {
-        return "tipoBanio{" + "Tipo de Baño: " + tipoBaño + '}';
+        return "tipoBanio{" + "tipoBanio=" + tipoBanio + ", descripcion=" + descripcion + '}';
     }
+
+    
     
 }

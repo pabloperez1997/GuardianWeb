@@ -7,6 +7,7 @@ package Logica;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -16,8 +17,11 @@ import javax.persistence.Id;
  */
 @Entity
 public class tipoEsquila implements Serializable {
-   @Id
+
+    @Id
+    @Column(length = 150)
     private String tipoEsquila;
+    private String descripcion;
 
     public tipoEsquila() {
     }
@@ -30,10 +34,19 @@ public class tipoEsquila implements Serializable {
         this.tipoEsquila = tipoEsquila;
     }
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 83 * hash + Objects.hashCode(this.tipoEsquila);
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.tipoEsquila);
+        hash = 97 * hash + Objects.hashCode(this.descripcion);
         return hash;
     }
 
@@ -52,14 +65,17 @@ public class tipoEsquila implements Serializable {
         if (!Objects.equals(this.tipoEsquila, other.tipoEsquila)) {
             return false;
         }
+        if (!Objects.equals(this.descripcion, other.descripcion)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "tipoEsquila{" + "Tipo de Esquila: " + tipoEsquila + '}';
+        return "tipoEsquila{" + "tipoEsquila=" + tipoEsquila + ", descripcion=" + descripcion + '}';
     }
 
     
-    
+
 }

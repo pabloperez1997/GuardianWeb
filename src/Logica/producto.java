@@ -7,6 +7,7 @@ package Logica;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,11 +22,11 @@ public class producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(length = 100)
     private String codigo;
     private float precio;
     private boolean disponible;
-    private String descicion;
+    private String descripcion;
 
     @Override
     public int hashCode() {
@@ -33,7 +34,7 @@ public class producto implements Serializable {
         hash = 53 * hash + Objects.hashCode(this.codigo);
         hash = 53 * hash + Float.floatToIntBits(this.precio);
         hash = 53 * hash + (this.disponible ? 1 : 0);
-        hash = 53 * hash + Objects.hashCode(this.descicion);
+        hash = 53 * hash + Objects.hashCode(this.descripcion);
         return hash;
     }
 
@@ -58,7 +59,7 @@ public class producto implements Serializable {
         if (!Objects.equals(this.codigo, other.codigo)) {
             return false;
         }
-        if (!Objects.equals(this.descicion, other.descicion)) {
+        if (!Objects.equals(this.descripcion, other.descripcion)) {
             return false;
         }
         return true;
@@ -66,7 +67,7 @@ public class producto implements Serializable {
 
     @Override
     public String toString() {
-        return "producto{" + "codigo=" + codigo + ", precio=" + precio + ", disponible=" + disponible + ", descicion=" + descicion + '}';
+        return "producto{" + "codigo=" + codigo + ", precio=" + precio + ", disponible=" + disponible + ", descicion=" + descripcion + '}';
     }
 
     public String getCodigo() {
@@ -93,12 +94,12 @@ public class producto implements Serializable {
         this.disponible = disponible;
     }
 
-    public String getDescicion() {
-        return descicion;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setDescicion(String descicion) {
-        this.descicion = descicion;
+    public void setDescripcion(String descicion) {
+        this.descripcion = descicion;
     }
 
     public producto() {

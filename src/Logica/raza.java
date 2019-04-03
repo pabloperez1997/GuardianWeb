@@ -7,6 +7,7 @@ package Logica;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -17,6 +18,7 @@ import javax.persistence.Id;
 @Entity
 class raza implements Serializable {
     @Id
+    @Column(length = 100)
     private String raza;
 
     public raza() {

@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -18,15 +20,16 @@ import javax.persistence.OneToOne;
  *
  * @author jp
  */
+@Inheritance (strategy = InheritanceType.JOINED)
 @Entity
-public class mascota implements Serializable {
+public abstract class mascota implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nombre;
-    @OneToOne
+    @ManyToOne
     private raza raza;
     @ManyToOne
     private cliente cliente;
