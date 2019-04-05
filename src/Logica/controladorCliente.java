@@ -6,14 +6,12 @@
 package Logica;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  *
  * @author jp
  */
-public class controladorCliente {
+public class controladorCliente implements iControladorCliente{
    /*
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("elGuardianServidorPU");
     
@@ -29,8 +27,14 @@ public class controladorCliente {
 
     private static final EntityManager em = Persistencia.persistencia.getInstance().getEm();
 
+    
     public static EntityManager getEm() {
         return em;
+    }
+
+    @Override
+    public void altaCliente(cliente clie) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }
