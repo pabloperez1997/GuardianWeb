@@ -16,9 +16,9 @@ import javax.persistence.Persistence;
 public class persistencia {
 
     private static persistencia instance;
-    private String unidadPersistencia = "elGuardianServidorPU";
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory(unidadPersistencia);
-    private EntityManager em = emf.createEntityManager();
+    private static String unidadPersistencia = "elGuardianServidorPU";
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(unidadPersistencia);
+    private static final EntityManager em = emf.createEntityManager();
 /**
  *@return retorna un manejador de entidades
  */
@@ -50,7 +50,7 @@ public class persistencia {
     }
 
     public void setUnidadPersistencia(String unidadPersistencia) {
-        this.unidadPersistencia = unidadPersistencia;
+        persistencia.unidadPersistencia = unidadPersistencia;
     }
 
 }
