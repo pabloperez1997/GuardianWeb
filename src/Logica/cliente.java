@@ -32,10 +32,9 @@ public class cliente implements Serializable {
     private String tel_cel;
     private String correo;
 
-
     @OneToMany(mappedBy = "cliente")
     private List<reserva> reservasCliente;
-   
+
     @OneToMany(mappedBy = "cliente")
     private List<mascota> mascotasCliente;
 
@@ -171,23 +170,42 @@ public class cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "cliente{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion=" + direccion + ", tel_cel=" + tel_cel + ", correo=" + correo + ", reservasCliente=" + reservasCliente + ", mascotasCliente=" + mascotasCliente +'}';
+        return "cliente{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion=" + direccion + ", tel_cel=" + tel_cel + ", correo=" + correo + ", reservasCliente=" + reservasCliente + ", mascotasCliente=" + mascotasCliente + '}';
     }
 
-   
-/*
-  public boolean emailValido(String email) {
-
-        // Patrón para validar el email
-        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-        Matcher mather = pattern.matcher(email);
-
-        return mather.find();
-    }
-*/
-    
-    public boolean passwordValido(String passw){return passw.equals(password);}
+    /*
   
-    
+     */
+    public cliente(cliente clienteCop) {
+        this.cedula = clienteCop.cedula;
+        this.nombre = clienteCop.nombre;
+        this.apellido = clienteCop.apellido;
+        this.direccion = clienteCop.direccion;
+        this.tel_cel = clienteCop.tel_cel;
+        this.correo = clienteCop.correo;
+        this.reservasCliente = clienteCop.reservasCliente;
+        this.mascotasCliente = clienteCop.mascotasCliente;
+        this.password = clienteCop.password;
+    }
+
+    public boolean passwordValido(String passw) {
+        return passw.equals(password);
+    }
+
+    public void modificarme(cliente cli) {
+        if (!this.getNombre().equals(cli.getNombre())&& cli.getNombre()!=null) {
+            this.setNombre(cli.getNombre());
+        }
+        if (!this.getApellido().equals(cli.getApellido())) {
+            this.setApellido(cli.getApellido());
+        }
+        if (!this.getCorreo().equals(cli.getCorreo())) {
+            this.setCorreo(cli.getCorreo());
+        }
+        if (!this.getDireccion().equals(cli.getDireccion())) {
+            this.setDireccion(cli.getDireccion());
+        }
+        
+
+    }
 }

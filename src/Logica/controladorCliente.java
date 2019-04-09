@@ -5,18 +5,26 @@
  */
 package Logica;
 
-import javax.persistence.EntityManager;
+import Persistencia.clientePersistencia;
+import java.util.HashMap;
 
 /**
  *
  * @author jp
  */
-public class controladorCliente implements iControladorCliente{
-   /*
+public class controladorCliente implements iControladorCliente {
+
+    /*
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("elGuardianServidorPU");
     
-    */
+     */
+    /////////////Variables///////////////
     private static controladorCliente instance;
+    ////////////Arreglos////////////////
+    HashMap<String, cliente> clientes;
+    HashMap<String, mascota> mascotas;
+
+    private clientePersistencia cPer = new clientePersistencia();
 
     public static controladorCliente getInstance() {
         if (instance == null) {
@@ -25,16 +33,42 @@ public class controladorCliente implements iControladorCliente{
         return instance;
     }
 
-    private static final EntityManager em = Persistencia.persistencia.getInstance().getEm();
+    /*   private static final EntityManager em = Persistencia.persistencia.getInstance().getEm();
 
     
     public static EntityManager getEm() {
         return em;
+    }*/
+    @Override
+    public boolean altaCliente(cliente clie) {
+        try {
+            System.out.println("altaCliente inicio");
+            clientes.put(clie.getCedula(), clie);
+
+            return cPer.altaCliente(clie);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+
     }
 
     @Override
-    public void altaCliente(cliente clie) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean modificarCliente(cliente clieMod) {
+        try {
+
+            return cPer.modificarCliente(clieMod);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
     }
 
+    public void modClienteArreglo(cliente clienteMod) {
+        if (clientes.containsKey(clienteMod.getCedula())) {
+            cliente cli = (cliente) clientes.get(clienteMod.getCedula());
+            
+        }
+
+    }
 }

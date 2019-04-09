@@ -20,7 +20,7 @@ private EntityManager eM;
      */
     public Principal() {
         initComponents();
-       eM= controladorCliente.getEm();
+      // eM= controladorCliente.getEm();
     }
 
     /**
