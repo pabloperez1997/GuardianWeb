@@ -18,10 +18,12 @@ public class persistencia {
     private static persistencia instance;
     private static String unidadPersistencia = "elGuardianServidorPU";
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(unidadPersistencia);
+
     private static final EntityManager em = emf.createEntityManager();
-/**
- *@return retorna un manejador de entidades
- */
+
+    /**
+     * @return retorna un manejador de entidades
+     */
     public EntityManager getEm() {
         return em;
     }
@@ -31,18 +33,6 @@ public class persistencia {
             instance = new persistencia();
         }
         return instance;
-    }
-
-    public void persistir(Object object) {
-
-        em.getTransaction().begin();
-        try {
-            em.persist(object);
-            em.getTransaction().commit();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            em.getTransaction().rollback();
-        }
     }
 
     public String getUnidadPersistencia() {

@@ -5,7 +5,7 @@
  */
 package Logica;
 
-import javax.persistence.EntityManager;
+
 
 /**
  *
@@ -14,9 +14,12 @@ import javax.persistence.EntityManager;
 public interface iControladorCliente {
 
     /**
-     *Funcion altaCliente
-     * Recibe un o
+     * Funcion altaCliente
+     * Recibe un objeto de tipo cliente
      * @param clie
+     * @return true or false
+     * 
      */
-    public abstract void altaCliente(cliente clie);
+    public abstract boolean altaCliente(cliente clie);
+    public abstract boolean modificarCliente(cliente clieMod);
 }
