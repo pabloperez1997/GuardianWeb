@@ -7,6 +7,7 @@ package Logica;
 
 import Persistencia.clientePersistencia;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -20,12 +21,13 @@ public class controladorCliente implements iControladorCliente {
      */
     /////////////Variables///////////////
     private static controladorCliente instance;
+    private utilidades util = utilidades.getInstance();
     ////////////Arreglos////////////////
-    HashMap<String, cliente> clientes;
-    HashMap<String, mascota> mascotas;
-
+    private HashMap<String, cliente> clientes= new HashMap<>();
+    private HashMap<String, mascota> mascotas = new HashMap<>();
+    
     private clientePersistencia cPer = new clientePersistencia();
-
+    
     public static controladorCliente getInstance() {
         if (instance == null) {
             instance = new controladorCliente();
@@ -39,36 +41,30 @@ public class controladorCliente implements iControladorCliente {
     public static EntityManager getEm() {
         return em;
     }*/
-    @Override
-    public boolean altaCliente(cliente clie) {
-        try {
-            System.out.println("altaCliente inicio");
-            clientes.put(clie.getCedula(), clie);
-
-            return cPer.altaCliente(clie);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-
-    }
-
-    @Override
-    public boolean modificarCliente(cliente clieMod) {
-        try {
-
-            return cPer.modificarCliente(clieMod);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-    }
-
+ 
+    
     public void modClienteArreglo(cliente clienteMod) {
         if (clientes.containsKey(clienteMod.getCedula())) {
             cliente cli = (cliente) clientes.get(clienteMod.getCedula());
             
         }
-
+        
     }
+    
+    public void cargarClientesArreglo() {
+        List arregloClientes = (List<cliente>) cPer.getArregloClientes();
+        for (int i = 0; i <= arregloClientes.size(); i++) {
+            cliente clAr = new cliente();
+            clAr = (cliente) arregloClientes.get(i);
+            clientes.put(clAr.getCedula(), clAr);
+            
+        }
+    }
+    
+    @Override
+    public boolean emailValido(String email) {
+        return util.emailValido(email);
+        
+    }
+    
 }

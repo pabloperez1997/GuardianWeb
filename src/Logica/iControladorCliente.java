@@ -5,21 +5,12 @@
  */
 package Logica;
 
-
-
 /**
  *
  * @author jp
  */
 public interface iControladorCliente {
 
-    /**
-     * Funcion altaCliente
-     * Recibe un objeto de tipo cliente
-     * @param clie
-     * @return true or false
-     * 
-     */
-    public abstract boolean altaCliente(cliente clie);
-    public abstract boolean modificarCliente(cliente clieMod);
+   
+    public abstract boolean emailValido(String email);
 }

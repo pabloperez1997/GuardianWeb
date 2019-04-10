@@ -16,7 +16,7 @@ import javax.persistence.Id;
  * @author jp
  */
 @Entity
-class raza implements Serializable {
+public class raza implements Serializable {
     @Id
     @Column(length = 100)
     private String raza;

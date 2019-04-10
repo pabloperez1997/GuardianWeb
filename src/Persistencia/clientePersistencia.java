@@ -18,15 +18,7 @@ import javax.persistence.Query;
 public class clientePersistencia {
 
     EntityManager em = persistencia.getInstance().getEm();
-    private static clientePersistencia instance;
-
-    public static clientePersistencia getCliePersistenciaInstace() {
-        if (instance == null) {
-            return instance = new clientePersistencia();
-
-        }
-        return instance;
-    }
+   
 
     /**
      * @Funcion altaCliente(): da de alta un cliente en la BD

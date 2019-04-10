@@ -5,17 +5,20 @@
  */
 package Logica;
 
-/**
- *
- * @author jp
- */
+import Persistencia.persistencia;
+        /**
+         *
+         * @author jp
+         */
+
 public class fabricaElGuardian {
- 
+
     private static fabricaElGuardian instance;
-    
+
     iControladorCliente iCC = new controladorCliente();
-    
-   public static fabricaElGuardian getInstance() {
+    persistencia perInstance = persistencia.getInstance();
+
+    public static fabricaElGuardian getInstance() {
         if (instance == null) {
             instance = new fabricaElGuardian();
         }
@@ -25,8 +28,12 @@ public class fabricaElGuardian {
     private fabricaElGuardian() {
 
     }
-    
-    public iControladorCliente getInstanceIControladorCliente(){
-    return  iCC;
+
+    public iControladorCliente getInstanceIControladorCliente() {
+        return iCC;
+    }
+
+    public persistencia getInstancePersistencia() {
+        return perInstance;
     }
 }
