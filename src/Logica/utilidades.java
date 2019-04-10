@@ -19,14 +19,25 @@ public class utilidades {
     public utilidades() {
     }
     
-    utilidades instance = new utilidades().instance;
+   private static utilidades instance;
     
-    public utilidades getInstance(){
-        if(instance==null)return instance = new utilidades().instance;
+    /**
+     *
+     * @return
+     */
+    public static utilidades getInstance(){
+        if(instance==null)instance = new utilidades();
         
         return instance;
     }
+    /*private clientePersistencia cPer = new clientePersistencia();
     
+    public static controladorCliente getInstance() {
+        if (instance == null) {
+            instance = new controladorCliente();
+        }
+        return instance;
+    }*/
    /**
     * @emailValido(): Funcion que recibe un email y valida que su formato sea correcto
     * @param email 

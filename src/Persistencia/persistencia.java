@@ -18,7 +18,7 @@ public class persistencia {
     private static persistencia instance;
     private static String unidadPersistencia = "elGuardianServidorPU";
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(unidadPersistencia);
-
+    private static final clientePersistencia clientePer = new clientePersistencia();
     private static final EntityManager em = emf.createEntityManager();
 
     /**
@@ -35,6 +35,10 @@ public class persistencia {
         return instance;
     }
 
+    public clientePersistencia getClientePersistencia() {
+        return clientePer;
+    }
+
     public String getUnidadPersistencia() {
         return unidadPersistencia;
     }
@@ -43,4 +47,42 @@ public class persistencia {
         persistencia.unidadPersistencia = unidadPersistencia;
     }
 
+    public boolean persis(Object obj) {
+        try {
+            em.getTransaction().begin();
+            em.persist(obj);
+            em.getTransaction().commit();
+
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error al agregar: " + e.getMessage() + " Causa: " + e.getCause());
+            em.getTransaction().rollback();
+            return false;
+        }
+    }
+
+    public boolean modificar(Object obj) {
+        try {
+            em.getTransaction().begin();
+            em.merge(obj);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+
+    }
+
+    public boolean eliminar(Object obj) {
+        try {
+            em.getTransaction().begin();
+            em.remove(obj);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
 }
