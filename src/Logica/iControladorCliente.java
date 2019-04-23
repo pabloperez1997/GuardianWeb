@@ -5,6 +5,8 @@
  */
 package Logica;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author jp
@@ -13,4 +15,13 @@ public interface iControladorCliente {
 
    
     public abstract boolean emailValido(String email);
+    public abstract ArrayList getClientes();
+    public abstract boolean eliminarCliente(String cedula);
+    public abstract String generarPassword();
+    public abstract cliente getCliente(String cedula);
+    public abstract boolean modificarCliente(cliente clieMod);
+    public abstract boolean resetearPassword(String cedula);
+    public abstract boolean altaCliente(cliente clienteNuevo);
+
+
 }

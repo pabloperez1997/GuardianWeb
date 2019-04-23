@@ -5,8 +5,13 @@
  */
 package Presentacion;
 
-import Logica.controladorCliente;
+import Logica.utilidades;
+import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.mail.internet.AddressException;
 import javax.persistence.EntityManager;
+import javax.swing.JDesktopPane;
 
 /**
  *
@@ -14,12 +19,24 @@ import javax.persistence.EntityManager;
  */
 public class Principal extends javax.swing.JFrame {
 
+    private utilidades util = utilidades.getInstance();
     private EntityManager eM;
+    String cuerpo = "coso", asunto = "cospe";
+    // private JDesktopPane escritorioPrincipal = new JDesktopPane();
 
     /**
      * Creates new form Principal
      */
-    public Principal() {
+    public Principal() throws AddressException {
+        this.setExtendedState(MAXIMIZED_BOTH);
+        this.setLocationRelativeTo(null);
+        eM = Persistencia.persistencia.getInstance().getEm();
+        try {
+            boolean enviarConGMail = utilidades.enviarConGMail("jballejo@gmail.com", asunto, cuerpo,null,null);
+        } catch (MessagingException ex) {
+            System.err.println(ex.getMessage());
+        }
+        // this.setVisible(true);
         initComponents();
         // eM= controladorCliente.getEm();
     }
@@ -33,12 +50,24 @@ public class Principal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        escritorioPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout escritorioPrincipalLayout = new javax.swing.GroupLayout(escritorioPrincipal);
+        escritorioPrincipal.setLayout(escritorioPrincipalLayout);
+        escritorioPrincipalLayout.setHorizontalGroup(
+            escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 752, Short.MAX_VALUE)
+        );
+        escritorioPrincipalLayout.setVerticalGroup(
+            escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 424, Short.MAX_VALUE)
+        );
 
         jMenu1.setText("Cliente");
 
@@ -61,11 +90,11 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(escritorioPrincipal)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addComponent(escritorioPrincipal)
         );
 
         pack();
@@ -76,9 +105,10 @@ public class Principal extends javax.swing.JFrame {
         /*Alta_Perfil altaP = new Alta_Perfil();
         this.getContentPane().add(altaP);
         altaP.show();*/
-        JIF_clientesAlta altaCliente = new JIF_clientesAlta();
-        this.getContentPane().add(altaCliente);
-        altaCliente.show();
+        JIF_clientes altaCliente = new JIF_clientes(escritorioPrincipal);
+        this.escritorioPrincipal.add(altaCliente);
+        //this.getContentPane().add(altaCliente);
+        altaCliente.setVisible(true);
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
@@ -113,15 +143,28 @@ public class Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal().setVisible(true);
+                try {
+                    new Principal().setVisible(true);
+                } catch (AddressException ex) {
+                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane escritorioPrincipal;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     // End of variables declaration//GEN-END:variables
+
+    public JDesktopPane getEscritorioPrincipal() {
+        return escritorioPrincipal;
+    }
+
+    public void setEscritorioPrincipal(JDesktopPane escritorioPrincipal) {
+        this.escritorioPrincipal = escritorioPrincipal;
+    }
 }

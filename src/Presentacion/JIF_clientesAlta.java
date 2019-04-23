@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Presentacion;
+
 import Persistencia.persistencia;
 import Logica.cliente;
 import Logica.controladorCliente;
@@ -21,7 +22,8 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
 
     fabricaElGuardian instanciaFabrica = fabricaElGuardian.getInstance();
     persistencia persistenciaIns = instanciaFabrica.getInstancePersistencia();
-controladorCliente contCliente = (controladorCliente) instanciaFabrica.getInstanceIControladorCliente();
+    controladorCliente contCliente = (controladorCliente) instanciaFabrica.getInstanceIControladorCliente();
+
     /**
      * Creates new form JIF_clientesAlta
      */
@@ -148,7 +150,9 @@ controladorCliente contCliente = (controladorCliente) instanciaFabrica.getInstan
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel2)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(jT_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
@@ -170,10 +174,8 @@ controladorCliente contCliente = (controladorCliente) instanciaFabrica.getInstan
                             .addComponent(jT_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jT_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -246,13 +248,15 @@ controladorCliente contCliente = (controladorCliente) instanciaFabrica.getInstan
                 nuevoCliente.setCorreo(jT_correo.getText());
                 nuevoCliente.setDireccion(jT_direccion.getText());
                 nuevoCliente.setTel_cel(jT_telefono.getText());
-                if (persistenciaIns.persis(nuevoCliente)) {
+                
+                if (contCliente.altaCliente(nuevoCliente)) {
                     JOptionPane.showMessageDialog(this, "Usuario agregado con exito!");
+                    limpiar();
                 }
             }
 
         }
-        
+
     }
 
     private boolean verificaDatos() {
@@ -293,5 +297,15 @@ controladorCliente contCliente = (controladorCliente) instanciaFabrica.getInstan
 
         }
         return true;
+    }
+
+    public void limpiar() {
+        jTA_comentario.setText(null);
+        jT_apellido.setText(null);
+        jT_cedula.setText(null);
+        jT_correo.setText(null);
+        jT_direccion.setText(null);
+        jT_nombre.setText(null);
+        jT_telefono.setText(null);
     }
 }

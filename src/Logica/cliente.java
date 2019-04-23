@@ -5,9 +5,15 @@
  */
 package Logica;
 
+import java.io.PrintStream;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +27,7 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class cliente implements Serializable {
-    
+
     private static final long serialVersionUID = 1L;
     @Id
     @Column(length = 100)
@@ -32,87 +38,87 @@ public class cliente implements Serializable {
     private String tel_cel;
     private String correo;
     private String password;
-    
+
     public cliente() {
     }
     @OneToMany(mappedBy = "cliente")
     private List<reserva> reservasCliente;
-    
+
     @OneToMany(mappedBy = "cliente")
     private List<mascota> mascotasCliente;
-    
+
     public String getCorreo() {
         return correo;
     }
-    
+
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-    
+
     public String getCedula() {
         return this.cedula;
     }
-    
+
     public void setCedula(String cedula) {
         this.cedula = cedula;
     }
-    
+
     public String getNombre() {
         return nombre;
     }
-    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     public String getApellido() {
         return apellido;
     }
-    
+
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
-    
+
     public String getDireccion() {
         return direccion;
     }
-    
+
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-    
+
     public String getTel_cel() {
         return tel_cel;
     }
-    
+
     public void setTel_cel(String tel_cel) {
         this.tel_cel = tel_cel;
     }
-    
+
     public String getPassword() {
         return password;
     }
-    
+
     public void setPassword(String password) {
-        this.password = password;
+        this.password = this.autoEncriptarPasswdMD5(password);
     }
-    
+
     public List<reserva> getReservasCliente() {
         return reservasCliente;
     }
-    
+
     public void setReservasCliente(List<reserva> reservasCliente) {
         this.reservasCliente = reservasCliente;
     }
-    
+
     public List<mascota> getMascotasCliente() {
         return mascotasCliente;
     }
-    
+
     public void setMascotasCliente(List<mascota> mascotasCliente) {
         this.mascotasCliente = mascotasCliente;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -127,7 +133,7 @@ public class cliente implements Serializable {
         hash = 37 * hash + Objects.hashCode(this.password);
         return hash;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -166,10 +172,34 @@ public class cliente implements Serializable {
         }
         return Objects.equals(this.mascotasCliente, other.mascotasCliente);
     }
-    
+
     @Override
     public String toString() {
-        return "cliente{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion=" + direccion + ", tel_cel=" + tel_cel + ", correo=" + correo + ", reservasCliente=" + reservasCliente + ", mascotasCliente=" + mascotasCliente + '}';
+        return "Nombre/" + nombre + "/Apellido/" + apellido + "/Cedula/" + cedula + "/Telefono/" + tel_cel + "/Direccion/" + direccion + "/Email/" + correo;
+//return "cliente{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion=" + direccion + ", tel_cel=" + tel_cel + ", correo=" + correo + ", reservasCliente=" + reservasCliente + ", mascotasCliente=" + mascotasCliente + '}';
+    }
+
+    public String toStringTabla() {
+        return "Nombre/" + nombre + "/Apellido/" + apellido + "/Cedula/" + cedula + "/Telefono/" + tel_cel + "/Direccion/" + direccion + "/Email/" + correo;
+    }
+
+    private String autoEncriptarPasswdMD5(String pass) {
+        try {
+
+            java.security.MessageDigest md = java.security.MessageDigest
+                    .getInstance("MD5");
+            byte[] array = md.digest(pass.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100)
+                        .substring(1, 3));
+            }
+            return sb.toString();
+
+        } catch (java.security.NoSuchAlgorithmException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     /*
@@ -186,26 +216,29 @@ public class cliente implements Serializable {
         this.mascotasCliente = clienteCop.mascotasCliente;
         this.password = clienteCop.password;
     }
-    
+
     public boolean passwordValido(String passw) {
         return passw.equals(password);
     }
-    
+
     public void modificarme(cliente cli) {
         if (!this.getNombre().equals(cli.getNombre()) && cli.getNombre() != null) {
             this.setNombre(cli.getNombre());
         }
-        if (!this.getApellido().equals(cli.getApellido())&&cli.getApellido()!=null) {
+        if (!this.getApellido().equals(cli.getApellido()) && cli.getApellido() != null) {
             this.setApellido(cli.getApellido());
         }
-        if (!this.getCorreo().equals(cli.getCorreo())&&cli.getCorreo()!=null) {
+        if (!this.getCorreo().equals(cli.getCorreo()) && cli.getCorreo() != null) {
             this.setCorreo(cli.getCorreo());
         }
-        if (!this.getDireccion().equals(cli.getDireccion())&&cli.getDireccion()!=null) {
+        if (!this.getDireccion().equals(cli.getDireccion()) && cli.getDireccion() != null) {
             this.setDireccion(cli.getDireccion());
         }
-        if (!this.getTel_cel().equals(cli.getTel_cel())&&cli.getTel_cel()!=null) {
+        if (!this.getTel_cel().equals(cli.getTel_cel()) && cli.getTel_cel() != null) {
             this.setTel_cel(cli.getTel_cel());
+        }
+        if (!this.getCedula().equals(cli.getCedula()) && cli.getTel_cel() != null) {
+            this.setCedula(cli.getCedula());
         }
         //revisar comparacion de arreglos cosas
     }

@@ -18,7 +18,6 @@ import javax.persistence.Query;
 public class clientePersistencia {
 
     EntityManager em = persistencia.getInstance().getEm();
-   
 
     /**
      * @Funcion altaCliente(): da de alta un cliente en la BD
@@ -78,10 +77,18 @@ public class clientePersistencia {
         }
     }
 
-    public List getArregloClientes() {
-        List<cliente> listaClientes = new ArrayList<>();
-        Query qClientes = (Query) em.createQuery("SELECT * FROM cliente");
-        listaClientes = (ArrayList<cliente>) qClientes.getResultList();
-        return listaClientes;
+    public ArrayList<cliente> getArregloClientes() {
+        List<cliente> listaClientes = null;
+
+        try {
+            em.getTransaction().begin();
+            listaClientes = em.createNativeQuery("Select * from cliente", cliente.class).getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println("Error al levantar los clientes:");
+
+            System.err.println(e.getMessage());
+        }
+        return (ArrayList<cliente>)listaClientes;
     }
 }

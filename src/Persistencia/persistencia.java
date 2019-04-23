@@ -5,9 +5,12 @@
  */
 package Persistencia;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -84,5 +87,20 @@ public class persistencia {
             System.err.println(e.getMessage());
             return false;
         }
+    }
+
+    public List<Object> getListaObjetos(String sql, Class clase) {
+        try {
+           em.getTransaction().begin();
+            List resultList = em.createNativeQuery(sql, clase.getClass()).getResultList();
+            em.getTransaction().commit();
+            return resultList;
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+        return null;
+
     }
 }
