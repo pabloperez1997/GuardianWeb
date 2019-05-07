@@ -5,25 +5,21 @@
  */
 package Servlets;
 
-import clases.EstadoSesion;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import servicios.Cliente;
-import servicios.PublicadorConsultarUsuario;
 
 /**
  *
  * @author PabloP
  */
-public class ServletInicio extends HttpServlet {
+@WebServlet("/registrarse")
+public class Registrarse extends HttpServlet {
 
-    private PublicadorConsultarUsuario port;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -36,37 +32,15 @@ public class ServletInicio extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Cliente cliente = null;
-        HttpSession session = request.getSession();
-        if (session.getAttribute("usuario_logueado") == null) {
-
-            boolean haySesion = false;
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                for (int i = 0; i < cookies.length; i++) {
-                    if (cookies[i].getName().equals("cookieSesion")) {
-                        if (!cookies[i].getValue().equals("")) {
-                            haySesion = true;
-                            String correo = cookies[i].getValue();
-                            try {
-                                cliente = this.port.obtenerCliente(correo);
-                            }catch (Exception e) {
-                                }
-                            }
-
-                            session.setAttribute("estado_sesion", EstadoSesion.LOGIN_CORRECTO);
-                            session.setAttribute("usuario_logueado", cliente.getCorreo());
-                        }
-                    }
-                }
-            
-            if (!haySesion) {
-                session.setAttribute("estado_sesion", null);
-                session.setAttribute("usuario_logueado", null);
-            }
+       
+        Cliente clienteLog = (Cliente) request.getSession().getAttribute("usuario_logueado");
+       
+        if (clienteLog == null) {
+            request.getRequestDispatcher("Vistas/Registrarse.jsp").forward(request, response);
+        } else {
+            request.setAttribute("mensaje", "Ya existe una sesion en el sistema");
+            request.getRequestDispatcher("Vistas/Inicio.jsp").forward(request, response);
         }
-        
-         request.getRequestDispatcher("Vistas/Inicio.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

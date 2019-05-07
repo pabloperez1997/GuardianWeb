@@ -36,12 +36,17 @@
                     <a class="nav-link" href="#">Galeria de Fotos</a>
                 </li>
             </ul>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
+  
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" href="iniciar-sesion">
           Iniciar Sesion</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="registrarse">
+          Registrarme</a>
+      </li>
+      
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
           aria-haspopup="true" aria-expanded="false">
@@ -52,7 +57,8 @@
         </div>
       </li>
     </ul>
-  </div>
+  
+            </div>
     </nav>
 
 </header>
