@@ -12,6 +12,14 @@
         <servlet-name>Registrarse</servlet-name>
         <servlet-class>Servlets.Registrarse</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletCerrarSesion</servlet-name>
+        <servlet-class>Servlets.ServletCerrarSesion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletProductos</servlet-name>
+        <servlet-class>Servlets.ServletProductos</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletInicio</servlet-name>
         <url-pattern>/ServletInicio</url-pattern>
@@ -23,6 +31,14 @@
     <servlet-mapping>
         <servlet-name>Registrarse</servlet-name>
         <url-pattern>/Registrarse</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletCerrarSesion</servlet-name>
+        <url-pattern>/ServletCerrarSesion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletProductos</servlet-name>
+        <url-pattern>/ServletProductos</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

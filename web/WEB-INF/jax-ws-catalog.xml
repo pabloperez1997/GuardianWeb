@@ -3,4 +3,6 @@
     <system systemId="http://127.0.0.1:8280/servicioInicio?wsdl" uri="wsdl/127.0.0.1_8280/servicioInicio.wsdl"/>
     <system systemId="http://127.0.0.1:8280/servicioConsultaUsuario?wsdl" uri="wsdl/127.0.0.1_8280/servicioConsultaUsuario.wsdl"/>
     <system systemId="http://127.0.0.1:8280/servicioConsultaU?xsd=1" uri="wsdl/127.0.0.1_8280/servicioConsultaU.xsd_1.xsd"/>
+    <system systemId="http://127.0.0.1:8280/servicioVentas?wsdl" uri="wsdl/127.0.0.1_8280/servicioVentas.wsdl"/>
+    <system systemId="http://127.0.0.1:8280/servicioVentas?xsd=1" uri="wsdl/127.0.0.1_8280/servicioVentas.xsd_1.xsd"/>
 </catalog>

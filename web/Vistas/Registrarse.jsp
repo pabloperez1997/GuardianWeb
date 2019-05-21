@@ -22,48 +22,67 @@
   <!-- Your custom styles (optional) -->
   <link href="bootstrap/css/style.css" rel="stylesheet">
         <title>Guardian:: Registrarse</title>
+        <jsp:include page="/Vistas/Cabezal.jsp" />
     </head>
     <body>
-        <!-- Default form register -->
-<form class="text-center border border-light p-5">
+    <main>
+    <div style="height: 140vh"> 
+    <div class="d-flex justify-content-center align-items-center h-100"> 
+    <div class="container"> 
+    <!-- Grid row --> 
+    <div class="row">
+    <!-- Grid column --> 
+    <div class="col-md-12">
+        
+    <!-- Default form register -->
+    <form method="post" action="registrarse" class="text-center border border-light p-5">
 
     <p class="h4 mb-4">Registrarse</p>
 
     <div class="form-row mb-4">
         <div class="col">
             <!-- Nombre -->
-            <input type="text" id="nombre" class="form-control" placeholder="Nombre">
+            <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre">
         </div>
         <div class="col">
             <!-- Apellido -->
-            <input type="text" id="apellido" class="form-control" placeholder="Apellido">
+            <input type="text" name="apellido" id="apellido" class="form-control" placeholder="Apellido">
         </div>
     </div>
     <!-- E-mail -->
-    <input type="email" id="cedula" class="form-control mb-4" placeholder="Cedula">
+    <input type="text" name="cedula" id="cedula" class="form-control mb-4" placeholder="Cedula">
 
     <!-- E-mail -->
-    <input type="email" id="email" class="form-control mb-4" placeholder="E-mail">
+    <input type="Email" name="email" id="email" class="form-control mb-4" placeholder="E-mail">
 
     <!-- Password -->
-    <input type="password" id="contraseña" class="form-control mb-3" placeholder="Contraseña">
-    <input type="password" id="contraseña" class="form-control" placeholder="Repetir Contraseña">
+    <input type="password" name="pass" id="pass" class="form-control mb-3" placeholder="Contraseña">
+    <input type="password" name="pass" id="pass" class="form-control" placeholder="Repetir Contraseña">
     <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
         Al menos 6 caracteres
     </small>
 
     <!-- Telefono -->
-    <input type="text" id="telefono" class="form-control mb-4" placeholder="Teléfono" >
+    <input type="text" name="telefono" id="telefono" class="form-control mb-4" placeholder="Teléfono" >
 
     <!-- Direccion -->
-    <input type="text" id="direccion" class="form-control mb-4" placeholder="Dirección" >
+    <input type="text" name="direccion" id="direccion" class="form-control mb-4" placeholder="Dirección" >
 
     <!-- Boton Registrarse -->
     <button class="btn btn-dark my-4 btn-block" type="submit">Registrarme</button>
 
-    <hr>
-
-</form>
+    <p>Ya tienes una cuenta?
+        <a href="iniciar-sesion">Inicia Sesion</a>
+    </p>
+    
+    </form>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+        
+    </main>
 <!-- Default form register -->
 <script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
   <!-- Bootstrap tooltips -->
@@ -72,6 +91,8 @@
   <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="bootstrap/js/mdb.min.js"></script>
+  <jsp:include page="/Vistas/Footer.jsp" />
+
     </body>
     
   

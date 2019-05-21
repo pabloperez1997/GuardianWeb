@@ -20,10 +20,21 @@
     <link href="bootstrap/css/mdb.min.css" rel="stylesheet">
     <!-- Your custom styles (optional) -->
     <link href="bootstrap/css/style.css" rel="stylesheet">
+    
+    <jsp:include page="/Vistas/Cabezal.jsp" />
     </head>
     <body>
-        <!-- Default form login -->
-<form class="text-center border border-light p-5">
+    <main>
+    <div style="height: 95vh"> 
+    <div class="d-flex justify-content-center align-items-center h-100"> 
+    <div class="container"> 
+    <!-- Grid row --> 
+    <div class="row">
+    <!-- Grid column --> 
+    <div class="col-md-12">
+      
+    <!-- Default form login -->
+    <form class="text-center border border-light p-5">
 
     <p class="h4 mb-4">Iniciar Sesión</p>
 
@@ -55,8 +66,15 @@
         <a href="registrarse">Registrarme</a>
     </p>
 
-</form>
-<!-- Default form login -->
+    </form>
+    <!-- Default form login -->
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+        
+    </main>
 
   <script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
   <!-- Bootstrap tooltips -->
@@ -65,5 +83,7 @@
   <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="bootstrap/js/mdb.min.js"></script>
+  
+  <jsp:include page="/Vistas/Footer.jsp" />
     </body>
 </html>

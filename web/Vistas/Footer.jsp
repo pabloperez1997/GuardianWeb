@@ -6,7 +6,18 @@
 
 <!DOCTYPE html>
 <html>
-<footer class="page-footer font-small unique-color-dark pt-4">
+    <head>
+    <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="bootstrap/css/mdb.min.css" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="bootstrap/css/style.css" rel="stylesheet">
+    </head>
+    
+ <footer class="page-footer font-small unique-color-dark pt-4">
 
     <!-- Footer Elements -->
     <div  class="container">
@@ -47,5 +58,13 @@
     </div>
     <!-- Copyright -->
   </footer>
+    
+    <script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="bootstrap/js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="bootstrap/js/mdb.min.js"></script>
     </body>
 </html>

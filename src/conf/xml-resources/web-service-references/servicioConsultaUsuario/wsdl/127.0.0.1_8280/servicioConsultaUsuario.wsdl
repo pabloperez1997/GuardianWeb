@@ -9,14 +9,21 @@
 </message>
 <message name="publicarConsultarUsuarioResponse"></message>
 <message name="obtenerCliente">
-<part name="arg0" type="xsd:string"></part>
+<part name="cedula" type="xsd:string"></part>
 </message>
 <message name="obtenerClienteResponse">
 <part name="return" type="tns:cliente"></part>
 </message>
-<message name="Exception">
-<part name="fault" element="tns:Exception"></part>
+<message name="AgregarCliente">
+<part name="cedula" type="xsd:string"></part>
+<part name="nombre" type="xsd:string"></part>
+<part name="apellido" type="xsd:string"></part>
+<part name="correo" type="xsd:string"></part>
+<part name="telefono" type="xsd:string"></part>
+<part name="direccion" type="xsd:string"></part>
+<part name="hash" type="xsd:string"></part>
 </message>
+<message name="AgregarClienteResponse"></message>
 <portType name="PublicadorConsultarUsuario">
 <operation name="publicarConsultarUsuario">
 <input wsam:Action="http://servicios/PublicadorConsultarUsuario/publicarConsultarUsuarioRequest" message="tns:publicarConsultarUsuario"></input>
@@ -25,7 +32,10 @@
 <operation name="obtenerCliente">
 <input wsam:Action="http://servicios/PublicadorConsultarUsuario/obtenerClienteRequest" message="tns:obtenerCliente"></input>
 <output wsam:Action="http://servicios/PublicadorConsultarUsuario/obtenerClienteResponse" message="tns:obtenerClienteResponse"></output>
-<fault message="tns:Exception" name="Exception" wsam:Action="http://servicios/PublicadorConsultarUsuario/obtenerCliente/Fault/Exception"></fault>
+</operation>
+<operation name="AgregarCliente" parameterOrder="cedula nombre apellido correo telefono direccion hash">
+<input wsam:Action="http://servicios/PublicadorConsultarUsuario/AgregarClienteRequest" message="tns:AgregarCliente"></input>
+<output wsam:Action="http://servicios/PublicadorConsultarUsuario/AgregarClienteResponse" message="tns:AgregarClienteResponse"></output>
 </operation>
 </portType>
 <binding name="PublicadorConsultarUsuarioPortBinding" type="tns:PublicadorConsultarUsuario">
@@ -47,9 +57,15 @@
 <output>
 <soap:body use="literal" namespace="http://servicios/"></soap:body>
 </output>
-<fault name="Exception">
-<soap:fault name="Exception" use="literal"></soap:fault>
-</fault>
+</operation>
+<operation name="AgregarCliente">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal" namespace="http://servicios/"></soap:body>
+</input>
+<output>
+<soap:body use="literal" namespace="http://servicios/"></soap:body>
+</output>
 </operation>
 </binding>
 <service name="PublicadorConsultarUsuarioService">

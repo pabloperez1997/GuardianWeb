@@ -24,6 +24,20 @@
     
    <body>
   <jsp:include page="/Vistas/Cabezal.jsp" />
+  <!--Main Navigation-->
+
+<!--Main Layout-->
+<main>
+    <div class="container" style="height:500px;">
+        <div class="row mt-5 pt-5">
+            <div class="col text-center">
+                <h2>Aca va una foto o algo</h2>
+                <br>
+            </div>
+        </div>
+    </div>
+</main>
+<!--Main Layout-->
   <jsp:include page="/Vistas/Footer.jsp" />
   
   <script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
