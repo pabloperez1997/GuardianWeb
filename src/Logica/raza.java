@@ -17,9 +17,11 @@ import javax.persistence.Id;
  */
 @Entity
 public class raza implements Serializable {
+
     @Id
     @Column(length = 100)
     private String raza;
+
 
     public raza() {
     }
@@ -32,6 +34,7 @@ public class raza implements Serializable {
         this.raza = raza;
     }
 
+   
     @Override
     public int hashCode() {
         int hash = 7;
@@ -59,7 +62,7 @@ public class raza implements Serializable {
 
     @Override
     public String toString() {
-        return "raza{" + "raza=" + raza + '}';
+        return "/Raza/" + raza;
     }
-    
+
 }

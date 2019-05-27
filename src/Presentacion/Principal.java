@@ -31,11 +31,7 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         eM = Persistencia.persistencia.getInstance().getEm();
-        try {
-            boolean enviarConGMail = utilidades.enviarConGMail("jballejo@gmail.com", asunto, cuerpo,null,null);
-        } catch (MessagingException ex) {
-            System.err.println(ex.getMessage());
-        }
+        
         // this.setVisible(true);
         initComponents();
         // eM= controladorCliente.getEm();
@@ -52,9 +48,10 @@ public class Principal extends javax.swing.JFrame {
 
         escritorioPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jM_cliente = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
+        jM_animal = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -69,20 +66,29 @@ public class Principal extends javax.swing.JFrame {
             .addGap(0, 424, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("Cliente");
+        jM_cliente.setText("Cliente");
 
-        jMenuItem1.setText("Alta Cliente");
+        jMenuItem1.setText("Cliente");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem1);
+        jM_cliente.add(jMenuItem1);
 
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jM_cliente);
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        jM_animal.setText("Animal");
+
+        jMenuItem2.setText("Animal");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jM_animal.add(jMenuItem2);
+
+        jMenuBar1.add(jM_animal);
 
         setJMenuBar(jMenuBar1);
 
@@ -112,6 +118,12 @@ public class Principal extends javax.swing.JFrame {
 
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        JIF_animal animal = new JIF_animal(escritorioPrincipal);
+        this.escritorioPrincipal.add(animal);
+        animal.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -154,10 +166,11 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane escritorioPrincipal;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jM_animal;
+    private javax.swing.JMenu jM_cliente;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     // End of variables declaration//GEN-END:variables
 
     public JDesktopPane getEscritorioPrincipal() {

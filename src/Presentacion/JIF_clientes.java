@@ -131,6 +131,11 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTab_clientes.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTab_clientesMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTab_clientes);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -153,7 +158,6 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
                         .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(24, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(btn_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btn_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -207,7 +211,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        JIF_clientesAlta altaCliente = new JIF_clientesAlta();
+        JIF_clientesAlta altaCliente = new JIF_clientesAlta(this);
         escritorio.add(altaCliente);
 
         altaCliente.setVisible(true);// TODO add your handling code here:
@@ -235,6 +239,14 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jT_buscarKeyTyped
 
+    private void jTab_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTab_clientesMouseClicked
+        int row = jTab_clientes.rowAtPoint(evt.getPoint());
+        // int col = jTab_clientes.columnAtPoint(evt.getPoint());
+        cedula = (String) jTab_clientes.getValueAt(row, 2);
+        System.out.println(cedula);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTab_clientesMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_agregar;
@@ -256,8 +268,8 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
             ArrayList clientes = (ArrayList) contCliente.getClientes();
             if (clientes.size() > 0) {
                 jTab_clientes.setEnabled(true);
-                String[] cabeceras = (String[]) cabeceras((cliente) clientes.get(0));
-                DefaultTableModel modelo = new DefaultTableModel(cabeceras, clientes.size() - 2);
+                String[] cabeceras = (String[])util.cabeceras((cliente) clientes.get(0));
+                DefaultTableModel modelo = new DefaultTableModel(cabeceras, 0);
                 Iterator it = clientes.listIterator();
                 while (it.hasNext()) {
                     cliente cl = (cliente) it.next();
@@ -273,7 +285,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
             }
         } else {
             jTab_clientes.setEnabled(true);
-            String[] cabeceras = (String[]) cabeceras((cliente) listaC.get(0));
+            String[] cabeceras = (String[])util.cabeceras((cliente) listaC.get(0));
             DefaultTableModel model = new DefaultTableModel(cabeceras, listaC.size() - 1);
             for (cliente cl : listaC) {
                 Object[] dat = {cl.getNombre(), cl.getApellido(), cl.getCedula(), cl.getTel_cel(), cl.getDireccion(), cl.getCorreo()};
@@ -299,7 +311,6 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
                 System.out.println(i);
                 String add = cabAux[i];
                 cab.add(add);
-
                 System.out.println(cabAux[i]);
                 i++;
 
@@ -330,4 +341,5 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
         }
     }
 
+    
 }

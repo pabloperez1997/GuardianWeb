@@ -15,7 +15,7 @@ import javax.persistence.Query;
  *
  * @author jp
  */
-public class clientePersistencia {
+public class clientePersistencia extends persistencia {
 
     EntityManager em = persistencia.getInstance().getEm();
 
@@ -26,9 +26,7 @@ public class clientePersistencia {
      */
     public boolean altaCliente(cliente cliente) {
         try {
-            em.getTransaction().begin();
-            em.persist(cliente);
-            em.getTransaction().commit();
+            persis(cliente);
             System.out.println("Cliente agregado: " + cliente.getNombre() + " " + cliente.getApellido());
             return true;
         } catch (Exception e) {
@@ -46,9 +44,7 @@ public class clientePersistencia {
     public boolean modificarCliente(cliente clienteMod) {
         try {
 
-            em.getTransaction().begin();
-            em.merge(clienteMod);
-            em.getTransaction().commit();
+            modificar(clienteMod);
             System.out.println("Cliente: " + clienteMod.getNombre() + " " + clienteMod.getApellido() + " modificado con exito");
             return true;
         } catch (Exception e) {
@@ -66,9 +62,7 @@ public class clientePersistencia {
      */
     public boolean eliminarCliente(cliente clienteDel) {
         try {
-            em.getTransaction().begin();
-            em.remove(clienteDel);
-            em.getTransaction().commit();
+            boolean del = eliminar(clienteDel);
             System.out.println("Cliente: " + clienteDel.getNombre() + " " + clienteDel.getApellido() + " eliminado con exito");
             return true;
         } catch (Exception e) {
@@ -89,6 +83,15 @@ public class clientePersistencia {
 
             System.err.println(e.getMessage());
         }
-        return (ArrayList<cliente>)listaClientes;
+        return (ArrayList<cliente>) listaClientes;
+    }
+
+    public cliente getCliente(String id) {
+        cliente cli = null;
+        try {
+            cli = (cliente) getObjeto(id,cliente.class);
+        } catch (Exception e) {
+        }
+        return cli;
     }
 }
