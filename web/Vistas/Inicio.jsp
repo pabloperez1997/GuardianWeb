@@ -9,44 +9,45 @@
 <html>
  <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
   
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-  <!-- Bootstrap core CSS -->
-  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Material Design Bootstrap -->
-  <link href="bootstrap/css/mdb.min.css" rel="stylesheet">
-  <!-- Your custom styles (optional) -->
-  <link href="bootstrap/css/style.css" rel="stylesheet">
  </head>
-    
+     <jsp:include page="/Vistas/Cabezal.jsp" />
    <body>
-  <jsp:include page="/Vistas/Cabezal.jsp" />
+  
   <!--Main Navigation-->
-
+  <br>
+  <br>
 <!--Main Layout-->
 <main>
-    <div class="container" style="height:500px;">
-        <div class="row mt-5 pt-5">
-            <div class="col text-center">
-                <h2>Aca va una foto o algo</h2>
-                <br>
-            </div>
+    
+    <div id="carouselExample1" class="carousel slide z-depth-1-half" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img class="d-block w-100" src="img/s2.jpg" alt="">
         </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="img/s5.jpg" alt="">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="img/s3.jpg" alt="">
+        </div>
+          <div class="carousel-item">
+          <img class="d-block w-100" src="img/s4.jpg" alt="">
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExample1" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Siguiente</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExample1" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Anterior</span>
+      </a>
     </div>
 </main>
 <!--Main Layout-->
-  <jsp:include page="/Vistas/Footer.jsp" />
   
-  <script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>
-  <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="bootstrap/js/popper.min.js"></script>
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
-  <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="bootstrap/js/mdb.min.js"></script>
+  
     </body>
-
+<jsp:include page="/Vistas/Footer.jsp" />
 </html>

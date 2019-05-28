@@ -5,35 +5,23 @@
  */
 package Servlets;
 
-import Logica.configuracion;
-import Logica.producto;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import servicios.ListProductos;
-import servicios.Producto;
-import servicios.PublicadorVentas;
-import servicios.PublicadorVentasService;
 
 /**
  *
  * @author PabloP
  */
-@WebServlet("/ver-productos")
-public class ServletProductos extends HttpServlet {
-    
-    private PublicadorVentas port;
-    configuracion conf = new configuracion();
-    List<Producto> Productosavender = new ArrayList<>();
+@WebServlet("/imagenes")
+public class ServletImagenes extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,19 +34,18 @@ public class ServletProductos extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        ServletContext context;
-        context = request.getServletContext();
-        String ruta = context.getResource("").getPath();
-        URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sVentas", ruta));
-        PublicadorVentasService webService = new PublicadorVentasService(url);
-        this.port = webService.getPublicadorVentasPort();
+     
+        List<String> imagenes= new ArrayList<>();
+        File imageDir = new File("C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/img/galeria");  
+        for(File imageFile : imageDir.listFiles()){  
+        String imageFileName = imageFile.getName();  
 
-        List<Producto> productos = this.port.obtenerProductos().getLista();
-        request.setAttribute("Productos", productos);
-        
-       RequestDispatcher dispatcher = request.getRequestDispatcher("/Vistas/VerProductos.jsp");
-       dispatcher.forward(request, response);
+        // add this images name to the list we are building up  
+        imagenes.add(imageFileName);  
+
+        }  
+        request.setAttribute("imageUrlList", imagenes);  
+        request.getRequestDispatcher("Vistas/GaleriaFotos.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -87,14 +74,6 @@ public class ServletProductos extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-     String codigoprod = request.getParameter("codigoprod");
-     Producto p = port.obtenerProducto(codigoprod);
-     
-        Productosavender.add(p);
-        request.setAttribute("CantidadProdVend", Productosavender.size());
-        request.getSession().setAttribute("ProdsVenta", this.Productosavender);
-   
         processRequest(request, response);
     }
 

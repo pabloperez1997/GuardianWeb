@@ -26,7 +26,10 @@
     </head>
     <body>
     <main>
-    <div style="height: 140vh"> 
+        <br>
+        <br>
+        <br>
+        <br>
     <div class="d-flex justify-content-center align-items-center h-100"> 
     <div class="container"> 
     <!-- Grid row --> 
@@ -76,7 +79,6 @@
     </p>
     
     </form>
-    </div>
     </div>
     </div>
     </div>

@@ -6,7 +6,6 @@
 package Servlets;
 
 import Logica.configuracion;
-import Logica.producto;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
@@ -19,7 +18,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import servicios.ListProductos;
 import servicios.Producto;
 import servicios.PublicadorVentas;
 import servicios.PublicadorVentasService;
@@ -28,13 +26,13 @@ import servicios.PublicadorVentasService;
  *
  * @author PabloP
  */
-@WebServlet("/ver-productos")
-public class ServletProductos extends HttpServlet {
-    
+@WebServlet("/venta")
+public class ServletVenta extends HttpServlet {
+
     private PublicadorVentas port;
     configuracion conf = new configuracion();
     List<Producto> Productosavender = new ArrayList<>();
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -53,12 +51,11 @@ public class ServletProductos extends HttpServlet {
         URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sVentas", ruta));
         PublicadorVentasService webService = new PublicadorVentasService(url);
         this.port = webService.getPublicadorVentasPort();
-
-        List<Producto> productos = this.port.obtenerProductos().getLista();
-        request.setAttribute("Productos", productos);
         
-       RequestDispatcher dispatcher = request.getRequestDispatcher("/Vistas/VerProductos.jsp");
+       RequestDispatcher dispatcher = request.getRequestDispatcher("/Vistas/Venta.jsp");
        dispatcher.forward(request, response);
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -87,11 +84,11 @@ public class ServletProductos extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-     String codigoprod = request.getParameter("codigoprod");
-     Producto p = port.obtenerProducto(codigoprod);
+       
+        String eliminarprod = request.getParameter("eliminarprod");
+        Producto p = port.obtenerProducto(eliminarprod);
      
-        Productosavender.add(p);
+        Productosavender.remove(p);
         request.setAttribute("CantidadProdVend", Productosavender.size());
         request.getSession().setAttribute("ProdsVenta", this.Productosavender);
    

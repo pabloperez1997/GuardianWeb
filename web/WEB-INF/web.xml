@@ -20,6 +20,14 @@
         <servlet-name>ServletProductos</servlet-name>
         <servlet-class>Servlets.ServletProductos</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletVenta</servlet-name>
+        <servlet-class>Servlets.ServletVenta</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletImagenes</servlet-name>
+        <servlet-class>Servlets.ServletImagenes</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletInicio</servlet-name>
         <url-pattern>/ServletInicio</url-pattern>
@@ -39,6 +47,14 @@
     <servlet-mapping>
         <servlet-name>ServletProductos</servlet-name>
         <url-pattern>/ServletProductos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletVenta</servlet-name>
+        <url-pattern>/ServletVenta</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletImagenes</servlet-name>
+        <url-pattern>/ServletImagenes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

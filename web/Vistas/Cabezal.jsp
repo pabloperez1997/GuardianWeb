@@ -18,11 +18,11 @@
         <link href="bootstrap/css/style.css" rel="stylesheet">
     </head>
     <body>
-  <!--Main Navigation-->
-<header>
 
+<header>
+    
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark black scrolling-navbar">
-        <a class="navbar-brand" href="inicio"><strong>Guardian</strong></a>
+        <a class="navbar-brand" href="inicio"><img src="img/logo2.jpg" alt="Logo" class="img-responsive"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -34,13 +34,13 @@
                 <a class="dropdown-item" href="#">Baño</a>
                 <a class="dropdown-item" href="#">Esquila</a>
                 <a class="dropdown-item" href="#">Paseos</a>
-          </div>
+                </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="ver-productos">Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Galeria de Fotos</a>
+                    <a class="nav-link" href="imagenes">Galeria de Fotos</a>
                 </li>
             </ul>
   
@@ -61,21 +61,35 @@
           <%=((Cliente) request.getSession().getAttribute("usuario_logueado")).getApellido()%>
       </a>
       </li>
-        <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-user"></i>Mi cuenta</a>
-        <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
-          <a class="dropdown-item" href="#">Perfil</a>
-          <a class="dropdown-item" href="cerrar-sesion">Cerrar Sesión</a>
-        </div>
-      </li>
-      <%}%>
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-user"></i>Mi cuenta</a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
+              <a class="dropdown-item" href="#">Perfil</a>
+              <a class="dropdown-item" href="cerrar-sesion">Cerrar Sesión</a>
       
-    </ul>
-  
             </div>
+            </li>
+            
+      <%}%>
+    </ul>
+      
+<% if (request.getAttribute("CantidadProdVend")!=null) {%>
+<div id="ex2">
+   <%int i=(Integer)request.getAttribute("CantidadProdVend");%>
+   <a href="venta"><span class="fa-stack  has-badge" data-count="<%=i%>">
+    <i class="fa fa-circle fa-stack-2x"></i>
+    <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>
+  </span></a>
+</div>
+    <% }%>
+
+</div>
+    
+     
     </nav>
+    
 
 </header>
 
