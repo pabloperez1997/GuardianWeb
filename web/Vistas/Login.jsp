@@ -4,6 +4,7 @@
     Author     : PabloP
 --%>
 
+<%@page import="clases.EstadoSesion"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -39,24 +40,27 @@
     <div class="col-md-12">
       
     <!-- Default form login -->
-    <form class="text-center border border-light p-5">
+    <form action="iniciar-sesion" method="post" class="text-center border border-light p-5">
 
     <p class="h4 mb-4">Iniciar Sesión</p>
 
     <!-- Email -->
-    <input type="email" id="defaultLoginFormEmail" class="form-control mb-4" placeholder="E-mail">
+    <input type="email" id="login" name="login" class="form-control mb-4" placeholder="E-mail">
 
     <!-- Password -->
-    <input type="password" id="defaultLoginFormPassword" class="form-control mb-4" placeholder="Password">
+    <input type="password" id="pass" name="pass" class="form-control mb-4" placeholder="Password">
 
     <div class="d-flex justify-content-around">
         <div>
             <!-- Remember me -->
             <div class="custom-control custom-checkbox">
-                <input type="checkbox" class="custom-control-input" id="defaultLoginFormRemember">
-                <label class="custom-control-label" for="defaultLoginFormRemember">Recordarme</label>
+                <input type="checkbox" id="Recordarme" name="Recordarme" class="custom-control-input">
+                <label class="custom-control-label" for="Recordarme">Recordarme</label>
             </div>
+            
         </div>
+         
+        
         <div>
             <!-- Forgot password -->
             <a href="">Olvidaste la contraseña?</a>
@@ -65,7 +69,16 @@
 
     <!-- Sign in button -->
     <button class="btn btn-dark btn-block my-4" type="submit">Iniciar Sesion</button>
+        <div id="Error_login" style="display: none;" class="alert alert-danger" role="alert">
+                <span class="sr-only">Error:</span>
+                <% if (request.getAttribute("errorContrasenia") != null) {%>
+                Contraseña Incorrecta.
+                <%} else {%>                  
+                Usuario Incorrecto, reintente o Registrese si aun no tiene una cuenta.                  
+                <%}
 
+                %>  
+        </div>
     <!-- Register -->
     <p>No eres miembro?
         <a href="registrarse">Registrarme</a>
@@ -89,7 +102,14 @@
   <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
   <!-- MDB core JavaScript -->
   <script type="text/javascript" src="bootstrap/js/mdb.min.js"></script>
-  
+  <script type="text/javascript">
+            <% if (request.getSession().getAttribute("estado_sesion") == EstadoSesion.LOGIN_INCORRECTO
+                        || request.getSession().getAttribute("estado_sesion") == EstadoSesion.CONTRASENIA_INCORRECTA) { %>
+            var var2 = document.getElementById('Error_login');
+            var2.style.display = "block";
+           
+            <% }%>
+        </script>        
   <jsp:include page="/Vistas/Footer.jsp" />
     </body>
 </html>

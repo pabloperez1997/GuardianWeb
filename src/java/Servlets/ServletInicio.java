@@ -5,9 +5,12 @@
  */
 package Servlets;
 
+import Logica.configuracion;
 import clases.EstadoSesion;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import servicios.Cliente;
 import servicios.PublicadorConsultarUsuario;
+import servicios.PublicadorConsultarUsuarioService;
 
 /**
  *
@@ -26,6 +30,7 @@ import servicios.PublicadorConsultarUsuario;
 public class ServletInicio extends HttpServlet {
 
     private PublicadorConsultarUsuario port;
+    private configuracion conf = new configuracion();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,6 +42,12 @@ public class ServletInicio extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ServletContext context;
+        context = request.getServletContext();
+        String ruta = context.getResource("").getPath();
+        URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
+        PublicadorConsultarUsuarioService webService = new PublicadorConsultarUsuarioService(url);
+        this.port = webService.getPublicadorConsultarUsuarioPort();
         
         Cliente cliente = null;
         HttpSession session = request.getSession();
@@ -57,7 +68,7 @@ public class ServletInicio extends HttpServlet {
                             }
 
                             session.setAttribute("estado_sesion", EstadoSesion.LOGIN_CORRECTO);
-                            session.setAttribute("usuario_logueado", cliente.getCorreo());
+                            session.setAttribute("usuario_logueado", cliente);
                         }
                     }
                 }

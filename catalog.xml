@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
     <system systemId="http://127.0.0.1:8280/servicioInicio?wsdl" uri="src/conf/xml-resources/web-service-references/servicioInicio/wsdl/127.0.0.1_8280/servicioInicio.wsdl"/>
-    <system systemId="http://127.0.0.1:8280/servicioConsultaUsuario?wsdl" uri="src/conf/xml-resources/web-service-references/servicioConsultaUsuario/wsdl/127.0.0.1_8280/servicioConsultaUsuario.wsdl"/>
-    <system systemId="http://127.0.0.1:8280/servicioConsultaU?xsd=1" uri="src/conf/xml-resources/web-service-references/servicioConsultaUsuario/wsdl/127.0.0.1_8280/servicioConsultaU.xsd_1.xsd"/>
     <system systemId="http://127.0.0.1:8280/servicioVentas?wsdl" uri="src/conf/xml-resources/web-service-references/servicioVentas/wsdl/127.0.0.1_8280/servicioVentas.wsdl"/>
     <system systemId="http://127.0.0.1:8280/servicioVentas?xsd=1" uri="src/conf/xml-resources/web-service-references/servicioVentas/wsdl/127.0.0.1_8280/servicioVentas.xsd_1.xsd"/>
+    <system systemId="http://127.0.0.1:8280/servicioConsultaUsuario?wsdl" uri="src/conf/xml-resources/web-service-references/servicioConsultaUsuario/wsdl/127.0.0.1_8280/servicioConsultaUsuario.wsdl"/>
+    <system systemId="http://127.0.0.1:8280/servicioConsultaU?xsd=1" uri="src/conf/xml-resources/web-service-references/servicioConsultaUsuario/wsdl/127.0.0.1_8280/servicioConsultaU.xsd_1.xsd"/>
 </catalog>

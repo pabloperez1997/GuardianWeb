@@ -4,6 +4,12 @@
 <xsd:import namespace="http://servicios/" schemaLocation="http://127.0.0.1:8280/servicioVentas?xsd=1"></xsd:import>
 </xsd:schema>
 </types>
+<message name="obtenerProducto">
+<part name="Codigo" type="xsd:string"></part>
+</message>
+<message name="obtenerProductoResponse">
+<part name="return" type="tns:producto"></part>
+</message>
 <message name="publicarVentas">
 <part name="arg0" type="xsd:string"></part>
 </message>
@@ -12,13 +18,11 @@
 <message name="obtenerProductosResponse">
 <part name="return" type="tns:listProductos"></part>
 </message>
-<message name="obtenerProducto">
-<part name="Codigo" type="xsd:string"></part>
-</message>
-<message name="obtenerProductoResponse">
-<part name="return" type="tns:producto"></part>
-</message>
 <portType name="PublicadorVentas">
+<operation name="obtenerProducto">
+<input wsam:Action="http://servicios/PublicadorVentas/obtenerProductoRequest" message="tns:obtenerProducto"></input>
+<output wsam:Action="http://servicios/PublicadorVentas/obtenerProductoResponse" message="tns:obtenerProductoResponse"></output>
+</operation>
 <operation name="publicarVentas">
 <input wsam:Action="http://servicios/PublicadorVentas/publicarVentasRequest" message="tns:publicarVentas"></input>
 <output wsam:Action="http://servicios/PublicadorVentas/publicarVentasResponse" message="tns:publicarVentasResponse"></output>
@@ -27,13 +31,18 @@
 <input wsam:Action="http://servicios/PublicadorVentas/obtenerProductosRequest" message="tns:obtenerProductos"></input>
 <output wsam:Action="http://servicios/PublicadorVentas/obtenerProductosResponse" message="tns:obtenerProductosResponse"></output>
 </operation>
-<operation name="obtenerProducto">
-<input wsam:Action="http://servicios/PublicadorVentas/obtenerProductoRequest" message="tns:obtenerProducto"></input>
-<output wsam:Action="http://servicios/PublicadorVentas/obtenerProductoResponse" message="tns:obtenerProductoResponse"></output>
-</operation>
 </portType>
 <binding name="PublicadorVentasPortBinding" type="tns:PublicadorVentas">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"></soap:binding>
+<operation name="obtenerProducto">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal" namespace="http://servicios/"></soap:body>
+</input>
+<output>
+<soap:body use="literal" namespace="http://servicios/"></soap:body>
+</output>
+</operation>
 <operation name="publicarVentas">
 <soap:operation soapAction=""></soap:operation>
 <input>
@@ -44,15 +53,6 @@
 </output>
 </operation>
 <operation name="obtenerProductos">
-<soap:operation soapAction=""></soap:operation>
-<input>
-<soap:body use="literal" namespace="http://servicios/"></soap:body>
-</input>
-<output>
-<soap:body use="literal" namespace="http://servicios/"></soap:body>
-</output>
-</operation>
-<operation name="obtenerProducto">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal" namespace="http://servicios/"></soap:body>

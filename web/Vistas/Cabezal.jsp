@@ -56,9 +56,9 @@
       </li>
       <% }else {%>
       <li class="nav-item">
-      <a class="nav-link"> Bienvenido 
+      <a class="nav-link"> ¡Hola
           <%=((Cliente) request.getSession().getAttribute("usuario_logueado")).getNombre()%>
-          <%=((Cliente) request.getSession().getAttribute("usuario_logueado")).getApellido()%>
+          <%=((Cliente) request.getSession().getAttribute("usuario_logueado")).getApellido()%>!
       </a>
       </li>
             <li class="nav-item dropdown">

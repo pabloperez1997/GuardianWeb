@@ -5,10 +5,14 @@
  */
 package Servlets;
 
+import Logica.cliente;
+import Logica.configuracion;
 import clases.codificador;
 import clases.EstadoSesion;
 import java.io.IOException;
+import java.net.URL;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -18,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import servicios.PublicadorConsultarUsuario;
 import servicios.Cliente;
+import servicios.PublicadorConsultarUsuarioService;
 
 /**
  *
@@ -27,7 +32,7 @@ import servicios.Cliente;
 public class IniciarSesion extends HttpServlet {
 
      private PublicadorConsultarUsuario port;
-     
+     configuracion conf = new configuracion();
 //    private PublicadorConsultarUsuario port;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,9 +51,26 @@ public class IniciarSesion extends HttpServlet {
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-       RequestDispatcher dispatcher = request.getRequestDispatcher("/Vistas/Login.jsp");
-       dispatcher.forward(request, response);
+
+        ServletContext context;
+        context = request.getServletContext();
+        String ruta = context.getResource("").getPath();
+        URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
+        PublicadorConsultarUsuarioService webService = new PublicadorConsultarUsuarioService(url);
+        this.port = webService.getPublicadorConsultarUsuarioPort();
+        
+        Cliente usuLogeado = (Cliente) request.getSession().getAttribute("usuario_logueado");
+        if (usuLogeado == null) {
+            request.getSession().setAttribute("estado_sesion", null);
+            response.setContentType("text/html;charset=UTF-8");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/Vistas/Login.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            request.setAttribute("mensaje", "Ya existe una sesion en el sistema");
+            request.getRequestDispatcher("/Vistas/Mensaje_Recibido.jsp").forward(request, response);
+        }
+        
+        request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -90,7 +112,7 @@ public class IniciarSesion extends HttpServlet {
         } catch (Exception e) {
                 nuevoEstado = EstadoSesion.LOGIN_INCORRECTO;
                 objSesion.setAttribute("estado_sesion", nuevoEstado);
-                request.getRequestDispatcher("Vistas/iniciarSesion.jsp").forward(request, response);
+                request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
             }
             if (cliente != null) {
                 String hash = a.sha1(password);
@@ -98,7 +120,7 @@ public class IniciarSesion extends HttpServlet {
                     request.setAttribute("errorContrasenia", "Contraseña Incorrecta.");
                     nuevoEstado = EstadoSesion.CONTRASENIA_INCORRECTA;
                     objSesion.setAttribute("estado_sesion", nuevoEstado);
-                    request.getRequestDispatcher("Vistas/iniciarSesion.jsp").forward(request, response);
+                    request.getRequestDispatcher("Vistas/Login.jsp").forward(request, response);
                 } else {
                     nuevoEstado = EstadoSesion.LOGIN_CORRECTO;
                     request.getSession().setAttribute("usuario_logueado", cliente);// setea el usuario logueado
@@ -112,8 +134,7 @@ public class IniciarSesion extends HttpServlet {
 
             }
             objSesion.setAttribute("estado_sesion", nuevoEstado);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/index.html");
-            dispatcher.forward(request, response);
+            request.getRequestDispatcher("Vistas/Inicio.jsp").forward(request, response);
     }
 
     
