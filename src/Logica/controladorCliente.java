@@ -8,7 +8,6 @@ package Logica;
 import Persistencia.clientePersistencia;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.persistence.EntityManager;
 import Persistencia.persistencia;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import java.math.BigInteger;
@@ -17,12 +16,7 @@ import java.util.List;
 import javax.mail.internet.AddressException;
 import ClientesRest.apiCliente;
 import Persistencia.animalPersistencia;
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-import com.sun.net.httpserver.HttpContext;
 import java.util.Iterator;
-import javax.naming.Context;
-import static org.hibernate.criterion.Expression.sql;
-import sun.net.www.http.HttpClient;
 
 /**
  * Coontrolador de clientes
@@ -41,7 +35,7 @@ public class controladorCliente implements iControladorCliente {
     ////////////Arreglos////////////////
     private HashMap<String, cliente> clientes = new HashMap<>();
     private HashMap<String, mascota> mascotas = new HashMap<>();
-
+    
     public static controladorCliente getInstance() {
         if (instance == null) {
             instance = new controladorCliente();
@@ -57,9 +51,9 @@ public class controladorCliente implements iControladorCliente {
      */
     @Override
     public ArrayList getClientes() {
-
+        
         return (ArrayList<cliente>) cPer.getArregloClientes();
-
+        
     }
 
     /**
@@ -71,7 +65,7 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean emailValido(String email) {
         return util.emailValido(email);
-
+        
     }
 
     /**
@@ -83,9 +77,9 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean eliminarCliente(String cedula) {
         try {
-
-            cliente cli = (cliente) cPer.getCliente(cedula);
-
+            
+            cliente cli = (cliente) persistencia.getObjeto(cedula, cliente.class);
+            
             if (cli != null) {
                 return persistencia.eliminar((Object) cli);
             } else {
@@ -94,7 +88,7 @@ public class controladorCliente implements iControladorCliente {
         } catch (Exception e) {
             return false;
         }
-
+        
     }
 
     /**
@@ -121,7 +115,7 @@ public class controladorCliente implements iControladorCliente {
     public cliente getCliente(String cedula) {
         try {
             cliente cli = new cliente();
-            cli = (cliente) cPer.getCliente(cedula);
+            cli = (cliente) persistencia.getObjeto(cedula, cliente.class);
             return cli;
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -153,7 +147,7 @@ public class controladorCliente implements iControladorCliente {
             cliPassCambio.setPassword(this.generarPassword());
             if (persistencia.modificar((Object) cliPassCambio)) {
                 utilidades.enviarConGMail(cliPassCambio.getCorreo(), "Reseteo de contraseña", "SU contraseña a sido reseteada con exito, puede ingresar al sitio con la siguiente contraseña: " + cliPassCambio.getPassword(), null, null);
-
+                
                 return true;
             }
         } catch (MessagingException | AddressException e) {
@@ -161,7 +155,7 @@ public class controladorCliente implements iControladorCliente {
             return false;
         }
         return false;
-
+        
     }
 
     /**
@@ -174,14 +168,14 @@ public class controladorCliente implements iControladorCliente {
     public boolean altaCliente(cliente clienteNuevo) {
         try {
             clienteNuevo.setPassword(this.generarPassword());
-
+            
             if (!persistencia.existe(clienteNuevo)) {
                 if (persistencia.persis((Object) clienteNuevo)) {
-
+                    
                     utilidades.enviarConGMail(clienteNuevo.getCorreo(), "Usuario Nuevo", "EL usuario a sido registrado con exito!", null, null);
-
+                    
                     return true;
-
+                    
                 }
             }
         } catch (AddressException | MessagingException ex) {
@@ -201,7 +195,7 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean altaAnimal(mascota mascota) {
         try {
-
+            
             if (!persistencia.existe(mascota)) {
                 return persistencia.persis(mascota);
             } else {
@@ -220,9 +214,9 @@ public class controladorCliente implements iControladorCliente {
      * @return
      */
     @Override
-    public boolean eliminarAnimal(String id) {
+    public boolean eliminarAnimal(Long id) {
         try {
-            mascota mascota = aPer.getMascota(id);
+            mascota mascota = (mascota) aPer.getMascota(id);
             if (aPer.eliminar((Object) mascota)) {
                 return true;
             }
@@ -247,7 +241,7 @@ public class controladorCliente implements iControladorCliente {
             System.err.println(e.getMessage() + " CAUSA: " + e.getCause());
             return false;
         }
-
+        
     }
 
     /**
@@ -283,7 +277,7 @@ public class controladorCliente implements iControladorCliente {
         } else {
             return this.getRazasDB();
         }
-
+        
     }
 
     /**
@@ -329,7 +323,7 @@ public class controladorCliente implements iControladorCliente {
      * @return mascota
      */
     @Override
-    public mascota getMascota(String id) {
+    public mascota getMascota(Long id) {
         return (mascota) aPer.getMascota(id);
     }
 
@@ -342,7 +336,7 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean eliminarRaza(String raza) {
         try {
-            raza r = (raza) aPer.getRaza(raza);
+            raza r = (raza) persistencia.getObjeto(raza, raza.class);
             return aPer.eliminar(r);
         } catch (Exception e) {
             System.err.println(e.getMessage() + " CAUSA: " + e.getCause());
@@ -399,7 +393,7 @@ public class controladorCliente implements iControladorCliente {
             }
         } catch (Exception e) {
             System.err.println(e.getMessage() + " CAUSA " + e.getCause());
-
+            
         }
         return clientesMascotas;
     }
@@ -412,9 +406,9 @@ public class controladorCliente implements iControladorCliente {
      */
     @Override
     public raza getRaza(String raza) {
-        return aPer.getRaza(raza);
+        return (raza) persistencia.getObjeto(raza, raza.class);
     }
-
+    
     @Override
     public ArrayList getMascotas() {
         ArrayList<mascota> mascotasSistema = new ArrayList<>();
@@ -425,5 +419,5 @@ public class controladorCliente implements iControladorCliente {
         }
         return mascotasSistema;
     }
-
+    
 }

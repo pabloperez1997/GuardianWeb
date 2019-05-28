@@ -33,11 +33,11 @@ public interface iControladorCliente {
 
     public abstract boolean altaAnimal(mascota mascota);
 
-    public abstract boolean eliminarAnimal(String id);
+    public abstract boolean eliminarAnimal(Long id);
 
     public abstract boolean modificarAnimal(mascota mascota);
 
-    public abstract mascota getMascota(String id);
+    public abstract mascota getMascota(Long id);
 
     public abstract List<String> getRazasApiRest();
 

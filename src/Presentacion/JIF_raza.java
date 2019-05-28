@@ -10,21 +10,10 @@ import Logica.fabricaElGuardian;
 import Logica.raza;
 import Logica.utilidades;
 import java.util.List;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.JButton;
 import javax.swing.JDesktopPane;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 
 /**
  *
@@ -36,14 +25,6 @@ public class JIF_raza extends javax.swing.JInternalFrame {
     utilidades util = utilidades.getInstance();
     DefaultListModel modelo = new DefaultListModel();
     private final JIF_animalAlta animalForm;
-
-    public DefaultListModel getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(DefaultListModel modelo) {
-        this.modelo = modelo;
-    }
 
     /**
      * Creates new form JIF_raza
@@ -91,6 +72,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
 
         jInternalFrame1.setVisible(true);
 
+        jTxt_nuevaRaza.setFocusCycleRoot(true);
         jTxt_nuevaRaza.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTxt_nuevaRazaActionPerformed(evt);
@@ -352,59 +334,24 @@ public class JIF_raza extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTxt_nuevaRazaKeyTyped
 
     private void btn_nuevaRazaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevaRazaActionPerformed
-        int showConfirmDialog = JOptionPane.showConfirmDialog(this, "Desea agregar la siguiente raza: " + jTxt_nuevaRaza.getText() + "?");
-        if (showConfirmDialog == 0) {
-            raza raza = new raza();
-            raza.setRaza(jTxt_nuevaRaza.getText());
-            if (contC.nuevaRaza(raza)) {
-                JOptionPane.showMessageDialog(this, "La raza: " + jTxt_nuevaRaza.getText() + " fue agregada con exito!");
-                jTxt_nuevaRaza.setText(null);
-                cargarRazas();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo agregar la raza!");
-            }
+       altaRaza();
     }//GEN-LAST:event_btn_nuevaRazaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int res = JOptionPane.showConfirmDialog(this, "La siguiente accion comprobara la existencia de nuevas razas y actualizara la Base de Datos del sistema si es necesario, desea continuar?");
-        if (res == 1) {
-            if (contC.actualizarRazas()) {
-                JOptionPane.showMessageDialog(this, "Razas actualizadas con exito!");
-            } else {
-                JOptionPane.showConfirmDialog(this, "No ha sido necesario actualizar la Base de Datos!");
-            }
-        }        // TODO add your handling code here:
+        actualizarRazas();
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int res = JOptionPane.showConfirmDialog(this, "La siguiente accion borrara todas las razas registradas en la Base de Datos y volvera a cargar las razas del sistema. desea continuar?");
-        if (res == 1) {
-            List<String> reloadRazas = contC.reloadRazas();
-            if (reloadRazas != null) {
-
-                JOptionPane.showMessageDialog(this, "Se reiniciaron las razas del sistema!");
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al reiniciar las razas!");
-            }
-        }        // TODO add your handling code here:
+        reload();      // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    int res = JOptionPane.showConfirmDialog(this, "Desea eliminar la raza: " + jListRazaE.getSelectedValue() + "?");
-        if (res == 1) {
-            if (contC.eliminarRaza(jListRazaE.getSelectedValue())) {
-                JOptionPane.showMessageDialog(this, "Raza: " + jListRazaE.getSelectedValue() + " eliminada con exito!");
-                jTxt_buscar.setText(null);
-                cargarRazas();
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo eliminar la raza!");
-            }
-
-        }        // TODO add your handling code here:
+        eliminar();    // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTxt_buscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxt_buscarKeyTyped
-        buscar(jTxt_buscar);        // TODO add your handling code here:
+        buscarR(jTxt_buscar);        // TODO add your handling code here:
     }//GEN-LAST:event_jTxt_buscarKeyTyped
 
 
@@ -447,7 +394,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
         this.setModelo(dlm);
     }
 
-    private void buscar(JTextField jtxt) {
+    private void buscarR(JTextField jtxt) {
 
         DefaultListModel modeln = (DefaultListModel) util.filtrarJList(jtxt.getText(), this.getModelo());
         JListRazaN.setModel(modeln);
@@ -458,5 +405,71 @@ public class JIF_raza extends javax.swing.JInternalFrame {
         jTxt_nuevaRaza.setText(null);
 
     }
- 
+
+    public DefaultListModel getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(DefaultListModel modelo) {
+        this.modelo = modelo;
+    }
+
+    private void eliminar() {
+        int res = JOptionPane.showConfirmDialog(this, "Desea eliminar la raza: " + jListRazaE.getSelectedValue() + "?");
+        if (res == 1) {
+            if (contC.eliminarRaza(jListRazaE.getSelectedValue())) {
+                JOptionPane.showMessageDialog(this, "Raza: " + jListRazaE.getSelectedValue() + " eliminada con exito!");
+                jTxt_buscar.setText(null);
+                cargarRazas();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo eliminar la raza!");
+            }
+
+        }
+    }
+
+    private void reload() {
+        int res = JOptionPane.showConfirmDialog(this, "La siguiente accion borrara todas las razas registradas en la Base de Datos y volvera a cargar las razas del sistema. desea continuar?");
+        if (res == 1) {
+            List<String> reloadRazas = contC.reloadRazas();
+            if (reloadRazas != null) {
+
+                JOptionPane.showMessageDialog(this, "Se reiniciaron las razas del sistema!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al reiniciar las razas!");
+            }
+        }
+    }
+
+    private void actualizarRazas() {
+        int res = JOptionPane.showConfirmDialog(this, "La siguiente accion comprobara la existencia de nuevas razas y actualizara la Base de Datos del sistema si es necesario, desea continuar?");
+        if (res == 1) {
+            if (contC.actualizarRazas()) {
+                JOptionPane.showMessageDialog(this, "Razas actualizadas con exito!");
+            } else {
+                JOptionPane.showConfirmDialog(this, "No ha sido necesario actualizar la Base de Datos!");
+            }
+        }
+    }
+
+    private void altaRaza() {
+       int showConfirmDialog = JOptionPane.showConfirmDialog(this, "Desea agregar la siguiente raza: " + jTxt_nuevaRaza.getText() + "?");
+        if (showConfirmDialog == 0) {
+            raza raza = new raza();
+            raza.setRaza(jTxt_nuevaRaza.getText());
+            if (contC.nuevaRaza(raza)) {
+                JOptionPane.showMessageDialog(this, "La raza: " + jTxt_nuevaRaza.getText() + " fue agregada con exito!");
+                jTxt_nuevaRaza.setText(null);
+                cargarRazas();
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo agregar la raza!");
+            }
+    }}
+
+
+
+
+
 }
+
+

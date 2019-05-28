@@ -10,10 +10,17 @@ import Logica.fabricaElGuardian;
 import Logica.iControladorCliente;
 import Logica.mascota;
 import Logica.utilidades;
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.validation.groups.Default;
 
 /**
@@ -22,6 +29,7 @@ import javax.validation.groups.Default;
  */
 public class JIF_animal extends javax.swing.JInternalFrame {
 
+    Long idMascota;
     private final JDesktopPane escritorio;
     controladorCliente contCliente = (controladorCliente) fabricaElGuardian.getInstance().getInstanceIControladorCliente();
     utilidades util = utilidades.getInstance();
@@ -55,6 +63,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         btn_modificar = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
         btn_cancelar = new javax.swing.JButton();
+        jLab_foto = new javax.swing.JLabel();
 
         jTab_Animal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -67,6 +76,11 @@ public class JIF_animal extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTab_Animal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTab_AnimalMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTab_Animal);
 
         jLabel1.setText("Buscar");
@@ -76,15 +90,16 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
+                        .addGap(50, 50, 50)
                         .addComponent(jLabel1)
                         .addGap(29, 29, 29)
                         .addComponent(jT_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 815, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(34, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 758, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -93,9 +108,9 @@ public class JIF_animal extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jT_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addGap(32, 32, 32)
+                .addGap(29, 29, 29)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(59, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btn_nuevo.setText("Nuevo");
@@ -106,8 +121,18 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         });
 
         btn_modificar.setText("Modificar");
+        btn_modificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modificarActionPerformed(evt);
+            }
+        });
 
         btn_eliminar.setText("Eliminar");
+        btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarActionPerformed(evt);
+            }
+        });
 
         btn_cancelar.setText("Cerrar");
         btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -116,6 +141,8 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             }
         });
 
+        jLab_foto.setText("Foto");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -123,26 +150,34 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btn_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_nuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btn_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                    .addComponent(btn_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btn_nuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                        .addComponent(jLab_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(69, 69, 69)
+                .addGap(31, 31, 31)
+                .addComponent(jLab_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btn_nuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
+                .addGap(18, 18, 18)
                 .addComponent(btn_modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(71, 71, 71)
+                .addGap(18, 18, 18)
                 .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(34, 34, 34)
                 .addComponent(btn_cancelar)
                 .addGap(38, 38, 38))
         );
@@ -154,7 +189,8 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -176,12 +212,36 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
+    private void jTab_AnimalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTab_AnimalMouseClicked
+        int rowAtPoint = jTab_Animal.rowAtPoint(evt.getPoint()); // TODO add your handling code here:
+        this.idMascota = (Long) jTab_Animal.getValueAt(rowAtPoint, 0);
+        cargarFoto(idMascota);
+    }//GEN-LAST:event_jTab_AnimalMouseClicked
+
+    private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
+        if (this.idMascota != null) {
+            int res = JOptionPane.showConfirmDialog(this, "Desea modificar la informacion de la Mascota: " + idMascota + "?");
+            if (res == 0) {
+                JIF_animalModificar animalModificar = new JIF_animalModificar(this.idMascota);
+                escritorio.add(animalModificar);
+                animalModificar.setVisible(true);
+            }
+        }
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_btn_modificarActionPerformed
+
+    private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
+        eliminar();        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_eliminarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_eliminar;
     private javax.swing.JButton btn_modificar;
     private javax.swing.JButton btn_nuevo;
+    private javax.swing.JLabel jLab_foto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -196,13 +256,36 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             String[] cabeceras = (String[]) util.cabeceras((mascota) mascotasSis.get(0));
             DefaultTableModel dtm = new DefaultTableModel(cabeceras, 0);
             for (mascota m : mascotasSis) {
-                Object[] objdata = {m.getId(), m.getNombre(),m.getRaza().getRaza(),m.getCliente().getCedula() + " " + m.getCliente().getNombre() + " " + m.getCliente().getApellido(), m.getDescripcion(), };
+                Object[] objdata = {m.getId(), m.getNombre(), m.getRaza().getRaza(), m.getCliente().getCedula() + " " + m.getCliente().getNombre() + " " + m.getCliente().getApellido(), m.getDescripcion(),};
                 dtm.addRow(objdata);
             }
+            //jTab_Animal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             jTab_Animal.setModel(dtm);
+            util.resizeColumnWidth(jTab_Animal);
         } else {
             JOptionPane.showMessageDialog(this, "No existen mascotas en el sistema!");
             jTab_Animal.setEnabled(false);
         }
     }
+
+    private void eliminar() {
+        if (this.idMascota != null) {
+            if (JOptionPane.showConfirmDialog(this, "Desea eliminar la Mascota: " + this.idMascota + "?") == 0) {
+                if (contCliente.eliminarAnimal(this.idMascota)) {
+                    JOptionPane.showMessageDialog(this, "Se ha eliminado la mascota!");
+                    cargarMascotas();
+                }
+            }
+
+        }
+    }
+
+    private void cargarFoto(Long idMascota) {
+        mascota mascota = (mascota) contCliente.getMascota(idMascota);
+        BufferedImage image = (BufferedImage) util.dameEstaImagen(mascota.getFoto());
+        jLab_foto.setIcon(new ImageIcon(mascota.getFoto()));
+        Image scaledInstance = image.getScaledInstance(200, 180, Image.SCALE_DEFAULT);
+        jLab_foto.setIcon(new ImageIcon(scaledInstance));
+    }
+
 }

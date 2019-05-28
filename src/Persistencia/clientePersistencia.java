@@ -86,12 +86,4 @@ public class clientePersistencia extends persistencia {
         return (ArrayList<cliente>) listaClientes;
     }
 
-    public cliente getCliente(String id) {
-        cliente cli = null;
-        try {
-            cli = (cliente) getObjeto(id,cliente.class);
-        } catch (Exception e) {
-        }
-        return cli;
     }
-}

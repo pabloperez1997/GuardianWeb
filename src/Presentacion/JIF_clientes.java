@@ -9,15 +9,12 @@ import Logica.cliente;
 import Logica.controladorCliente;
 import Logica.fabricaElGuardian;
 import Logica.utilidades;
-import com.sun.imageio.plugins.png.RowFilter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -56,13 +53,12 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jT_buscar = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
-        btn_cancelar = new javax.swing.JButton();
         btn_eliminar = new javax.swing.JButton();
         btn_agregar = new javax.swing.JButton();
         btn_modificar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTab_clientes = new javax.swing.JTable();
+        btn_cancelar = new javax.swing.JButton();
 
         jLabel1.setText("Buscar");
 
@@ -74,30 +70,6 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
                 jT_buscarKeyPressed(evt);
             }
         });
-
-        btn_cancelar.setText("Cerrar");
-        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_cancelarActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(234, Short.MAX_VALUE)
-                .addComponent(btn_cancelar)
-                .addGap(188, 188, 188))
-        );
 
         btn_eliminar.setText("Eliminar");
         btn_eliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -113,7 +85,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
             }
         });
 
-        btn_modificar.setText("Modificcar");
+        btn_modificar.setText("Modificar");
         btn_modificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_modificarActionPerformed(evt);
@@ -138,6 +110,13 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTab_clientes);
 
+        btn_cancelar.setText("Cerrar");
+        btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -152,38 +131,39 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 796, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(24, Short.MAX_VALUE))
+                        .addGap(44, 44, 44)
+                        .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btn_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(80, 80, 80))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btn_modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(31, 31, 31))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jT_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(75, 75, 75)
-                .addComponent(btn_agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(btn_modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
-                .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btn_agregar, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26)
+                        .addComponent(btn_modificar, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)
+                        .addComponent(btn_eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(238, 238, 238)
+                        .addComponent(btn_cancelar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jT_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 41, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -199,7 +179,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -211,10 +191,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     private void btn_agregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarActionPerformed
-        JIF_clientesAlta altaCliente = new JIF_clientesAlta(this);
-        escritorio.add(altaCliente);
-
-        altaCliente.setVisible(true);// TODO add your handling code here:
+        clientesAlta();// TODO add your handling code here:
         //cargarClientes();
     }//GEN-LAST:event_btn_agregarActionPerformed
 
@@ -223,11 +200,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        JIF_clientesModificar modCliente = new JIF_clientesModificar(cedula, this);
-        escritorio.add(modCliente);
-
-        modCliente.setVisible(true);// TODO add your handling code here:
-        cargarClientes(null);        // TODO add your handling code here:
+        modificarCliente();
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void jT_buscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jT_buscarKeyPressed
@@ -255,7 +228,6 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_modificar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jT_buscar;
     private javax.swing.JTable jTab_clientes;
@@ -268,7 +240,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
             ArrayList clientes = (ArrayList) contCliente.getClientes();
             if (clientes.size() > 0) {
                 jTab_clientes.setEnabled(true);
-                String[] cabeceras = (String[])util.cabeceras((cliente) clientes.get(0));
+                String[] cabeceras = (String[]) util.cabeceras((cliente) clientes.get(0));
                 DefaultTableModel modelo = new DefaultTableModel(cabeceras, 0);
                 Iterator it = clientes.listIterator();
                 while (it.hasNext()) {
@@ -285,7 +257,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
             }
         } else {
             jTab_clientes.setEnabled(true);
-            String[] cabeceras = (String[])util.cabeceras((cliente) listaC.get(0));
+            String[] cabeceras = (String[]) util.cabeceras((cliente) listaC.get(0));
             DefaultTableModel model = new DefaultTableModel(cabeceras, listaC.size() - 1);
             for (cliente cl : listaC) {
                 Object[] dat = {cl.getNombre(), cl.getApellido(), cl.getCedula(), cl.getTel_cel(), cl.getDireccion(), cl.getCorreo()};
@@ -341,5 +313,23 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
         }
     }
 
-    
+    private void clientesAlta() {
+        int res = JOptionPane.showConfirmDialog(this, "Desea agregar un nuevo cliente?");
+        if (res == 0) {
+            JIF_clientesAlta altaCliente = new JIF_clientesAlta(this);
+            escritorio.add(altaCliente);
+            altaCliente.setVisible(true);
+        }
+    }
+
+    private void modificarCliente() {
+        int res = JOptionPane.showConfirmDialog(this, "Desea modificar el cliente: " + this.cedula + "?");
+        if (res == 0) {
+            JIF_clientesModificar modCliente = new JIF_clientesModificar(cedula, this);
+            escritorio.add(modCliente);
+            modCliente.setVisible(true);
+            cargarClientes(null);
+        }
+    }
+
 }

@@ -6,7 +6,6 @@
 package Presentacion;
 
 import Logica.utilidades;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.internet.AddressException;

@@ -6,16 +6,12 @@
 package Logica;
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
-import java.awt.Image;
+import java.awt.Component;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageProducer;
-import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
@@ -24,17 +20,14 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableRowSorter;
-import org.jboss.logging.Message;
-import org.jdesktop.swingx.search.ListSearchable;
-import sun.rmi.transport.Transport;
 
 /**
  * Clase contenedora de funciones de uso generico
@@ -66,20 +59,6 @@ public class utilidades {
         return instance;
     }
 
-    /*private clientePersistencia cPer = new clientePersistencia();
-    
-    public static controladorCliente getInstance() {
-        if (instance == null) {
-            instance = new controladorCliente();
-        }
-        return instance;
-    }*/
-    /**
-     * Funcion que recibe un email y valida que su formato sea correcto
-     *
-     * @param email
-     * @return true or false
-     */
     public boolean emailValido(String email) {
 
         // Patrón para validar el email
@@ -179,7 +158,6 @@ public class utilidades {
 
     public boolean salvarImagen(BufferedImage imagen, String ruta, String nombre, int extencion) {
 
-
         String ext = ".png";
         if (extencion == 0) {
             ext = ".png";
@@ -190,10 +168,10 @@ public class utilidades {
         if (extencion == 2) {
             ext = ".bmp";
         }
-        File outputfile = new File(ruta +"/"+ nombre + ext);
+        File outputfile = new File(ruta + "/" + nombre + ext);
         boolean write = false;
         try {
-            
+
             write = ImageIO.write(imagen, "png", outputfile);
 
         } catch (IOException ex) {
@@ -212,14 +190,18 @@ public class utilidades {
      */
     public BufferedImage levantarImagen(JTextField jt) {
         BufferedImage imagenUp = null;
+        JFileChooser buscarArchivo = new JFileChooser();
         try {
-            JFileChooser buscarArchivo = new JFileChooser();
-            FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("JPG, PNG & GIF", "jpg", "png", "gif");
-            buscarArchivo.setFileFilter(filtroImagen);
-            int sele = buscarArchivo.showOpenDialog(jt);
-            if (sele == JFileChooser.APPROVE_OPTION) {
-                imagenUp = ImageIO.read(new File(buscarArchivo.getSelectedFile().getPath()));
-            }
+    
+                FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("JPG, PNG & GIF", "jpg", "png", "gif");
+                buscarArchivo.setFileFilter(filtroImagen);
+                int sele = buscarArchivo.showOpenDialog(jt);
+                if (sele == JFileChooser.APPROVE_OPTION) {
+                    //  imagenUp = ImageIO.read(new File(buscarArchivo.getSelectedFile().getPath()));
+                    System.out.println(buscarArchivo.getSelectedFile().getPath());
+                    imagenUp = this.dameEstaImagen(buscarArchivo.getSelectedFile().getPath());
+                }
+          
         } catch (Exception e) {
             System.err.println(e.getMessage() + " Causa: " + e.getCause());
         }
@@ -231,41 +213,49 @@ public class utilidades {
         File archivo = null;
         try {
             archivo = new File(ruta);
+            if (archivo.exists()) {
+                return archivo;
+            }
         } catch (Exception e) {
             System.err.println(e.getMessage() + " Causa: " + e.getCause());
         }
-        return archivo;
+        return null;
 
     }
 
-    public Image deFileAImage(File file) {
-        Image img = null;
+    public BufferedImage deFileABufferImage(File file) {
+        BufferedImage img = null;
         try {
-            img = (Image) ImageIO.read(file);
+            img = ImageIO.read(file);
         } catch (IOException ex) {
             System.err.println("Error: " + ex.getMessage() + " Causa:" + ex.getCause());
         }
         return img;
     }
 
-    public Image dameEstaImagen(String ruta) {
-        File nuevo = this.levantarArchivo(ruta);
-        return this.deFileAImage(nuevo);
+    public BufferedImage dameEstaImagen(String ruta) {
+        BufferedImage imgbf = null;
+        try {
+            imgbf = (BufferedImage) ImageIO.read(new File(ruta));
+        } catch (IOException e) {
+            System.err.println(e.getMessage() + " Causa: " + e.getCause());
+        }
+        return imgbf;
     }
-    
-/**
- * Funcion que retorna un arreglo de string con las cabeceras de la tabla
- * 
+
+    /**
+     * Funcion que retorna un arreglo de string con las cabeceras de la tabla
+     *
      * @param objeto
-     * @return 
- */    
-     public String[] cabeceras(Object objeto) {
+     * @return
+     */
+    public String[] cabeceras(Object objeto) {
 
         ArrayList<String> cab = new ArrayList<>();
         try {
 
             String separador = Pattern.quote("/");
-            String[] cabAux =  objeto.toString().split(separador);
+            String[] cabAux = objeto.toString().split(separador);
 
             for (int i = 0; i < cabAux.length; i++) {
                 System.out.println("Tamaño cabAux: " + cabAux.length);
@@ -287,6 +277,22 @@ public class utilidades {
             return null;
         }
 
-    }  
-    
+    }
+
+    public void resizeColumnWidth(JTable table) {
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        final TableColumnModel columnModel = table.getColumnModel();
+        for (int column = 0; column < table.getColumnCount(); column++) {
+            int width = 15; // Min width
+            for (int row = 0; row < table.getRowCount(); row++) {
+                TableCellRenderer renderer = table.getCellRenderer(row, column);
+                Component comp = table.prepareRenderer(renderer, row, column);
+                width = Math.max(comp.getPreferredSize().width + 3, width);
+            }
+            if (width > 300) {
+                width = 300;
+            }
+            columnModel.getColumn(column).setPreferredWidth(width);
+        }
+    }
 }

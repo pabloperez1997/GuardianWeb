@@ -5,7 +5,6 @@
  */
 package Presentacion;
 
-import ClientesRest.apiCliente;
 import Logica.controladorCliente;
 import Logica.fabricaElGuardian;
 import Logica.mascota;
@@ -13,12 +12,9 @@ import Logica.raza;
 import Logica.utilidades;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -27,10 +23,6 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import org.hibernate.dialect.MckoiDialect;
-import org.jdesktop.swingx.autocomplete.ComboBoxAdaptor;
-import sun.awt.image.ToolkitImage;
 
 /**
  *
@@ -330,6 +322,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
         for (String raza : razasApiRest) {
             dlm.addElement(raza);
         }
+
         jListRaza.setModel(dlm);
 
         this.setModelo(dlm);
@@ -367,6 +360,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     private void selecImagen() {
         BufferedImage image = util.levantarImagen(JText_nomMascota);
         JLAB_foto.setIcon(new ImageIcon(image));
+        System.out.println(JLAB_foto.getWidth()+"//"+ JLAB_foto.getHeight());
         Image scaledInstance = image.getScaledInstance(JLAB_foto.getWidth(), JLAB_foto.getHeight(), Image.SCALE_DEFAULT);
         JLAB_foto.setIcon(new ImageIcon(scaledInstance));
         fotoMascota = image;
@@ -432,7 +426,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
 
     private String generarNombreFoto() {
         String nombre;
-        nombre = "MASCOTA_" + JText_nomMascota.getText() + "_CLIENTE_" + getCedula();
+        nombre = "MASCOTA_" + JText_nomMascota.getText() + "_CLIENTE_" + contC.getCliente(getCedula()).getTel_cel();
         return nombre;
     }
 

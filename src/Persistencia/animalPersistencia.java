@@ -39,19 +39,6 @@ public class animalPersistencia extends persistencia {
         return listaMascota;
     }
 
-    public mascota getMascota(String id) {
-        mascota mascota = null;
-        try {
-            mascota = (mascota) getObjeto(id, mascota.class);
-
-        } catch (Exception e) {
-
-            System.err.println(e.getMessage());
-            return null;
-        }
-        return mascota;
-    }
-
     public List<raza> getRazas() {
 
         List<raza> listaRazas = new ArrayList<>();
@@ -67,14 +54,10 @@ public class animalPersistencia extends persistencia {
         return listaRazas;
     }
 
-    public raza getRaza(String raza) {
-        raza r = null;
-        try {
-            r = (raza) getObjeto(raza, raza.class);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return null;
-        }
-        return r;
+    public mascota getMascota(Long id) {
+        em.getTransaction().begin();
+        mascota obj = (mascota) em.find(mascota.class, id);
+        em.getTransaction().commit();
+        return obj;
     }
 }
