@@ -37,15 +37,15 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     private controladorCliente contC = (controladorCliente) fabricaElGuardian.getInstance().getInstanceIControladorCliente();
     private utilidades util = utilidades.getInstance();
     private DefaultListModel modelo = null;
-    private HashMap<String, String> clientes = new HashMap<>();
-    String rutaFoto = "/home/jp/Escritorio/elGuardianServidor/ImagenesMascotas";
+    private HashMap<Long, String> clientes = new HashMap<>();
+    String rutaFoto = "/home/jp/Escritorio/elGuardianServidor/ImagenesMascotas/";
 ///////////////GET-SET////////////////
 
-    public HashMap<String, String> getClientes() {
+    public HashMap<Long, String> getClientes() {
         return clientes;
     }
 
-    public void setClientes(HashMap<String, String> clientes) {
+    public void setClientes(HashMap<Long, String> clientes) {
         this.clientes = clientes;
     }
 
@@ -92,7 +92,6 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
         btn_aceptar = new javax.swing.JButton();
         btn_cancelar = new javax.swing.JButton();
         jText_buscarRaza = new javax.swing.JTextField();
-        btn_nuevaRaza = new javax.swing.JButton();
         jComboClientes = new javax.swing.JComboBox<>();
 
         jLabel1.setText("Cliente:");
@@ -148,13 +147,6 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
             }
         });
 
-        btn_nuevaRaza.setText("Nueva");
-        btn_nuevaRaza.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_nuevaRazaActionPerformed(evt);
-            }
-        });
-
         jComboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -170,10 +162,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
                                 .addComponent(JLab_descripcion))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(29, 29, 29)
-                                .addComponent(jLabel2))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btn_nuevaRaza)))
+                                .addComponent(jLabel2)))
                         .addGap(15, 15, 15)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -227,13 +216,8 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jText_buscarRaza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_nuevaRaza))))
+                        .addGap(12, 12, 12)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(JLAB_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -263,13 +247,6 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btn_nuevaRazaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevaRazaActionPerformed
-        JIF_raza razaNueva = new JIF_raza(escritorio, this);
-        escritorio.add(razaNueva);
-
-        razaNueva.setVisible(true);         // TODO add your handling code here:
-    }//GEN-LAST:event_btn_nuevaRazaActionPerformed
 
     private void jText_buscarRazaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jText_buscarRazaKeyTyped
         buscar(jText_buscarRaza);
@@ -303,7 +280,6 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_aceptar;
     private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_foto;
-    private javax.swing.JButton btn_nuevaRaza;
     private javax.swing.JComboBox<String> jComboClientes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -344,15 +320,15 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     }
 
     private void cargarComboClientes() {
-        clientes = (HashMap<String, String>) contC.getClientesMascota();
-        Iterator<String> it = clientes.keySet().iterator();
+        clientes = (HashMap<Long, String>) contC.getClientesMascota();
+        Iterator<Long> it = clientes.keySet().iterator();
         JComboBox combo = new JComboBox<String>();
 
         combo.addItem("Seleccionar Cliente");
 
         while (it.hasNext()) {
-            String key = it.next();
-            combo.addItem(key + " - " + (String) clientes.get(key));
+            Long key = it.next();
+            combo.addItem(key + "-" + (String) clientes.get(key));
         }
         jComboClientes.setModel(combo.getModel());
     }
@@ -360,7 +336,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     private void selecImagen() {
         BufferedImage image = util.levantarImagen(JText_nomMascota);
         JLAB_foto.setIcon(new ImageIcon(image));
-        System.out.println(JLAB_foto.getWidth()+"//"+ JLAB_foto.getHeight());
+        System.out.println(JLAB_foto.getWidth() + "//" + JLAB_foto.getHeight());
         Image scaledInstance = image.getScaledInstance(JLAB_foto.getWidth(), JLAB_foto.getHeight(), Image.SCALE_DEFAULT);
         JLAB_foto.setIcon(new ImageIcon(scaledInstance));
         fotoMascota = image;
@@ -399,6 +375,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
 
                     JOptionPane.showMessageDialog(this, "La mascota: " + JText_nomMascota.getText() + " fue dada de alta con exito!");
                     limpiar();
+                    this.dispose();
                 }
 
             }
@@ -413,20 +390,23 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
         }
         msctNew.setFoto(rutaFoto + generarNombreFoto() + ".png");
         msctNew.setRaza((raza) contC.getRaza((String) jListRaza.getSelectedValue()));
-        msctNew.setCliente(contC.getCliente(this.getCedula()));
+        msctNew.setCliente(contC.getCliente(this.getId()));
         return msctNew;
     }
 
-    private String getCedula() {
+    private Long getId() {
+        Long id = null;
         int index = jComboClientes.getSelectedIndex();
         String cortar1 = jComboClientes.getItemAt(index);
-        String[] split = cortar1.split(" ");
-        return split[0];
+        String[] split = cortar1.split("-");
+        id = Long.valueOf(split[0]);
+        return id;
+
     }
 
     private String generarNombreFoto() {
         String nombre;
-        nombre = "MASCOTA_" + JText_nomMascota.getText() + "_CLIENTE_" + contC.getCliente(getCedula()).getTel_cel();
+        nombre = "MASCOTA_" + JText_nomMascota.getText() + "_CLIENTE_" + contC.getCliente(this.getId()).getTel_cel();
         return nombre;
     }
 

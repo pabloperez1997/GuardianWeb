@@ -21,15 +21,38 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jM_animal">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Animal"/>
+            <Property name="text" type="java.lang.String" value="Mascota"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="jMenANimal">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Animal"/>
+                <Property name="text" type="java.lang.String" value="Mascota"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenANimalActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="JM_Configuracion">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Configuracion"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenConfRaza">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Razas"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenConfRazaActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenConfTurno">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Turnos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenConfTurnoActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

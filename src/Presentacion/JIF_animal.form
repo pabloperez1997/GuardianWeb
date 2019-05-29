@@ -98,6 +98,9 @@
           </SubComponents>
         </Container>
         <Component class="javax.swing.JTextField" name="jT_buscar">
+          <Events>
+            <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jT_buscarKeyTyped"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>

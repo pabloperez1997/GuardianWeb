@@ -82,14 +82,13 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
         btn_cancelar = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         jText_buscarRaza = new javax.swing.JTextField();
-        btn_nuevaRaza = new javax.swing.JButton();
         Jlab_foto = new javax.swing.JLabel();
 
         jLabel1.setText("Cliente:");
 
         JLab_nombreCliente.setText("NombreCliente");
 
-        JLab_cedula.setText("Cedula");
+        JLab_cedula.setText("Celular");
 
         JLab_nomMascota.setText("Nombre Mascota:");
 
@@ -135,8 +134,6 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
             }
         });
 
-        btn_nuevaRaza.setText("Nueva");
-
         Jlab_foto.setText("Foto");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -169,13 +166,8 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
                                 .addGap(38, 38, 38)
                                 .addComponent(jText_buscarRaza, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(JLab_descripcion)
-                                        .addGap(15, 15, 15))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btn_nuevaRaza)
-                                        .addGap(18, 18, 18)))
+                                .addComponent(JLab_descripcion)
+                                .addGap(15, 15, 15)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                                     .addComponent(jScrollPane1))))
@@ -213,13 +205,8 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jText_buscarRaza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(38, 38, 38)
-                                .addComponent(btn_nuevaRaza)))
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(25, 25, 25)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -286,7 +273,6 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
     private javax.swing.JButton btn_aceptar;
     private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_foto;
-    private javax.swing.JButton btn_nuevaRaza;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JList<String> jListRaza;
@@ -337,7 +323,7 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
         if (this.msc.getDescripcion() != null) {
             jtxtA_descricpcion.setText(this.msc.getDescripcion());
         }
-        JLab_cedula.setText(this.msc.getCliente().getCedula());
+        JLab_cedula.setText(this.msc.getCliente().getId().toString());
         JLab_nombreCliente.setText(this.msc.getCliente().getNombre() + " " + this.msc.getCliente().getApellido());
         jListRaza.setSelectedValue(this.msc.getRaza().getRaza(), true);
         System.err.println(msc.getFoto());
@@ -410,7 +396,7 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
     
     private String generarNombreFoto() {
         String nombre = "sample";
-        nombre = "MASCOTA_" + JText_nomMascota.getText() + "_CLIENTE_" + contC.getCliente(msc.getCliente().getCedula()).getTel_cel();
+        nombre = "MASCOTA_" + JText_nomMascota.getText() + "_CLIENTE_" + contC.getCliente(msc.getCliente().getId()).getTel_cel();
         return nombre;
     }
 }

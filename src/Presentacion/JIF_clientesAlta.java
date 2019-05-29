@@ -21,7 +21,7 @@ import jdk.nashorn.internal.scripts.JO;
  * @author jp
  */
 public class JIF_clientesAlta extends javax.swing.JInternalFrame {
-    
+
     fabricaElGuardian instanciaFabrica = fabricaElGuardian.getInstance();
     persistencia persistenciaIns = instanciaFabrica.getInstancePersistencia();
     controladorCliente contCliente = (controladorCliente) instanciaFabrica.getInstanceIControladorCliente();
@@ -33,8 +33,6 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
     public JIF_clientesAlta(JIF_clientes clientesForm) {
         initComponents();
         this.clientesForm = clientesForm;
-    
-       
 
     }
 
@@ -169,9 +167,11 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
         panelClientesLayout.setVerticalGroup(
             panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelClientesLayout.createSequentialGroup()
-                .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(panelClientesLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jT_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jT_apellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2))
@@ -190,13 +190,11 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
                     .addGroup(panelClientesLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jT_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel1))
+                            .addComponent(jLabel1)
                             .addComponent(jLabel7))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(panelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jT_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -236,7 +234,7 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-          this.dispose();        // TODO add your handling code here:
+        this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jT_nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jT_nombreActionPerformed
@@ -277,17 +275,18 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
                 nuevoCliente.setCorreo(jT_correo.getText());
                 nuevoCliente.setDireccion(jT_direccion.getText());
                 nuevoCliente.setTel_cel(jT_telefono.getText());
-                
+
                 if (contCliente.altaCliente(nuevoCliente)) {
                     JOptionPane.showMessageDialog(this, "Usuario agregado con exito!");
                     limpiar();
+                    this.dispose();
                 }
             }
-            
+
         }
-        
+
     }
-    
+
     private boolean verificaDatos() {
         if (jT_nombre.getText() == null) {
             JOptionPane.showMessageDialog(this, "Debe ingresar un nombre!");
@@ -323,11 +322,11 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(this, "Debe ingresar un telefono!");
             jT_telefono.requestFocus();
             return false;
-            
+
         }
         return true;
     }
-    
+
     public void limpiar() {
         jTA_comentario.setText(null);
         jT_apellido.setText(null);

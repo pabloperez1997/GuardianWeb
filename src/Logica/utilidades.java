@@ -5,8 +5,9 @@
  */
 package Logica;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+
 import java.awt.Component;
+import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -82,9 +83,10 @@ public class utilidades {
      * <li>false: si no se pudo enviar el mail</li>
      *
      * </ul>
+     * @throws javax.mail.internet.AddressException
      *
      */
-    public static boolean enviarConGMail(String destinatario, String asunto, String cuerpo, String user, String pass) throws AddressException, MessagingException {
+    public static boolean enviarConGMail(String destinatario, String asunto, String cuerpo, String user, String pass) throws AddressException {
         Properties props = new Properties();
         final String username = "elGuardianEsteticaCanina@gmail.com";
         final String password = "elguardian12345";
@@ -192,17 +194,17 @@ public class utilidades {
         BufferedImage imagenUp = null;
         JFileChooser buscarArchivo = new JFileChooser();
         try {
-    
-                FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("JPG, PNG & GIF", "jpg", "png", "gif");
-                buscarArchivo.setFileFilter(filtroImagen);
-                int sele = buscarArchivo.showOpenDialog(jt);
-                if (sele == JFileChooser.APPROVE_OPTION) {
-                    //  imagenUp = ImageIO.read(new File(buscarArchivo.getSelectedFile().getPath()));
-                    System.out.println(buscarArchivo.getSelectedFile().getPath());
-                    imagenUp = this.dameEstaImagen(buscarArchivo.getSelectedFile().getPath());
-                }
-          
-        } catch (Exception e) {
+
+            FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("JPG, PNG & GIF", "jpg", "png", "gif");
+            buscarArchivo.setFileFilter(filtroImagen);
+            int sele = buscarArchivo.showOpenDialog(jt);
+            if (sele == JFileChooser.APPROVE_OPTION) {
+                //  imagenUp = ImageIO.read(new File(buscarArchivo.getSelectedFile().getPath()));
+                System.out.println(buscarArchivo.getSelectedFile().getPath());
+                imagenUp = this.dameEstaImagen(buscarArchivo.getSelectedFile().getPath());
+            }
+
+        } catch (HeadlessException e) {
             System.err.println(e.getMessage() + " Causa: " + e.getCause());
         }
 
@@ -237,10 +239,13 @@ public class utilidades {
         BufferedImage imgbf = null;
         try {
             imgbf = (BufferedImage) ImageIO.read(new File(ruta));
+            if (imgbf != null) {
+                return imgbf;
+            }
         } catch (IOException e) {
             System.err.println(e.getMessage() + " Causa: " + e.getCause());
         }
-        return imgbf;
+        return null;
     }
 
     /**
@@ -293,6 +298,14 @@ public class utilidades {
                 width = 300;
             }
             columnModel.getColumn(column).setPreferredWidth(width);
+        }
+    }
+
+    public static String primeraLetraMayuscula(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        } else {
+            return str.substring(0, 1).toUpperCase() + str.substring(1);
         }
     }
 }

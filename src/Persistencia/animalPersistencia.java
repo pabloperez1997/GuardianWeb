@@ -18,6 +18,14 @@ import javax.persistence.EntityManager;
 public class animalPersistencia extends persistencia {
 
     private static final EntityManager em = Persistencia.persistencia.getInstance().getEm();
+    private static animalPersistencia instance;
+
+    public static animalPersistencia getInstance() {
+        if (instance == null) {
+            instance = new animalPersistencia();
+        }
+        return instance;
+    }
 
     /**
      * *

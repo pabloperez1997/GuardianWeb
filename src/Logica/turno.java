@@ -8,6 +8,8 @@ package Logica;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -18,18 +20,20 @@ import javax.persistence.Id;
 public class turno implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private String hora;
 
     public turno() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -44,8 +48,8 @@ public class turno implements Serializable {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 61 * hash + this.id;
-        hash = 61 * hash + Objects.hashCode(this.hora);
+        hash = 97 * hash + Objects.hashCode(this.id);
+        hash = 97 * hash + Objects.hashCode(this.hora);
         return hash;
     }
 
@@ -61,19 +65,15 @@ public class turno implements Serializable {
             return false;
         }
         final turno other = (turno) obj;
-        if (this.id != other.id) {
+        if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.hora, other.hora)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.hora, other.hora);
     }
 
     @Override
     public String toString() {
-        return "turno{" + "Numero de turno: " + id + " hora: " + hora + " Hs"+ '}';
+        return "ID/" + id + "/HORA/" + hora;
     }
-    
 
 }

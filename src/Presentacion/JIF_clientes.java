@@ -27,6 +27,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     utilidades util = utilidades.getInstance();
     private final JDesktopPane escritorio;
     private String cedula = null;
+    private Long id;
 
     /**
      * Creates new form JIF_clientes
@@ -196,11 +197,15 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
-        eliminarCliente();
+        if (id != null) {
+            eliminarCliente();
+        }
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        modificarCliente();
+        if (id != null) {
+            modificarCliente();
+        }
     }//GEN-LAST:event_btn_modificarActionPerformed
 
     private void jT_buscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jT_buscarKeyPressed
@@ -216,6 +221,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
         int row = jTab_clientes.rowAtPoint(evt.getPoint());
         // int col = jTab_clientes.columnAtPoint(evt.getPoint());
         cedula = (String) jTab_clientes.getValueAt(row, 2);
+        id = (Long) jTab_clientes.getValueAt(row, 0);
         System.out.println(cedula);
         // TODO add your handling code here:
     }//GEN-LAST:event_jTab_clientesMouseClicked
@@ -304,7 +310,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
         int res = JOptionPane.showConfirmDialog(this, "Desea eliminar este cliente: " + cedula + "?");
         if (res == 0) {
             {
-                if (contCliente.eliminarCliente(cedula)) {
+                if (contCliente.eliminarCliente(id)) {
                     JOptionPane.showMessageDialog(this, "Cliente eliminado con exito!");
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al eliminar el cliente!");
@@ -325,7 +331,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     private void modificarCliente() {
         int res = JOptionPane.showConfirmDialog(this, "Desea modificar el cliente: " + this.cedula + "?");
         if (res == 0) {
-            JIF_clientesModificar modCliente = new JIF_clientesModificar(cedula, this);
+            JIF_clientesModificar modCliente = new JIF_clientesModificar(id, this);
             escritorio.add(modCliente);
             modCliente.setVisible(true);
             cargarClientes(null);

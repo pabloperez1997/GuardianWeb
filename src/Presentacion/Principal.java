@@ -17,7 +17,7 @@ import javax.swing.JDesktopPane;
  * @author jp
  */
 public class Principal extends javax.swing.JFrame {
-
+    
     private utilidades util = utilidades.getInstance();
     private EntityManager eM;
     String cuerpo = "coso", asunto = "cospe";
@@ -30,7 +30,7 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         eM = Persistencia.persistencia.getInstance().getEm();
-        
+
         // this.setVisible(true);
         initComponents();
         // eM= controladorCliente.getEm();
@@ -50,7 +50,10 @@ public class Principal extends javax.swing.JFrame {
         jM_cliente = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jM_animal = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenANimal = new javax.swing.JMenuItem();
+        JM_Configuracion = new javax.swing.JMenu();
+        jMenConfRaza = new javax.swing.JMenuItem();
+        jMenConfTurno = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,17 +80,37 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jM_cliente);
 
-        jM_animal.setText("Animal");
+        jM_animal.setText("Mascota");
 
-        jMenuItem2.setText("Animal");
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        jMenANimal.setText("Mascota");
+        jMenANimal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                jMenANimalActionPerformed(evt);
             }
         });
-        jM_animal.add(jMenuItem2);
+        jM_animal.add(jMenANimal);
 
         jMenuBar1.add(jM_animal);
+
+        JM_Configuracion.setText("Configuracion");
+
+        jMenConfRaza.setText("Razas");
+        jMenConfRaza.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenConfRazaActionPerformed(evt);
+            }
+        });
+        JM_Configuracion.add(jMenConfRaza);
+
+        jMenConfTurno.setText("Turnos");
+        jMenConfTurno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenConfTurnoActionPerformed(evt);
+            }
+        });
+        JM_Configuracion.add(jMenConfTurno);
+
+        jMenuBar1.add(JM_Configuracion);
 
         setJMenuBar(jMenuBar1);
 
@@ -118,11 +141,27 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        JIF_animal animal = new JIF_animal(escritorioPrincipal);
+    private void jMenConfRazaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenConfRazaActionPerformed
+        JIF_raza raza = new JIF_raza(escritorioPrincipal);
+        this.escritorioPrincipal.add(raza);
+        raza.setVisible(true);
+    }//GEN-LAST:event_jMenConfRazaActionPerformed
+
+    private void jMenConfTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenConfTurnoActionPerformed
+        JIF_turnos turno = new JIF_turnos();
+        this.escritorioPrincipal.add(turno);
+        turno.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenConfTurnoActionPerformed
+
+    private void jMenANimalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenANimalActionPerformed
+        JIF_animal animal;
+        animal = new JIF_animal(escritorioPrincipal);
         this.escritorioPrincipal.add(animal);
-        animal.setVisible(true);        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+        animal.setVisible(true);
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenANimalActionPerformed
 
     /**
      * @param args the command line arguments
@@ -164,18 +203,21 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu JM_Configuracion;
     private javax.swing.JDesktopPane escritorioPrincipal;
     private javax.swing.JMenu jM_animal;
     private javax.swing.JMenu jM_cliente;
+    private javax.swing.JMenuItem jMenANimal;
+    private javax.swing.JMenuItem jMenConfRaza;
+    private javax.swing.JMenuItem jMenConfTurno;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     // End of variables declaration//GEN-END:variables
 
     public JDesktopPane getEscritorioPrincipal() {
         return escritorioPrincipal;
     }
-
+    
     public void setEscritorioPrincipal(JDesktopPane escritorioPrincipal) {
         this.escritorioPrincipal = escritorioPrincipal;
     }

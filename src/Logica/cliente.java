@@ -30,6 +30,8 @@ public class cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     @Column(length = 100)
     private String cedula;
     private String nombre;
@@ -175,7 +177,7 @@ public class cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "Nombre/" + nombre + "/Apellido/" + apellido + "/Cedula/" + cedula + "/Telefono/" + tel_cel + "/Direccion/" + direccion + "/Email/" + correo;
+        return "Id"+id+"/Nombre/" + nombre + "/Apellido/" + apellido + "/Cedula/" + cedula + "/Telefono/" + tel_cel + "/Direccion/" + direccion + "/Email/" + correo;
 //return "cliente{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion=" + direccion + ", tel_cel=" + tel_cel + ", correo=" + correo + ", reservasCliente=" + reservasCliente + ", mascotasCliente=" + mascotasCliente + '}';
     }
 
@@ -212,6 +214,7 @@ public class cliente implements Serializable {
         this.direccion = clienteCop.direccion;
         this.tel_cel = clienteCop.tel_cel;
         this.correo = clienteCop.correo;
+        this.id=clienteCop.id;
         this.reservasCliente = clienteCop.reservasCliente;
         this.mascotasCliente = clienteCop.mascotasCliente;
         this.password = clienteCop.password;
@@ -237,9 +240,17 @@ public class cliente implements Serializable {
         if (!this.getTel_cel().equals(cli.getTel_cel()) && cli.getTel_cel() != null) {
             this.setTel_cel(cli.getTel_cel());
         }
-        if (!this.getCedula().equals(cli.getCedula()) && cli.getTel_cel() != null) {
+        if (!this.getCedula().equals(cli.getCedula()) && cli.getCedula() != null) {
             this.setCedula(cli.getCedula());
         }
         //revisar comparacion de arreglos cosas
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

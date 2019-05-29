@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class JIF_clientesModificar extends javax.swing.JInternalFrame {
 
-    private final String cedula;
+    private final Long id;
     private fabricaElGuardian fabIns = fabricaElGuardian.getInstance();
     private controladorCliente contCliente = (controladorCliente) fabIns.getInstanceIControladorCliente();
     cliente cliente;
@@ -28,9 +28,9 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
      * @param cedula
      * @param jifClientes
      */
-    public JIF_clientesModificar(String cedula, JIF_clientes jifClientes) {
+    public JIF_clientesModificar(Long id, JIF_clientes jifClientes) {
         initComponents();
-        this.cedula = cedula;
+        this.id = id;
         cliente = new cliente();
         cargaCliente();
         this.jifClientes = jifClientes;
@@ -261,7 +261,7 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
 
     private void cargaCliente() {
         try {
-            cliente = contCliente.getCliente(cedula);
+            cliente = contCliente.getCliente(id);
             jT_nombre.setText(cliente.getNombre());
             jT_apellido.setText(cliente.getApellido());
             jT_cedula.setText(cliente.getCedula());
@@ -284,7 +284,7 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
                 cliente modificado = new cliente();
                 modificado.setNombre(jT_nombre.getText());
                 modificado.setApellido(jT_apellido.getText());
-                modificado.setCedula(cedula);
+                modificado.setCedula(jT_cedula.getText());
                 modificado.setCorreo(jT_correo.getText());
                 modificado.setDireccion(jT_direccion.getText());
                 modificado.setTel_cel(jT_telefono.getText());
@@ -353,7 +353,7 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
     private void resetPass() {
         int res = JOptionPane.showConfirmDialog(this, "Desea resetear la contraseña?");
         if (res == 0) {
-            if (contCliente.resetearPassword(cedula)) {
+            if (contCliente.resetearPassword(id)) {
                 JOptionPane.showMessageDialog(this, "Contraseña reseteada con exito!");
             }
         }

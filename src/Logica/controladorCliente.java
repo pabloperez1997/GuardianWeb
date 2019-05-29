@@ -9,7 +9,7 @@ import Persistencia.clientePersistencia;
 import java.util.ArrayList;
 import java.util.HashMap;
 import Persistencia.persistencia;
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+//import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
@@ -29,13 +29,13 @@ public class controladorCliente implements iControladorCliente {
     private static controladorCliente instance;
     private utilidades util = utilidades.getInstance();
     private persistencia persistencia = Persistencia.persistencia.getInstance();
-    private animalPersistencia aPer = new animalPersistencia();
-    private clientePersistencia cPer = new clientePersistencia();
+    private animalPersistencia aPer = animalPersistencia.getInstance();
+    private clientePersistencia cPer = clientePersistencia.getInstance();
     private apiCliente restCliente = apiCliente.getInstance();
     ////////////Arreglos////////////////
     private HashMap<String, cliente> clientes = new HashMap<>();
     private HashMap<String, mascota> mascotas = new HashMap<>();
-    
+
     public static controladorCliente getInstance() {
         if (instance == null) {
             instance = new controladorCliente();
@@ -51,9 +51,9 @@ public class controladorCliente implements iControladorCliente {
      */
     @Override
     public ArrayList getClientes() {
-        
+
         return (ArrayList<cliente>) cPer.getArregloClientes();
-        
+
     }
 
     /**
@@ -65,7 +65,7 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean emailValido(String email) {
         return util.emailValido(email);
-        
+
     }
 
     /**
@@ -75,11 +75,11 @@ public class controladorCliente implements iControladorCliente {
      * @return
      */
     @Override
-    public boolean eliminarCliente(String cedula) {
+    public boolean eliminarCliente(Long id) {
         try {
-            
-            cliente cli = (cliente) persistencia.getObjeto(cedula, cliente.class);
-            
+
+            cliente cli = (cliente) persistencia.getObjeto(id, cliente.class);
+
             if (cli != null) {
                 return persistencia.eliminar((Object) cli);
             } else {
@@ -88,7 +88,7 @@ public class controladorCliente implements iControladorCliente {
         } catch (Exception e) {
             return false;
         }
-        
+
     }
 
     /**
@@ -108,14 +108,14 @@ public class controladorCliente implements iControladorCliente {
      * Funcion que retorna un cliente a partir de la cedula, en caso de no
      * encontrar ninguno retorna null
      *
-     * @param cedula
+     * @param id
      * @return cliente
      */
     @Override
-    public cliente getCliente(String cedula) {
+    public cliente getCliente(Long id) {
         try {
             cliente cli = new cliente();
-            cli = (cliente) persistencia.getObjeto(cedula, cliente.class);
+            cli = (cliente) persistencia.getObjeto(id, cliente.class);
             return cli;
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -131,6 +131,7 @@ public class controladorCliente implements iControladorCliente {
      */
     @Override
     public boolean modificarCliente(cliente clieMod) {
+        this.letraMayuscula(clieMod);
         return persistencia.modificar((Object) clieMod);
     }
 
@@ -141,21 +142,21 @@ public class controladorCliente implements iControladorCliente {
      * @return
      */
     @Override
-    public boolean resetearPassword(String cedula) {
+    public boolean resetearPassword(Long id) {
         try {
-            cliente cliPassCambio = this.getCliente(cedula);
+            cliente cliPassCambio = this.getCliente(id);
             cliPassCambio.setPassword(this.generarPassword());
             if (persistencia.modificar((Object) cliPassCambio)) {
                 utilidades.enviarConGMail(cliPassCambio.getCorreo(), "Reseteo de contraseña", "SU contraseña a sido reseteada con exito, puede ingresar al sitio con la siguiente contraseña: " + cliPassCambio.getPassword(), null, null);
-                
+
                 return true;
             }
-        } catch (MessagingException | AddressException e) {
+        } catch (AddressException e) {
             System.err.println(e.getMessage());
             return false;
         }
         return false;
-        
+
     }
 
     /**
@@ -168,21 +169,37 @@ public class controladorCliente implements iControladorCliente {
     public boolean altaCliente(cliente clienteNuevo) {
         try {
             clienteNuevo.setPassword(this.generarPassword());
-            
+            letraMayuscula(clienteNuevo);
             if (!persistencia.existe(clienteNuevo)) {
                 if (persistencia.persis((Object) clienteNuevo)) {
-                    
+
                     utilidades.enviarConGMail(clienteNuevo.getCorreo(), "Usuario Nuevo", "EL usuario a sido registrado con exito!", null, null);
-                    
+
                     return true;
-                    
+
                 }
             }
-        } catch (AddressException | MessagingException ex) {
-            System.err.println(ex.getMessage());
+        } catch (AddressException e) {
+            System.err.println(e.getMessage());
             return false;
         }
         return false;
+    }
+
+    private void letraMayuscula(cliente cli) {
+
+        String apellido, nombre;
+        apellido = cli.getApellido();
+        nombre = cli.getNombre();
+        cli.setNombre((String) utilidades.primeraLetraMayuscula(nombre));
+        cli.setApellido((String) utilidades.primeraLetraMayuscula(apellido));
+
+    }
+
+    private void letraMayuscula(mascota mascota) {
+        String nombre = mascota.getNombre();
+        mascota.setNombre(utilidades.primeraLetraMayuscula(nombre));
+
     }
 
     ////////////////////////////////////ANIMAL///////////////////////////////////
@@ -195,7 +212,7 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean altaAnimal(mascota mascota) {
         try {
-            
+            this.letraMayuscula(mascota);
             if (!persistencia.existe(mascota)) {
                 return persistencia.persis(mascota);
             } else {
@@ -236,12 +253,13 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean modificarAnimal(mascota mascota) {
         try {
+            this.letraMayuscula(mascota);
             return aPer.modificar(mascota);
         } catch (Exception e) {
             System.err.println(e.getMessage() + " CAUSA: " + e.getCause());
             return false;
         }
-        
+
     }
 
     /**
@@ -277,7 +295,7 @@ public class controladorCliente implements iControladorCliente {
         } else {
             return this.getRazasDB();
         }
-        
+
     }
 
     /**
@@ -289,7 +307,7 @@ public class controladorCliente implements iControladorCliente {
     public List<String> reloadRazas() {
         List<String> razas = (ArrayList<String>) restCliente.getRazas();
         if (razas != null && razas.size() > 0) {
-            persistencia.ejecutarSql("DROP TABLE raza");
+            persistencia.ejecutarSql("TRUNCATE TABLE raza");
             for (String raza : razas) {
                 raza r = new raza();
                 r.setRaza(raza);
@@ -385,15 +403,16 @@ public class controladorCliente implements iControladorCliente {
      */
     @Override
     public HashMap getClientesMascota() {
-        HashMap<String, String> clientesMascotas = new HashMap<>();
+        HashMap<Long, String> clientesMascotas = new HashMap<>();
         try {
             ArrayList<cliente> clientesArreglo = (ArrayList<cliente>) this.getClientes();
             for (cliente cli : clientesArreglo) {
-                clientesMascotas.put(cli.getCedula(), cli.getNombre() + " " + cli.getApellido());
+                clientesMascotas.put(cli.getId(), cli.getNombre() + " " + cli.getApellido() + " Cel: " + cli.getTel_cel());
+
             }
         } catch (Exception e) {
             System.err.println(e.getMessage() + " CAUSA " + e.getCause());
-            
+
         }
         return clientesMascotas;
     }
@@ -408,7 +427,7 @@ public class controladorCliente implements iControladorCliente {
     public raza getRaza(String raza) {
         return (raza) persistencia.getObjeto(raza, raza.class);
     }
-    
+
     @Override
     public ArrayList getMascotas() {
         ArrayList<mascota> mascotasSistema = new ArrayList<>();
@@ -419,5 +438,5 @@ public class controladorCliente implements iControladorCliente {
         }
         return mascotasSistema;
     }
-    
+
 }

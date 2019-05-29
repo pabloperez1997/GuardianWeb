@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import org.glassfish.jersey.process.internal.RequestScope.Instance;
 
 /**
  *
@@ -17,7 +18,15 @@ import javax.persistence.Query;
  */
 public class clientePersistencia extends persistencia {
 
+    private static clientePersistencia instance;
     EntityManager em = persistencia.getInstance().getEm();
+
+    public static clientePersistencia getInstance() {
+        if (instance == null) {
+            instance = new clientePersistencia();
+        }
+        return instance;
+    }
 
     /**
      * @Funcion altaCliente(): da de alta un cliente en la BD
@@ -64,7 +73,7 @@ public class clientePersistencia extends persistencia {
         try {
             boolean del = eliminar(clienteDel);
             System.out.println("Cliente: " + clienteDel.getNombre() + " " + clienteDel.getApellido() + " eliminado con exito");
-            return true;
+            return del;
         } catch (Exception e) {
             System.err.println(e.getMessage() + " Causa: " + e.getCause());
             return false;
@@ -86,4 +95,4 @@ public class clientePersistencia extends persistencia {
         return (ArrayList<cliente>) listaClientes;
     }
 
-    }
+}

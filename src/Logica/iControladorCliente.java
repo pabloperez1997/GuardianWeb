@@ -19,15 +19,15 @@ public interface iControladorCliente {
 
     public abstract ArrayList getClientes();
 
-    public abstract boolean eliminarCliente(String cedula);
+    public abstract boolean eliminarCliente(Long cedula);
 
     public abstract String generarPassword();
 
-    public abstract cliente getCliente(String cedula);
+    public abstract cliente getCliente(Long cedula);
 
     public abstract boolean modificarCliente(cliente clieMod);
 
-    public abstract boolean resetearPassword(String cedula);
+    public abstract boolean resetearPassword(Long cedula);
 
     public abstract boolean altaCliente(cliente clienteNuevo);
 

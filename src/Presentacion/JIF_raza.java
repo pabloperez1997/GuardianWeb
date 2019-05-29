@@ -24,15 +24,14 @@ public class JIF_raza extends javax.swing.JInternalFrame {
     controladorCliente contC = (controladorCliente) fabricaElGuardian.getInstance().getInstanceIControladorCliente();
     utilidades util = utilidades.getInstance();
     DefaultListModel modelo = new DefaultListModel();
-    private final JIF_animalAlta animalForm;
 
     /**
      * Creates new form JIF_raza
      */
-    JIF_raza(JDesktopPane escritorio, JIF_animalAlta animalAlt) {
+    JIF_raza(JDesktopPane escritorio) {
         initComponents();
         cargarRazas();
-        this.animalForm = animalAlt;
+
     }
 
     /**
@@ -65,7 +64,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         jListRazaRA = new javax.swing.JList<>();
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btn_cargarRazas = new javax.swing.JButton();
         btn_cancelar = new javax.swing.JButton();
 
         jLabel1.setText("jLabel1");
@@ -234,10 +233,10 @@ public class JIF_raza extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("Reiniciar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_cargarRazas.setText("Cargar Razas");
+        btn_cargarRazas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btn_cargarRazasActionPerformed(evt);
             }
         });
 
@@ -248,23 +247,25 @@ public class JIF_raza extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(28, 28, 28))
+                    .addComponent(btn_cargarRazas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(55, 55, 55))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton2)
-                        .addGap(42, 42, 42)
-                        .addComponent(jButton1))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(61, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_cargarRazas)))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jInternalFrame3Layout = new javax.swing.GroupLayout(jInternalFrame3.getContentPane());
@@ -278,10 +279,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
         );
         jInternalFrame3Layout.setVerticalGroup(
             jInternalFrame3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jInternalFrame3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Reinicio - Actualización", jInternalFrame3);
@@ -334,17 +332,13 @@ public class JIF_raza extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTxt_nuevaRazaKeyTyped
 
     private void btn_nuevaRazaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevaRazaActionPerformed
-       altaRaza();
+        altaRaza();
     }//GEN-LAST:event_btn_nuevaRazaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         actualizarRazas();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        reload();      // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         eliminar();    // TODO add your handling code here:
@@ -354,14 +348,18 @@ public class JIF_raza extends javax.swing.JInternalFrame {
         buscarR(jTxt_buscar);        // TODO add your handling code here:
     }//GEN-LAST:event_jTxt_buscarKeyTyped
 
+    private void btn_cargarRazasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cargarRazasActionPerformed
+        reload();        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_cargarRazasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList<String> JListRazaN;
     private javax.swing.JLabel Jlab_Nombre;
     private javax.swing.JButton btn_cancelar;
+    private javax.swing.JButton btn_cargarRazas;
     private javax.swing.JButton btn_nuevaRaza;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JInternalFrame jInternalFrame1;
     private javax.swing.JInternalFrame jInternalFrame2;
@@ -416,7 +414,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
 
     private void eliminar() {
         int res = JOptionPane.showConfirmDialog(this, "Desea eliminar la raza: " + jListRazaE.getSelectedValue() + "?");
-        if (res == 1) {
+        if (res == 0) {
             if (contC.eliminarRaza(jListRazaE.getSelectedValue())) {
                 JOptionPane.showMessageDialog(this, "Raza: " + jListRazaE.getSelectedValue() + " eliminada con exito!");
                 jTxt_buscar.setText(null);
@@ -429,21 +427,21 @@ public class JIF_raza extends javax.swing.JInternalFrame {
     }
 
     private void reload() {
-        int res = JOptionPane.showConfirmDialog(this, "La siguiente accion borrara todas las razas registradas en la Base de Datos y volvera a cargar las razas del sistema. desea continuar?");
-        if (res == 1) {
+        int res = JOptionPane.showConfirmDialog(this, "La siguiente accion cargara las razas en el sistema, desea continuar?");
+        if (res == 0) {
             List<String> reloadRazas = contC.reloadRazas();
             if (reloadRazas != null) {
 
-                JOptionPane.showMessageDialog(this, "Se reiniciaron las razas del sistema!");
+                JOptionPane.showMessageDialog(this, "Se cargaron las razas del sistema!");
             } else {
-                JOptionPane.showMessageDialog(this, "Error al reiniciar las razas!");
+                JOptionPane.showMessageDialog(this, "Error al cargar las razas!");
             }
         }
     }
 
     private void actualizarRazas() {
         int res = JOptionPane.showConfirmDialog(this, "La siguiente accion comprobara la existencia de nuevas razas y actualizara la Base de Datos del sistema si es necesario, desea continuar?");
-        if (res == 1) {
+        if (res == 0) {
             if (contC.actualizarRazas()) {
                 JOptionPane.showMessageDialog(this, "Razas actualizadas con exito!");
             } else {
@@ -453,7 +451,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
     }
 
     private void altaRaza() {
-       int showConfirmDialog = JOptionPane.showConfirmDialog(this, "Desea agregar la siguiente raza: " + jTxt_nuevaRaza.getText() + "?");
+        int showConfirmDialog = JOptionPane.showConfirmDialog(this, "Desea agregar la siguiente raza: " + jTxt_nuevaRaza.getText() + "?");
         if (showConfirmDialog == 0) {
             raza raza = new raza();
             raza.setRaza(jTxt_nuevaRaza.getText());
@@ -464,12 +462,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
             } else {
                 JOptionPane.showMessageDialog(this, "No se pudo agregar la raza!");
             }
-    }}
-
-
-
-
+        }
+    }
 
 }
-
-

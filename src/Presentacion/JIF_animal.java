@@ -7,29 +7,23 @@ package Presentacion;
 
 import Logica.controladorCliente;
 import Logica.fabricaElGuardian;
-import Logica.iControladorCliente;
 import Logica.mascota;
 import Logica.utilidades;
-import java.awt.Component;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
-import javax.validation.groups.Default;
 
 /**
  *
  * @author jp
  */
 public class JIF_animal extends javax.swing.JInternalFrame {
-
-    Long idMascota;
+    
+    Long idMascota=null;
     private final JDesktopPane escritorio;
     controladorCliente contCliente = (controladorCliente) fabricaElGuardian.getInstance().getInstanceIControladorCliente();
     utilidades util = utilidades.getInstance();
@@ -41,7 +35,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         initComponents();
         this.escritorio = escritorioPrincipal;
         cargarMascotas();
-
+        
     }
 
     /**
@@ -82,6 +76,12 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(jTab_Animal);
+
+        jT_buscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jT_buscarKeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("Buscar");
 
@@ -204,7 +204,6 @@ public class JIF_animal extends javax.swing.JInternalFrame {
     private void btn_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevoActionPerformed
         JIF_animalAlta animalAlta = new JIF_animalAlta(escritorio);
         escritorio.add(animalAlta);
-
         animalAlta.setVisible(true);      // TODO add your handling code here:
     }//GEN-LAST:event_btn_nuevoActionPerformed
 
@@ -234,6 +233,10 @@ public class JIF_animal extends javax.swing.JInternalFrame {
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
         eliminar();        // TODO add your handling code here:
     }//GEN-LAST:event_btn_eliminarActionPerformed
+
+    private void jT_buscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jT_buscarKeyTyped
+        util.filtrarTabla(jT_buscar.getText(), jTab_Animal);        // TODO add your handling code here:
+    }//GEN-LAST:event_jT_buscarKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -267,7 +270,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             jTab_Animal.setEnabled(false);
         }
     }
-
+    
     private void eliminar() {
         if (this.idMascota != null) {
             if (JOptionPane.showConfirmDialog(this, "Desea eliminar la Mascota: " + this.idMascota + "?") == 0) {
@@ -276,10 +279,10 @@ public class JIF_animal extends javax.swing.JInternalFrame {
                     cargarMascotas();
                 }
             }
-
+            
         }
     }
-
+    
     private void cargarFoto(Long idMascota) {
         mascota mascota = (mascota) contCliente.getMascota(idMascota);
         BufferedImage image = (BufferedImage) util.dameEstaImagen(mascota.getFoto());
@@ -287,5 +290,5 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         Image scaledInstance = image.getScaledInstance(200, 180, Image.SCALE_DEFAULT);
         jLab_foto.setIcon(new ImageIcon(scaledInstance));
     }
-
+    
 }

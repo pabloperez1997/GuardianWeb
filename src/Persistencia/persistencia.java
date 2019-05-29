@@ -5,14 +5,11 @@
  */
 package Persistencia;
 
-import static Logica.mascota_.id;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 /**
  *
@@ -70,7 +67,7 @@ public class persistencia {
             em.getTransaction().commit();
             return true;
         } catch (Exception e) {
-              System.err.println("Error al modificar: "+e.getMessage() + " Causa: " + e.getCause());
+            System.err.println("Error al modificar: " + e.getMessage() + " Causa: " + e.getCause());
             return false;
         }
 
@@ -83,7 +80,7 @@ public class persistencia {
             em.getTransaction().commit();
             return true;
         } catch (Exception e) {
-           System.err.println("Error al eliminar: "+e.getMessage() + " Causa: " + e.getCause());
+            System.err.println("Error al eliminar: " + e.getMessage() + " Causa: " + e.getCause());
             return false;
         }
     }
@@ -133,11 +130,24 @@ public class persistencia {
         Object obj = null;
         try {
             em.getTransaction().begin();
-            obj = (Object)em.find(clase, id);
+            obj = (Object) em.find(clase, id);
             em.getTransaction().commit();
         } catch (Exception e) {
             System.err.println(e.getMessage() + " CAUSA " + e.getCause());
         }
         return obj;
+    }
+
+    public Object getObjeto(Long id, Class clase) {
+        Object obj = null;
+        try {
+            em.getTransaction().begin();
+            obj = (Object) em.find(clase, id);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println(e.getMessage() + " CAUSA " + e.getCause());
+        }
+        return obj;
+
     }
 }
