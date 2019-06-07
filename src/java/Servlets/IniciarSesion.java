@@ -108,6 +108,7 @@ public class IniciarSesion extends HttpServlet {
         
         boolean recordarme = request.getParameter("Recordarme") != null;
         try {
+            
             cliente = this.port.obtenerCliente(login);
         } catch (Exception e) {
                 nuevoEstado = EstadoSesion.LOGIN_INCORRECTO;

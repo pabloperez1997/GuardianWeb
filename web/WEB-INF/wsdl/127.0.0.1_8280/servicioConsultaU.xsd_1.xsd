@@ -9,8 +9,39 @@
 <xs:element name="tel_cel" type="xs:string" minOccurs="0"></xs:element>
 <xs:element name="correo" type="xs:string" minOccurs="0"></xs:element>
 <xs:element name="password" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="compra" type="tns:venta" minOccurs="0"></xs:element>
 <xs:element name="reservasCliente" type="tns:reserva" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="mascotasCliente" type="tns:mascota" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="venta">
+<xs:sequence>
+<xs:element name="detalles" type="tns:detalleVenta" minOccurs="0"></xs:element>
+<xs:element name="fecha" type="xs:dateTime" minOccurs="0"></xs:element>
+<xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="detalleVenta">
+<xs:sequence>
+<xs:element name="cantidad" type="xs:int"></xs:element>
+<xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
+<xs:element name="listaProducto" type="tns:producto" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="precioTotalProductos" type="xs:float"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="producto">
+<xs:sequence>
+<xs:element name="cantidad" type="xs:int"></xs:element>
+<xs:element name="codigo" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="detalleVentas" type="tns:detalleVenta" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="disponible" type="xs:boolean"></xs:element>
+<xs:element name="foto" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="precio" type="xs:float"></xs:element>
 </xs:sequence>
 </xs:complexType>
 

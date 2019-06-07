@@ -35,25 +35,12 @@
   <br>
   <div class="container">
 
-    <div class="row">
-
-      <div class="col-lg-3">
-
-        <h1 class="my-4">Lista de Productos</h1>
-        <div class="list-group">
-          <a href="#" class="list-group-item">Category 1</a>
-          <a href="#" class="list-group-item">Category 2</a>
-          <a href="#" class="list-group-item">Category 3</a>
-        </div>
-
-      </div>
+    <div class="col-lg-12">
       <!-- /.col-lg-3 -->
 
-      <div class="col-lg-9">
+      <div class="col-sm">
 
-        
-
-        <div class="row">
+        <div class="row ">
 
              <%List<Producto> prods = (List<Producto>) request.getAttribute("Productos");
                 if (prods.size() != 0) {%>
@@ -61,7 +48,6 @@
                 <%for (Producto producto : prods) {%>
           <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
-                
                 
              <%if (producto.getFoto().compareTo("sinfoto")!=0){%>
              <img class="card-img-top" src="img/<%=producto.getFoto()%>" alt="">
@@ -83,7 +69,7 @@
                   <div class="row">
                       <div class="col-sm-12">
                         <div class="text-center">
-                            <form method="post" action="ver-productos">
+                            <form  method="post"action="venta">
                           <button type="submit" class="btn btn-success" id="codigoprod" 
                                   name="codigoprod" value="<%=producto.getCodigo()%>" >Comprar</button
                         </div>
@@ -110,27 +96,16 @@
             </div>
           </div>
           <% }%>
-           
-          
           <% } else {%>
             <h1>No hay productos por el momento...</h1>
           <%}%>
 
         </div>
-        <!-- /.row -->
-
-     
-        
+        <!-- /.row -->        
       </div>
       <!-- /.col-lg-9 -->
-
     </div>
   </div>
-    <!-- /.row 
-     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
-    </div>
-
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>

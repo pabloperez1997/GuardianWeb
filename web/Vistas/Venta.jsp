@@ -43,9 +43,9 @@
             </div>
             <div class="card-body">
                     <!-- PRODUCT -->
-                    <% if (request.getSession().getAttribute("ProdsVenta")!=null) {%>
+                    <% if (request.getAttribute("ProdsVenta")!=null) {%>
                     
-                    <%List<Producto> prods = (List<Producto>) request.getSession().getAttribute("ProdsVenta");
+                    <%List<Producto> prods = (List<Producto>) request.getAttribute("ProdsVenta");
                     if (prods.size() > 0) {%>
 
                     <%for (Producto producto : prods) {%>
@@ -101,7 +101,7 @@
                             
                     
                     <div class="float-right">
-                    <a href="" class="btn btn-secondary float-right">
+                    <a href="ver-productos" class="btn btn-secondary float-right">
                         Continuar Comprando...
                     </a>
                 </div>
@@ -110,7 +110,13 @@
                 <div class="float-right" style="margin: 10px">
                     <a href="" class="btn btn-success float-right">Finalizar compra</a>
                     <div class="float-right" style="margin: 5px">
-                        Precio Total: <b>50.00€</b>
+                    <%List<Producto> prods = (List<Producto>) request.getAttribute("ProdsVenta");
+                    float precio=0;
+                    if (prods.size() > 0) {
+                    for (Producto producto : prods) {
+                      precio=precio+producto.getPrecio();
+                    }}%>
+                       Precio Total: <b><%=precio%></b>
                     </div>
                 </div>
             </div>
@@ -124,11 +130,6 @@
         
         
 <jsp:include page="/Vistas/Footer.jsp" />
-
-  <!-- Bootstrap core JavaScript -->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>

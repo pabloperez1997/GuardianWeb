@@ -28,6 +28,18 @@
         <servlet-name>ServletImagenes</servlet-name>
         <servlet-class>Servlets.ServletImagenes</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletContrasenia</servlet-name>
+        <servlet-class>Servlets.ServletContrasenia</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>Servlets.NewServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ServletReservas</servlet-name>
+        <servlet-class>Servlets.ServletReservas</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletInicio</servlet-name>
         <url-pattern>/ServletInicio</url-pattern>
@@ -55,6 +67,18 @@
     <servlet-mapping>
         <servlet-name>ServletImagenes</servlet-name>
         <url-pattern>/ServletImagenes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletContrasenia</servlet-name>
+        <url-pattern>/ServletContrasenia</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletReservas</servlet-name>
+        <url-pattern>/ServletReservas</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
