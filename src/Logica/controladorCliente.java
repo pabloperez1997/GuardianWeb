@@ -75,7 +75,7 @@ public class controladorCliente implements iControladorCliente {
      * @return
      */
     @Override
-    public boolean eliminarCliente(Long id) {
+    public boolean eliminarCliente(String id) {
         try {
 
             cliente cli = (cliente) persistencia.getObjeto(id, cliente.class);
@@ -112,7 +112,7 @@ public class controladorCliente implements iControladorCliente {
      * @return cliente
      */
     @Override
-    public cliente getCliente(Long id) {
+    public cliente getCliente(String id) {
         try {
             cliente cli = new cliente();
             cli = (cliente) persistencia.getObjeto(id, cliente.class);
@@ -142,8 +142,8 @@ public class controladorCliente implements iControladorCliente {
      * @return
      */
     @Override
-    public boolean resetearPassword(Long id) {
-        try {
+    public boolean resetearPassword(String id) {
+       /* try {
             cliente cliPassCambio = this.getCliente(id);
             cliPassCambio.setPassword(this.generarPassword());
             if (persistencia.modificar((Object) cliPassCambio)) {
@@ -154,7 +154,7 @@ public class controladorCliente implements iControladorCliente {
         } catch (AddressException e) {
             System.err.println(e.getMessage());
             return false;
-        }
+        }*/
         return false;
 
     }
@@ -403,11 +403,11 @@ public class controladorCliente implements iControladorCliente {
      */
     @Override
     public HashMap getClientesMascota() {
-        HashMap<Long, String> clientesMascotas = new HashMap<>();
+        HashMap<String, String> clientesMascotas = new HashMap<>();
         try {
             ArrayList<cliente> clientesArreglo = (ArrayList<cliente>) this.getClientes();
             for (cliente cli : clientesArreglo) {
-                clientesMascotas.put(cli.getId(), cli.getNombre() + " " + cli.getApellido() + " Cel: " + cli.getTel_cel());
+                clientesMascotas.put(cli.getCorreo(), cli.getNombre() + " " + cli.getApellido());
 
             }
         } catch (Exception e) {

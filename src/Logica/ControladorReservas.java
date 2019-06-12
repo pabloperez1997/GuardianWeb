@@ -112,8 +112,128 @@ public class ControladorReservas implements iControladorReservas {
 ////////////////////////////////////////////////////////////RESERVAS//////////////////////////////////////////////////////////////////////////////////    
 
     @Override
-    public boolean nuevaReserva() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean nuevaReserva(reserva r) {
+        try {
+            if (!per.existe(r)) {
+                return per.persis(r);
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Cause:" + e.getCause());
+            return false;
+        }
     }
+
+    @Override
+    public List getReservas() {
+        return (List<reserva>) rPer.getReservas();
+    }
+
+    @Override
+    public reserva getReserva(Long id) {
+        return (reserva) per.getObjeto(id, reserva.class);
+    }
+
+    @Override
+    public boolean eliminarReserva(Long id) {
+        reserva r = null;
+        try {
+            r = (reserva) per.getObjeto(id, reserva.class);
+            if (r != null) {
+                return per.eliminar(r);
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Cause:" + e.getCause());
+            return false;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////BAÑO___ESQUILA////////////////////////////////////////////////////////////////////////
+    @Override
+    public List getTipoBanios() {
+        return (List<tipoBanio>) rPer.getTIposBanio();
+    }
+
+    @Override
+    public tipoBanio getTipoBanio(Long id) {
+        return (tipoBanio) per.getObjeto(id, tipoBanio.class);
+    }
+
+    @Override
+    public boolean nuevoBanio(tipoBanio banio) {
+        try {
+            if (!per.existe(banio)) {
+                return per.persis(banio);
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Cause:" + e.getCause());
+            return false;
+        }
+
+    }
+
+    @Override
+    public boolean eliminarBanio(Long id) {
+        try {
+            tipoBanio tpb = (tipoBanio) per.getObjeto(id, tipoBanio.class);
+            if (tpb != null) {
+                return per.eliminar(tpb);
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Cause:" + e.getCause());
+            return false;
+
+        }
+    }
+
+    @Override
+    public List getTipoEsquila() {
+        return (List<tipoEsquila>) rPer.getTipoEsquila();
+    }
+
+    @Override
+    public tipoEsquila getTipoEsquila(Long id) {
+        return (tipoEsquila) per.getObjeto(id, tipoEsquila.class);
+    }
+
+    @Override
+    public boolean nuevaEaquila(tipoEsquila esquila) {
+        try {
+            if (!per.existe(esquila)) {
+                return per.persis(esquila);
+
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Cause:" + e.getCause());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean eliminarEsquila(Long id) {
+        try {
+            tipoEsquila tpe = (tipoEsquila) per.getObjeto(id, tipoEsquila.class);
+            if (tpe != null) {
+                return per.eliminar(tpe);
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Cause:" + e.getCause());
+            return false;
+        }
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }

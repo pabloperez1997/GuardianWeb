@@ -13,6 +13,8 @@ import Logica.raza;
 import Logica.utilidades;
 import java.awt.Component;
 import java.awt.FocusTraversalPolicy;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import jdk.nashorn.internal.scripts.JO;
 
@@ -25,14 +27,14 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
     fabricaElGuardian instanciaFabrica = fabricaElGuardian.getInstance();
     persistencia persistenciaIns = instanciaFabrica.getInstancePersistencia();
     controladorCliente contCliente = (controladorCliente) instanciaFabrica.getInstanceIControladorCliente();
-    private final JIF_clientes clientesForm;
+    private final JDesktopPane padre;
 
     /**
      * Creates new form JIF_clientesAlta
      */
-    public JIF_clientesAlta(JIF_clientes clientesForm) {
+    public JIF_clientesAlta(JDesktopPane clientesForm) {
         initComponents();
-        this.clientesForm = clientesForm;
+        this.padre = clientesForm;
 
     }
 
@@ -234,6 +236,8 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        limpiar();
+        recargarPadre();
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -266,7 +270,7 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
     ////////////////////FUNCIONES///////////////////////////
     private void altaCliente() {
         if (verificaDatos()) {
-            int result = JOptionPane.showConfirmDialog(this, "Quiere dar de alta el siguiente cliente: " + jT_nombre.getName() + " " + jT_apellido.getText());
+            int result = JOptionPane.showConfirmDialog(this, "Quiere dar de alta el siguiente cliente: " + jT_nombre.getText()+ " " + jT_apellido.getText());
             if (result == 0) {
                 cliente nuevoCliente = new cliente();
                 nuevoCliente.setNombre(jT_nombre.getText());
@@ -279,6 +283,7 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
                 if (contCliente.altaCliente(nuevoCliente)) {
                     JOptionPane.showMessageDialog(this, "Usuario agregado con exito!");
                     limpiar();
+                    recargarPadre();
                     this.dispose();
                 }
             }
@@ -335,5 +340,16 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
         jT_direccion.setText(null);
         jT_nombre.setText(null);
         jT_telefono.setText(null);
+    }
+
+    private void recargarPadre() {
+        JInternalFrame[] allFrames = this.padre.getAllFrames();
+        for (JInternalFrame jif : allFrames) {
+            if (jif instanceof JIF_clientes) {
+                JIF_clientes jifCli = (JIF_clientes) jif;
+                jifCli.cargarClientes(null);
+            }
+        }
+
     }
 }

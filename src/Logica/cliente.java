@@ -5,15 +5,9 @@
  */
 package Logica;
 
-import java.io.PrintStream;
 import java.io.Serializable;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,15 +24,17 @@ public class cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @Column(length = 100)
+    private String correo;
+
+
     @Column(length = 100)
     private String cedula;
     private String nombre;
     private String apellido;
     private String direccion;
     private String tel_cel;
-    private String correo;
+    
     private String password;
 
     public cliente() {
@@ -177,7 +173,7 @@ public class cliente implements Serializable {
 
     @Override
     public String toString() {
-        return "Id"+id+"/Nombre/" + nombre + "/Apellido/" + apellido + "/Cedula/" + cedula + "/Telefono/" + tel_cel + "/Direccion/" + direccion + "/Email/" + correo;
+        return "Nombre/" + nombre + "/Apellido/" + apellido + "/Cedula/" + cedula + "/Telefono/" + tel_cel + "/Direccion/" + direccion + "/Email/" + correo;
 //return "cliente{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion=" + direccion + ", tel_cel=" + tel_cel + ", correo=" + correo + ", reservasCliente=" + reservasCliente + ", mascotasCliente=" + mascotasCliente + '}';
     }
 
@@ -214,7 +210,6 @@ public class cliente implements Serializable {
         this.direccion = clienteCop.direccion;
         this.tel_cel = clienteCop.tel_cel;
         this.correo = clienteCop.correo;
-        this.id=clienteCop.id;
         this.reservasCliente = clienteCop.reservasCliente;
         this.mascotasCliente = clienteCop.mascotasCliente;
         this.password = clienteCop.password;
@@ -246,11 +241,5 @@ public class cliente implements Serializable {
         //revisar comparacion de arreglos cosas
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+   
 }

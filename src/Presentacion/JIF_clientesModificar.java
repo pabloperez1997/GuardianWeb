@@ -8,6 +8,8 @@ package Presentacion;
 import Logica.cliente;
 import Logica.controladorCliente;
 import Logica.fabricaElGuardian;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -16,11 +18,11 @@ import javax.swing.JOptionPane;
  */
 public class JIF_clientesModificar extends javax.swing.JInternalFrame {
 
-    private final Long id;
+    private final String idCorreo;
     private fabricaElGuardian fabIns = fabricaElGuardian.getInstance();
     private controladorCliente contCliente = (controladorCliente) fabIns.getInstanceIControladorCliente();
     cliente cliente;
-    private final JIF_clientes jifClientes;
+    private final JDesktopPane padre;
 
     /**
      * Creates new form JIF_clientesModificar
@@ -28,12 +30,12 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
      * @param cedula
      * @param jifClientes
      */
-    public JIF_clientesModificar(Long id, JIF_clientes jifClientes) {
+    public JIF_clientesModificar(String idCorreo, JDesktopPane jifClientes) {
         initComponents();
-        this.id = id;
+        this.idCorreo = idCorreo;
         cliente = new cliente();
         cargaCliente();
-        this.jifClientes = jifClientes;
+        this.padre = jifClientes;
 
     }
 
@@ -166,10 +168,12 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jT_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -191,14 +195,12 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
                             .addComponent(jLabel6)
                             .addComponent(jT_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jT_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel7)
+                        .addGap(16, 16, 16)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(btn_resetPassw)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_aceptar)
                     .addComponent(btn_cancelar))
@@ -224,6 +226,8 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jT_apellidoActionPerformed
 
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
+        limpiar();
+        recargarPadre();
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
@@ -261,7 +265,7 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
 
     private void cargaCliente() {
         try {
-            cliente = contCliente.getCliente(id);
+            cliente = (cliente)contCliente.getCliente(idCorreo);
             jT_nombre.setText(cliente.getNombre());
             jT_apellido.setText(cliente.getApellido());
             jT_cedula.setText(cliente.getCedula());
@@ -270,6 +274,8 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
             jT_telefono.setText(cliente.getTel_cel());
             jT_direccion.setText(cliente.getDireccion());
             jT_correo.setText(cliente.getCorreo());
+            jT_correo.setEditable(false);
+            jT_correo.setEnabled(false);
         } catch (Exception e) {
             System.err.println(e.getMessage());
 
@@ -293,7 +299,7 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
             if (contCliente.modificarCliente(cliente)) {
                 JOptionPane.showMessageDialog(this, "Cliente modificado con exito!");
                 limpiar();
-                jifClientes.cargarClientes(null);
+                recargarPadre();
                 this.dispose();
             }
         }
@@ -353,10 +359,20 @@ public class JIF_clientesModificar extends javax.swing.JInternalFrame {
     private void resetPass() {
         int res = JOptionPane.showConfirmDialog(this, "Desea resetear la contraseña?");
         if (res == 0) {
-            if (contCliente.resetearPassword(id)) {
+            if (contCliente.resetearPassword(idCorreo)) {
                 JOptionPane.showMessageDialog(this, "Contraseña reseteada con exito!");
             }
         }
     }
 
+    private void recargarPadre() {
+        JInternalFrame[] allFrames = this.padre.getAllFrames();
+        for (JInternalFrame jif : allFrames) {
+            if (jif instanceof JIF_clientes) {
+                JIF_clientes jifCli = (JIF_clientes) jif;
+                jifCli.cargarClientes(null);
+            }
+        }
+
+    }
 }

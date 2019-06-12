@@ -36,14 +36,14 @@ public class venta implements Serializable {
     public venta() {
     }
 
-    public float getPrecioTotalFinal() {
+   /* public float getPrecioTotalFinal() {
         float precioF = 0;
         Iterator<detalleVenta> iterator = detalles.iterator();
         while (iterator.hasNext()) {
             precioF = +(float) iterator.next().getPrecioTotalProductos();
         }
         return precioF;
-    }
+    }*/
 
     public Long getId() {
         return id;

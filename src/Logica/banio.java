@@ -5,36 +5,23 @@
  */
 package Logica;
 
-
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+
+
+import org.hibernate.annotations.Entity;
 
 /**
  *
  * @author jp
  */
 @Entity
-public class banio extends servicio{
+public class banio extends servicio {
 
-   
-    private float precio;
     @ManyToOne
     private tipoBanio tipoDeBanio;
 
     public banio() {
-    }
-
-   
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
     }
 
     public tipoBanio getTipoDeBanio() {
@@ -48,7 +35,6 @@ public class banio extends servicio{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 73 * hash + Float.floatToIntBits(this.precio);
         hash = 73 * hash + Objects.hashCode(this.tipoDeBanio);
         return hash;
     }
@@ -65,9 +51,6 @@ public class banio extends servicio{
             return false;
         }
         final banio other = (banio) obj;
-        if (Float.floatToIntBits(this.precio) != Float.floatToIntBits(other.precio)) {
-            return false;
-        }
         if (!Objects.equals(this.tipoDeBanio, other.tipoDeBanio)) {
             return false;
         }
@@ -76,9 +59,7 @@ public class banio extends servicio{
 
     @Override
     public String toString() {
-        return "banio{" + "precio=" + precio + ", tipoDeBanio=" + tipoDeBanio + '}';
+        return "tipoDeBanio/" + tipoDeBanio;
     }
 
-    
-    
 }

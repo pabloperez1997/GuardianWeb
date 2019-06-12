@@ -26,8 +26,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     controladorCliente contCliente = (controladorCliente) fabIns.getInstanceIControladorCliente();
     utilidades util = utilidades.getInstance();
     private final JDesktopPane escritorio;
-    private String cedula = null;
-    private Long id;
+    private String idCorreo=null;
 
     /**
      * Creates new form JIF_clientes
@@ -197,13 +196,13 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_agregarActionPerformed
 
     private void btn_eliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarActionPerformed
-        if (id != null) {
+        if (idCorreo != null) {
             eliminarCliente();
         }
     }//GEN-LAST:event_btn_eliminarActionPerformed
 
     private void btn_modificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarActionPerformed
-        if (id != null) {
+        if (idCorreo != null) {
             modificarCliente();
         }
     }//GEN-LAST:event_btn_modificarActionPerformed
@@ -220,9 +219,9 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     private void jTab_clientesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTab_clientesMouseClicked
         int row = jTab_clientes.rowAtPoint(evt.getPoint());
         // int col = jTab_clientes.columnAtPoint(evt.getPoint());
-        cedula = (String) jTab_clientes.getValueAt(row, 2);
-        id = (Long) jTab_clientes.getValueAt(row, 0);
-        System.out.println(cedula);
+        //cedula = (String) jTab_clientes.getValueAt(row, 2);
+        idCorreo = (String) jTab_clientes.getValueAt(row, 5);
+        System.out.println(idCorreo);
         // TODO add your handling code here:
     }//GEN-LAST:event_jTab_clientesMouseClicked
 
@@ -239,7 +238,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     private javax.swing.JTable jTab_clientes;
     // End of variables declaration//GEN-END:variables
 
-////////////////////funciones
+////////////////////funciones//////
     public void cargarClientes(ArrayList<cliente> listaC) {
         jTab_clientes.setEnabled(true);
         if (listaC == null) {
@@ -307,13 +306,17 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     }
 
     private void eliminarCliente() {
-        int res = JOptionPane.showConfirmDialog(this, "Desea eliminar este cliente: " + cedula + "?");
+        int res = JOptionPane.showConfirmDialog(this, "Desea eliminar este cliente: " + this.idCorreo + "?");
         if (res == 0) {
             {
-                if (contCliente.eliminarCliente(id)) {
+                if (contCliente.eliminarCliente(this.idCorreo)) {
                     JOptionPane.showMessageDialog(this, "Cliente eliminado con exito!");
+                    cargarClientes(null);
+                    idCorreo = null;
                 } else {
                     JOptionPane.showMessageDialog(this, "Error al eliminar el cliente!");
+                    cargarClientes(null);
+                    idCorreo = null;
                 }
             }
         }
@@ -322,19 +325,22 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     private void clientesAlta() {
         int res = JOptionPane.showConfirmDialog(this, "Desea agregar un nuevo cliente?");
         if (res == 0) {
-            JIF_clientesAlta altaCliente = new JIF_clientesAlta(this);
+            JIF_clientesAlta altaCliente = new JIF_clientesAlta(this.escritorio);
             escritorio.add(altaCliente);
             altaCliente.setVisible(true);
         }
     }
 
     private void modificarCliente() {
-        int res = JOptionPane.showConfirmDialog(this, "Desea modificar el cliente: " + this.cedula + "?");
+        int res = JOptionPane.showConfirmDialog(this, "Desea modificar el cliente: " + this.idCorreo + "?");
         if (res == 0) {
-            JIF_clientesModificar modCliente = new JIF_clientesModificar(id, this);
+            JIF_clientesModificar modCliente = new JIF_clientesModificar(this.idCorreo, this.escritorio);
             escritorio.add(modCliente);
             modCliente.setVisible(true);
             cargarClientes(null);
+        } else {
+            
+            this.idCorreo = null;
         }
     }
 

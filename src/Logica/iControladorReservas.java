@@ -18,6 +18,17 @@ public interface iControladorReservas {
     public abstract turno getTurno(Long id);
     public abstract boolean existeTurno(turno tr);
     public abstract List getHorasDisponibles();
-    public abstract boolean nuevaReserva();
+    public abstract List getTipoBanios();
+    public abstract tipoBanio getTipoBanio(Long id);
+    public abstract boolean nuevoBanio(tipoBanio banio);
+    public abstract boolean eliminarBanio(Long id);
+    public abstract List getTipoEsquila();
+    public abstract tipoEsquila getTipoEsquila(Long id);
+    public abstract boolean nuevaEaquila(tipoEsquila esquila);
+    public abstract boolean eliminarEsquila(Long id);
+    public abstract List getReservas();
+    public abstract reserva getReserva(Long id);
+    public abstract boolean nuevaReserva(reserva r);
+    public abstract boolean eliminarReserva(Long id);
     
 }

@@ -22,8 +22,8 @@ import javax.swing.table.DefaultTableModel;
  * @author jp
  */
 public class JIF_animal extends javax.swing.JInternalFrame {
-    
-    Long idMascota=null;
+
+    Long idMascota = null;
     private final JDesktopPane escritorio;
     controladorCliente contCliente = (controladorCliente) fabricaElGuardian.getInstance().getInstanceIControladorCliente();
     utilidades util = utilidades.getInstance();
@@ -35,7 +35,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         initComponents();
         this.escritorio = escritorioPrincipal;
         cargarMascotas();
-        
+
     }
 
     /**
@@ -202,7 +202,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevoActionPerformed
-        JIF_animalAlta animalAlta = new JIF_animalAlta(escritorio);
+        JIF_animalAlta animalAlta = new JIF_animalAlta(this.escritorio);
         escritorio.add(animalAlta);
         animalAlta.setVisible(true);      // TODO add your handling code here:
     }//GEN-LAST:event_btn_nuevoActionPerformed
@@ -221,7 +221,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         if (this.idMascota != null) {
             int res = JOptionPane.showConfirmDialog(this, "Desea modificar la informacion de la Mascota: " + idMascota + "?");
             if (res == 0) {
-                JIF_animalModificar animalModificar = new JIF_animalModificar(this.idMascota);
+                JIF_animalModificar animalModificar = new JIF_animalModificar(this.idMascota, this.escritorio);
                 escritorio.add(animalModificar);
                 animalModificar.setVisible(true);
             }
@@ -253,7 +253,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
     private javax.swing.JTable jTab_Animal;
     // End of variables declaration//GEN-END:variables
 
-    private void cargarMascotas() {
+    public void cargarMascotas() {
         ArrayList<mascota> mascotasSis = (ArrayList<mascota>) contCliente.getMascotas();
         if (mascotasSis.size() > 0) {
             String[] cabeceras = (String[]) util.cabeceras((mascota) mascotasSis.get(0));
@@ -270,19 +270,24 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             jTab_Animal.setEnabled(false);
         }
     }
-    
+
     private void eliminar() {
         if (this.idMascota != null) {
             if (JOptionPane.showConfirmDialog(this, "Desea eliminar la Mascota: " + this.idMascota + "?") == 0) {
                 if (contCliente.eliminarAnimal(this.idMascota)) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado la mascota!");
                     cargarMascotas();
+                    this.idMascota = null;
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ocurrio un problema al eliminar la mascota!");
+                    cargarMascotas();
+                    this.idMascota = null;
                 }
             }
-            
+
         }
     }
-    
+
     private void cargarFoto(Long idMascota) {
         mascota mascota = (mascota) contCliente.getMascota(idMascota);
         BufferedImage image = (BufferedImage) util.dameEstaImagen(mascota.getFoto());
@@ -290,5 +295,5 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         Image scaledInstance = image.getScaledInstance(200, 180, Image.SCALE_DEFAULT);
         jLab_foto.setIcon(new ImageIcon(scaledInstance));
     }
-    
+
 }

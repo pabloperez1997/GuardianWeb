@@ -18,7 +18,7 @@ import javax.persistence.InheritanceType;
  *
  * @author jp
  */
-@Inheritance (strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 public abstract class servicio implements Serializable {
 
@@ -28,6 +28,7 @@ public abstract class servicio implements Serializable {
     private Long id;
     private String descripcion;
     private int duracion;
+    private float precio;
 
     public servicio() {
     }
@@ -86,14 +87,20 @@ public abstract class servicio implements Serializable {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        return true;
+        return !Objects.equals(this.precio, other.getPrecio());
     }
 
     @Override
     public String toString() {
-        return "servicio{" + "id=" + id + ", descripcion=" + descripcion + ", duracion=" + duracion + '}';
+        return "Id/" + id + "/Descripcion/" + descripcion + "/Duracion/" + duracion;
     }
-    
-    
-    
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
+    }
+
 }

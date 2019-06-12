@@ -5,13 +5,13 @@
  */
 package Logica;
 
-
 import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -252,7 +252,7 @@ public class utilidades {
      * Funcion que retorna un arreglo de string con las cabeceras de la tabla
      *
      * @param objeto
-     * @return
+     * @return String[]
      */
     public String[] cabeceras(Object objeto) {
 
@@ -284,6 +284,61 @@ public class utilidades {
 
     }
 
+    /**
+     * Funcion que retorna un arreglo de String con las cabeceras para la
+     * jTable, devuelve la cantidad de cabeceras deceadas
+     *
+     * @param objeto
+     * @param cantAtributos
+     * @return String[]
+     */
+    public String[] cabeceras(Object objeto, int cantAtributos) {
+        String[] cab = null, cab2 = null;
+        try {
+            cab = (String[]) this.cabeceras(objeto);
+            if (cab.length > cantAtributos) {
+                for (int i = 0; i < cantAtributos; i++) {
+                    cab2[i] = cab[i];
+                }
+            } else {
+                return cab;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+        return cab2;
+    }
+
+    /**
+     * FUncion que filtra palabras, recibe un arreglo de palabras a filtrar y un
+     * arreglo de palabras filtro
+     *
+     * @param aFiltrar
+     * @param filtro
+     * @return String[]
+     */
+    public List filtrarPalabras(String[] aFiltrar, String[] filtro) {
+        int tam = aFiltrar.length;
+        List<String> filtradas = new ArrayList<>();
+        try {
+            for (String fil : filtro) {
+                for (String pal : aFiltrar) {
+                    if (!fil.toUpperCase().equals(pal.toUpperCase())) {
+                        filtradas.add(pal);
+
+                    }
+
+                }
+
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+        return filtradas;
+    }
+
     public void resizeColumnWidth(JTable table) {
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         final TableColumnModel columnModel = table.getColumnModel();
@@ -306,6 +361,13 @@ public class utilidades {
             return str;
         } else {
             return str.substring(0, 1).toUpperCase() + str.substring(1);
+        }
+    }
+
+    public void numerosYcomas(java.awt.event.KeyEvent evt) {
+        char car = evt.getKeyChar();
+        if ((car < '0' || car > '9') && (car < ',' || car > '.')) {
+            evt.consume();
         }
     }
 }

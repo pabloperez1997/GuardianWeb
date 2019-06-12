@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -31,7 +32,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author jp
  */
 public class JIF_animalModificar extends javax.swing.JInternalFrame {
-    
+
     mascota msc = null;
     JFileChooser navegadorArchivos = new JFileChooser();
     private BufferedImage fotoMascota, fotoMascotaNueva;
@@ -43,18 +44,20 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
     private final Long idMascota;
     utilidades util = utilidades.getInstance();
     private DefaultListModel dlm = new DefaultListModel();
+    private final JDesktopPane jPadre;
 
     /**
      * Creates new form JIF_animalModificar
      *
      * @param idMascota
      */
-    public JIF_animalModificar(Long idMascota) {
+    public JIF_animalModificar(Long idMascota, JDesktopPane escritorio) {
         initComponents();
         this.idMascota = idMascota;
+        this.jPadre = escritorio;
         cargarRazas();
         cargarMascota();
-        
+
     }
 
     /**
@@ -254,7 +257,17 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_fotoActionPerformed
 
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
+
         limpiar();
+        JInternalFrame[] allFrames = this.jPadre.getAllFrames();
+        for (JInternalFrame jif : allFrames) {
+            if (jif instanceof JIF_animal) {
+                JIF_animal animal = (JIF_animal) jif;
+                animal.cargarMascotas();
+
+            }
+
+        }
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
@@ -290,56 +303,56 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
             dlm.addElement(raza);
         }
         jListRaza.setModel(dlm);
-        
+
         this.setModelo(dlm);
     }
-    
+
     private void buscar(JTextField jtxt) {
-        
+
         DefaultListModel modeln = (DefaultListModel) util.filtrarJList(jtxt.getText(), this.getModelo());
         jListRaza.setModel(modeln);
     }
-    
+
     private void limpiar() {   //.setText(null);
         jtxtA_descricpcion.setText(null);
         jListRaza.clearSelection();
         Jlab_foto.setIcon(null);
         JText_nomMascota.setText(null);
-        
+
     }
-    
+
     private void selecImagen() {
-        
+
         BufferedImage image = util.levantarImagen(JText_nomMascota);
         Jlab_foto.setIcon(new ImageIcon(image));
         Image scaledInstance = image.getScaledInstance(Jlab_foto.getWidth(), Jlab_foto.getHeight(), Image.SCALE_DEFAULT);
         Jlab_foto.setIcon(new ImageIcon(scaledInstance));
         fotoMascotaNueva = image;
     }
-    
+
     private void cargarMascota() {
         this.msc = (mascota) contC.getMascota(idMascota);
         JText_nomMascota.setText(this.msc.getNombre());
         if (this.msc.getDescripcion() != null) {
             jtxtA_descricpcion.setText(this.msc.getDescripcion());
         }
-        JLab_cedula.setText(this.msc.getCliente().getId().toString());
+        JLab_cedula.setText(this.msc.getCliente().getCorreo());
         JLab_nombreCliente.setText(this.msc.getCliente().getNombre() + " " + this.msc.getCliente().getApellido());
         jListRaza.setSelectedValue(this.msc.getRaza().getRaza(), true);
         System.err.println(msc.getFoto());
         levantarImg(msc.getFoto());
     }
-    
+
     public DefaultListModel getModelo() {
         return dlm;
     }
-    
+
     public void setModelo(DefaultListModel dlm) {
         this.dlm = dlm;
     }
-    
+
     public boolean verificar() {
-        
+
         if (JText_nomMascota.getText() == null) {
             JOptionPane.showConfirmDialog(this, "Debe ingresar un nombre de mascota!");
             JText_nomMascota.requestFocus();
@@ -352,9 +365,9 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
             return false;
         }
         return true;
-        
+
     }
-    
+
     public void modificar() {
         if (verificar()) {
             int res = JOptionPane.showConfirmDialog(this, "Desea modificar la Mascota: " + JText_nomMascota.getText() + " ID: " + this.msc.getId());
@@ -374,18 +387,18 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
                 boolean modificarAnimal = contC.modificarAnimal(this.msc);
                 if (modificarAnimal) {
                     util.salvarImagen(fotoMascotaNueva, rutaFoto, generarNombreFoto(), 0);
-                    
+
                     JOptionPane.showMessageDialog(this, "Se ha modificado con exito la mascota!");
                     limpiar();
                     this.dispose();
-                    
+
                 }
             }
-            
+
         }
-        
+
     }
-    
+
     public void levantarImg(String rutImg) {
         BufferedImage image = (BufferedImage) util.dameEstaImagen(rutImg);
         Jlab_foto.setIcon(new ImageIcon(rutImg));
@@ -393,10 +406,10 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
         Jlab_foto.setIcon(new ImageIcon(scaledInstance));
         fotoMascota = image;
     }
-    
+
     private String generarNombreFoto() {
         String nombre = "sample";
-        nombre = "MASCOTA_" + JText_nomMascota.getText() + "_CLIENTE_" + contC.getCliente(msc.getCliente().getId()).getTel_cel();
+        nombre = "MASCOTA_" + JText_nomMascota.getText() + "_CLIENTE_" + msc.getCliente().getCorreo();
         return nombre;
     }
 }

@@ -5,6 +5,9 @@
  */
 package Persistencia;
 
+import Logica.reserva;
+import Logica.tipoBanio;
+import Logica.tipoEsquila;
 import Logica.turno;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,4 +52,45 @@ public class reservaPersistencia extends persistencia {
         }
         return turnos;
     }
+
+    public List<tipoBanio> getTIposBanio() {
+        List<tipoBanio> banios = new ArrayList<>();
+        try {
+            em.getTransaction().begin();
+            banios = (List<tipoBanio>) em.createNativeQuery("select * from tipoBanio", tipoBanio.class).getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+        return banios;
+    }
+
+    public List<tipoEsquila> getTipoEsquila() {
+        List<tipoEsquila> esquilas = null;
+        try {
+            em.getTransaction().begin();
+            esquilas = (List<tipoEsquila>) em.createNativeQuery("select * from tipoEsquila", tipoEsquila.class).getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+        return esquilas;
+    }
+
+    public List<reserva> getReservas() {
+        List<reserva> listaReser = null;
+        try {
+            em.getTransaction().begin();
+            listaReser = (List<reserva>) em.createNativeQuery("select * from reserva", reserva.class).getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Cause:" + e.getCause());
+            return null;
+        }
+        return listaReser;
+    }
+    
+    
 }

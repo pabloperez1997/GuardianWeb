@@ -46,26 +46,79 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         escritorioPrincipal = new javax.swing.JDesktopPane();
+        btn_reservar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jM_cliente = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jM_animal = new javax.swing.JMenu();
         jMenANimal = new javax.swing.JMenuItem();
+        jMenItem_banioEsquila = new javax.swing.JMenuItem();
         JM_Configuracion = new javax.swing.JMenu();
         jMenConfRaza = new javax.swing.JMenuItem();
         jMenConfTurno = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        btn_reservar.setText("jButton1");
+        btn_reservar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_reservarActionPerformed(evt);
+            }
+        });
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jButton1.setText("jButton1");
+
+        jButton2.setText("jButton2");
+
+        escritorioPrincipal.setLayer(btn_reservar, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorioPrincipal.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorioPrincipal.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorioPrincipal.setLayer(jButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
         javax.swing.GroupLayout escritorioPrincipalLayout = new javax.swing.GroupLayout(escritorioPrincipal);
         escritorioPrincipal.setLayout(escritorioPrincipalLayout);
         escritorioPrincipalLayout.setHorizontalGroup(
             escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 752, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioPrincipalLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 597, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(40, 40, 40)
+                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_reservar, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         escritorioPrincipalLayout.setVerticalGroup(
             escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 424, Short.MAX_VALUE)
+            .addGroup(escritorioPrincipalLayout.createSequentialGroup()
+                .addGap(72, 72, 72)
+                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioPrincipalLayout.createSequentialGroup()
+                        .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
         jM_cliente.setText("Cliente");
@@ -89,6 +142,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         jM_animal.add(jMenANimal);
+
+        jMenItem_banioEsquila.setText("Baño/Esquila");
+        jMenItem_banioEsquila.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenItem_banioEsquilaActionPerformed(evt);
+            }
+        });
+        jM_animal.add(jMenItem_banioEsquila);
 
         jMenuBar1.add(jM_animal);
 
@@ -163,6 +224,19 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenANimalActionPerformed
 
+    private void btn_reservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reservarActionPerformed
+        JIF_reservarTurno reservaTurno = new JIF_reservarTurno();
+        this.escritorioPrincipal.add(reservaTurno);
+        reservaTurno.setVisible(true);
+    }//GEN-LAST:event_btn_reservarActionPerformed
+
+    private void jMenItem_banioEsquilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenItem_banioEsquilaActionPerformed
+        JIF_esquilaBaño banioEsquila = new JIF_esquilaBaño(this.escritorioPrincipal);
+        this.escritorioPrincipal.add(banioEsquila);
+        banioEsquila.setVisible(true);
+// TODO add your handling code here:
+    }//GEN-LAST:event_jMenItem_banioEsquilaActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -204,14 +278,20 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu JM_Configuracion;
+    private javax.swing.JButton btn_reservar;
     private javax.swing.JDesktopPane escritorioPrincipal;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jM_animal;
     private javax.swing.JMenu jM_cliente;
     private javax.swing.JMenuItem jMenANimal;
     private javax.swing.JMenuItem jMenConfRaza;
     private javax.swing.JMenuItem jMenConfTurno;
+    private javax.swing.JMenuItem jMenItem_banioEsquila;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 
     public JDesktopPane getEscritorioPrincipal() {

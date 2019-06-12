@@ -69,6 +69,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
 
         jLabel1.setText("jLabel1");
 
+        jInternalFrame1.setBorder(null);
         jInternalFrame1.setVisible(true);
 
         jTxt_nuevaRaza.setFocusCycleRoot(true);
@@ -127,7 +128,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
                     .addComponent(btn_nuevaRaza)
                     .addComponent(Jlab_Nombre))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
                 .addGap(18, 18, 18))
         );
 
@@ -150,6 +151,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Nueva", jInternalFrame1);
 
+        jInternalFrame2.setBorder(null);
         jInternalFrame2.setVisible(true);
 
         jListRazaE.setModel(new javax.swing.AbstractListModel<String>() {
@@ -188,7 +190,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
                             .addComponent(jLabel2)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jTxt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -198,7 +200,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(jTxt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
                 .addContainerGap())
@@ -217,6 +219,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Eliminar", jInternalFrame2);
 
+        jInternalFrame3.setBorder(null);
         jInternalFrame3.setVisible(true);
 
         jListRazaRA.setModel(new javax.swing.AbstractListModel<String>() {
@@ -265,7 +268,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
                         .addComponent(jButton1)
                         .addGap(18, 18, 18)
                         .addComponent(btn_cargarRazas)))
-                .addContainerGap(85, Short.MAX_VALUE))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jInternalFrame3Layout = new javax.swing.GroupLayout(jInternalFrame3.getContentPane());
@@ -433,6 +436,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
             if (reloadRazas != null) {
 
                 JOptionPane.showMessageDialog(this, "Se cargaron las razas del sistema!");
+                cargarRazas();
             } else {
                 JOptionPane.showMessageDialog(this, "Error al cargar las razas!");
             }
@@ -444,6 +448,7 @@ public class JIF_raza extends javax.swing.JInternalFrame {
         if (res == 0) {
             if (contC.actualizarRazas()) {
                 JOptionPane.showMessageDialog(this, "Razas actualizadas con exito!");
+                cargarRazas();
             } else {
                 JOptionPane.showConfirmDialog(this, "No ha sido necesario actualizar la Base de Datos!");
             }

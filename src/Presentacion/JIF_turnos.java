@@ -226,7 +226,7 @@ public class JIF_turnos extends javax.swing.JInternalFrame {
         } else {
             JOptionPane.showMessageDialog(this, "No existen turnos en el sistema!");
             jTab_turnos.setEnabled(false);
-            jTab_turnos.setModel(null);
+        
         }
     }
     
