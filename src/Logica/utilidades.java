@@ -9,7 +9,12 @@ import java.awt.Component;
 import java.awt.HeadlessException;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -156,6 +161,39 @@ public class utilidades {
         } else {
             return dlm;
         }
+    }
+
+    /**
+     *
+     * Mueve archivos de un lugar a otro, si ya existen los sobreescribe Recibe
+     * dos String origen y destino
+     *
+     * @origen cadena con la ruta de origen del archivo
+     * @destino cadena con la ruta de destino del archivo
+     */
+    public boolean copiarArchivo(String origen, String destino) throws IOException {
+
+        File imagen = new File(origen);
+
+        if (imagen.exists()) {
+            try {
+                InputStream inp = new FileInputStream(origen);
+                int available = inp.available();
+                OutputStream out = new FileOutputStream(destino);
+                byte[] bufer = new byte[1024];
+                int largo;
+                while ((largo = inp.read(bufer)) > 0) {
+                    out.write(bufer, 0, largo);
+                }
+                inp.close();
+                out.close();
+                return true;
+            } catch (FileNotFoundException e) {
+                System.err.println(e.getMessage());
+                return false;
+            }
+        }
+        return false;
     }
 
     public boolean salvarImagen(BufferedImage imagen, String ruta, String nombre, int extencion) {

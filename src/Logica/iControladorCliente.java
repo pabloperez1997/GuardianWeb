@@ -5,6 +5,8 @@
  */
 package Logica;
 
+import ObjetosParaWeb.clienteWS;
+import ObjetosParaWeb.mascotaWS;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +56,27 @@ public interface iControladorCliente {
     public abstract raza getRaza(String raza);
 
     public abstract ArrayList getMascotas();
+    /////implementar con middleware a futuro
+    public abstract List getMascotasWS();
+    
+    public abstract mascotaWS getMascotaWS(long id);
+    
+    public abstract boolean altaMascotaWS(mascotaWS mascota);
+    
+    public abstract boolean modificarMascotaWS(mascotaWS mascotaMod);
+    
+    public abstract List getClientesWS();
+    
+    public abstract clienteWS getClienteWS(String correo);
+    
+    public abstract boolean altaClienteWS(clienteWS cliente);
+    
+    public abstract boolean modificarClienteWS(clienteWS clienteMod);
+    
+    
+    
+    
+    
     
     
 }

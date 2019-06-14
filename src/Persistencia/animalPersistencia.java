@@ -40,7 +40,8 @@ public class animalPersistencia extends persistencia {
             listaMascota = em.createNativeQuery("select * from mascota", mascota.class).getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error getMascotas: Mensaje: " + e.getMessage() + "Causa: " + e.getCause());
+
             return null;
         }
 
@@ -56,16 +57,24 @@ public class animalPersistencia extends persistencia {
             listaRazas = em.createNativeQuery("select * from raza", raza.class).getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error getRazas: Mensaje: " + e.getMessage() + "Causa: " + e.getCause());
+
             return null;
         }
         return listaRazas;
     }
 
     public mascota getMascota(Long id) {
-        em.getTransaction().begin();
-        mascota obj = (mascota) em.find(mascota.class, id);
-        em.getTransaction().commit();
+        mascota obj = null;
+
+        try {
+            em.getTransaction().begin();
+            obj = (mascota) em.find(mascota.class, id);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println("Error getMascota: Mensaje: " + e.getMessage() + "Causa: " + e.getCause());
+
+        }
         return obj;
     }
 }

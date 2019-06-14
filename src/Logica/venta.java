@@ -14,7 +14,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -28,11 +30,23 @@ public class venta implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fecha;
-    @OneToMany
-    private List<detalleVenta> detalles;
+    
+    
+  
+    
+    @OneToOne
+    private detalleVenta detalles;
 
+    public detalleVenta getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(detalleVenta detalles) {
+        this.detalles = detalles;
+    }
     public venta() {
     }
 
@@ -94,5 +108,7 @@ public class venta implements Serializable {
     public String toString() {
         return "venta{" + "id=" + id + ", fecha=" + fecha + ", detalles=" + detalles + '}';
     }
+
+  
 
 }

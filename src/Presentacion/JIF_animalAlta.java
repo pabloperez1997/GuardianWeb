@@ -390,7 +390,9 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
         if (!jTextArea1.getText().isEmpty()) {
             msctNew.setDescripcion(jTextArea1.getText());
         }
-        msctNew.setFoto(rutaFoto + generarNombreFoto() + ".png");
+        if (fotoMascota != null) {
+            msctNew.setFoto(rutaFoto + generarNombreFoto() + ".png");
+        }
         msctNew.setRaza((raza) contC.getRaza((String) jListRaza.getSelectedValue()));
         msctNew.setCliente(contC.getCliente(this.getId()));
         return msctNew;

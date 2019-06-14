@@ -15,6 +15,8 @@ import java.security.SecureRandom;
 import java.util.List;
 import javax.mail.internet.AddressException;
 import ClientesRest.apiCliente;
+import ObjetosParaWeb.clienteWS;
+import ObjetosParaWeb.mascotaWS;
 import Persistencia.animalPersistencia;
 import java.util.Iterator;
 
@@ -138,23 +140,24 @@ public class controladorCliente implements iControladorCliente {
     /**
      * Funion que resetea el password del cliente
      *
-     * @param cedula
+     * @param email
      * @return
      */
     @Override
-    public boolean resetearPassword(String id) {
-       /* try {
-            cliente cliPassCambio = this.getCliente(id);
-            cliPassCambio.setPassword(this.generarPassword());
+    public boolean resetearPassword(String email) {
+      try {
+            cliente cliPassCambio = this.getCliente(email);
+            String passEncr = this.generarPassword();
+            cliPassCambio.setPassword(passEncr);
             if (persistencia.modificar((Object) cliPassCambio)) {
-                utilidades.enviarConGMail(cliPassCambio.getCorreo(), "Reseteo de contraseña", "SU contraseña a sido reseteada con exito, puede ingresar al sitio con la siguiente contraseña: " + cliPassCambio.getPassword(), null, null);
+                utilidades.enviarConGMail(cliPassCambio.getCorreo(), "Reseteo de contraseña", "SU contraseña a sido reseteada con exito, puede ingresar al sitio con la siguiente contraseña: " + passEncr, null, null);
 
                 return true;
             }
         } catch (AddressException e) {
             System.err.println(e.getMessage());
             return false;
-        }*/
+        }
         return false;
 
     }
@@ -437,6 +440,46 @@ public class controladorCliente implements iControladorCliente {
             System.err.println(e.getMessage());
         }
         return mascotasSistema;
+    }
+//////////////////////////////////middleware para WebService///////////////
+    @Override
+    public List getMascotasWS() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public mascotaWS getMascotaWS(long id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean altaMascotaWS(mascotaWS mascota) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean modificarMascotaWS(mascotaWS mascotaMod) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List getClientesWS() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public clienteWS getClienteWS(String correo) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean altaClienteWS(clienteWS cliente) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean modificarClienteWS(clienteWS clienteMod) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

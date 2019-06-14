@@ -5,6 +5,9 @@
  */
 package Presentacion;
 
+import Logica.fabricaElGuardian;
+import Logica.iControladorCliente;
+import Logica.iControladorVentas;
 import Logica.utilidades;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +24,9 @@ public class Principal extends javax.swing.JFrame {
     private utilidades util = utilidades.getInstance();
     private EntityManager eM;
     String cuerpo = "coso", asunto = "cospe";
+    iControladorCliente ICC = fabricaElGuardian.getInstance().getInstanceIControladorCliente();
+    iControladorVentas ICV = fabricaElGuardian.getInstance().getInstanceIControladorVentas();
+        //ICC.cargarMascotas();
     // private JDesktopPane escritorioPrincipal = new JDesktopPane();
 
     /**
@@ -30,6 +36,7 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         eM = Persistencia.persistencia.getInstance().getEm();
+        ICV.cargarproductos();
 
         // this.setVisible(true);
         initComponents();
@@ -60,6 +67,11 @@ public class Principal extends javax.swing.JFrame {
         JM_Configuracion = new javax.swing.JMenu();
         jMenConfRaza = new javax.swing.JMenuItem();
         jMenConfTurno = new javax.swing.JMenuItem();
+        jMenuProductos = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuListarProductos = new javax.swing.JMenuItem();
+        jMenuVentas = new javax.swing.JMenu();
+        jMenuIAltaVenta = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -173,6 +185,38 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(JM_Configuracion);
 
+        jMenuProductos.setText("Productos");
+
+        jMenuItem2.setText("Alta Producto");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenuProductos.add(jMenuItem2);
+
+        jMenuListarProductos.setText("Listar Productos");
+        jMenuListarProductos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuListarProductosActionPerformed(evt);
+            }
+        });
+        jMenuProductos.add(jMenuListarProductos);
+
+        jMenuBar1.add(jMenuProductos);
+
+        jMenuVentas.setText("Ventas");
+
+        jMenuIAltaVenta.setText("Alta Venta");
+        jMenuIAltaVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuIAltaVentaActionPerformed(evt);
+            }
+        });
+        jMenuVentas.add(jMenuIAltaVenta);
+
+        jMenuBar1.add(jMenuVentas);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -237,6 +281,26 @@ public class Principal extends javax.swing.JFrame {
 // TODO add your handling code here:
     }//GEN-LAST:event_jMenItem_banioEsquilaActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        
+        AltaProducto altaP = new AltaProducto();
+        this.escritorioPrincipal.add(altaP);
+        altaP.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuIAltaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuIAltaVentaActionPerformed
+        AltaVenta altv = new AltaVenta();
+        this.escritorioPrincipal.add(altv);
+        altv.setVisible(true);        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuIAltaVentaActionPerformed
+
+    private void jMenuListarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuListarProductosActionPerformed
+        ListarProductos lsProd = new ListarProductos(this.escritorioPrincipal);
+        this.escritorioPrincipal.add(lsProd);
+        lsProd.setVisible(true);
+// TODO add your handling code here:
+    }//GEN-LAST:event_jMenuListarProductosActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -289,7 +353,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenConfTurno;
     private javax.swing.JMenuItem jMenItem_banioEsquila;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuIAltaVenta;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuListarProductos;
+    private javax.swing.JMenu jMenuProductos;
+    private javax.swing.JMenu jMenuVentas;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables

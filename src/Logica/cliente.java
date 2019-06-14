@@ -185,7 +185,7 @@ public class cliente implements Serializable {
         try {
 
             java.security.MessageDigest md = java.security.MessageDigest
-                    .getInstance("MD5");
+                    .getInstance("SHA1");//MD5 sustituyendo encripta en md5
             byte[] array = md.digest(pass.getBytes());
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < array.length; ++i) {
