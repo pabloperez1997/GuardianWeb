@@ -5,36 +5,22 @@
  */
 package Logica;
 
-import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
 import javax.persistence.ManyToOne;
+import org.hibernate.annotations.Entity;
 
 /**
  *
  * @author jp
  */
 @Entity
-public class esquila  extends servicio{
+public class esquila extends servicio {
 
-    
-    private float precio;
     @ManyToOne
     private tipoEsquila tipoDeEsquila;
 
     public esquila() {
-    }
-
-    
-    public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
     }
 
     public tipoEsquila getTipoDeEsquila() {
@@ -48,7 +34,7 @@ public class esquila  extends servicio{
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 59 * hash + Float.floatToIntBits(this.precio);
+
         hash = 59 * hash + Objects.hashCode(this.tipoDeEsquila);
         return hash;
     }
@@ -65,9 +51,6 @@ public class esquila  extends servicio{
             return false;
         }
         final esquila other = (esquila) obj;
-        if (Float.floatToIntBits(this.precio) != Float.floatToIntBits(other.precio)) {
-            return false;
-        }
         if (!Objects.equals(this.tipoDeEsquila, other.tipoDeEsquila)) {
             return false;
         }
@@ -76,9 +59,7 @@ public class esquila  extends servicio{
 
     @Override
     public String toString() {
-        return "esquila{" + "precio=" + precio + ", tipoDeEsquila=" + tipoDeEsquila + '}';
+        return  "tipoDeEsquila/" + tipoDeEsquila;
     }
 
-    
-    
 }

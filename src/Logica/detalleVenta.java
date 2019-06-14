@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -31,6 +32,8 @@ public class detalleVenta implements Serializable {
     private float precioTotalProductos;
 
     private int cantidad;
+    
+    
 
     public detalleVenta() {
     }

@@ -14,15 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 
 /**
  *
  * @author jp
  */
-@Inheritance (strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-public abstract class mascota implements Serializable {
+public class mascota implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -33,6 +32,8 @@ public abstract class mascota implements Serializable {
     private raza raza;
     @ManyToOne
     private cliente cliente;
+    private String descripcion;
+    private String foto;
 
     public mascota() {
     }
@@ -108,7 +109,23 @@ public abstract class mascota implements Serializable {
 
     @Override
     public String toString() {
-        return "mascota{" + "id=" + id + ", nombre=" + nombre + ", raza=" + raza + ", cliente=" + cliente + '}';
+        return "Id/" + id + "/Nombre/" + nombre + "/Raza/" + raza.getRaza() +"/Cliente/" + cliente.getCedula()+"/Descripcion/"+descripcion ;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
 }

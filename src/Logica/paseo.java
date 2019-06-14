@@ -5,79 +5,38 @@
  */
 package Logica;
 
-import java.io.Serializable;
-import java.util.Objects;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.hibernate.annotations.Entity;
+
+
 
 /**
  *
  * @author jp
  */
 @Entity
-public class paseo implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private float precio;
+public class paseo extends servicio {
 
     public paseo() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    @Override
     public float getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(float precio) {
-        this.precio = precio;
+        return super.getPrecio(); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.id);
-        hash = 53 * hash + Float.floatToIntBits(this.precio);
-        return hash;
+    public int getDuracion() {
+        return super.getDuracion(); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final paseo other = (paseo) obj;
-        if (Float.floatToIntBits(this.precio) != Float.floatToIntBits(other.precio)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
+    public String getDescripcion() {
+        return super.getDescripcion(); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public String toString() {
-        return "paseo{" + "id=" + id + ", precio=" + precio + '}';
+        return "Precio/" + getPrecio() + "/Duracion/" + getDuracion() + "/Descripcion/" + getDescripcion();
     }
-    
-   
-    
+
 }

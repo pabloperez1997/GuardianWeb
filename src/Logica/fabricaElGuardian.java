@@ -16,6 +16,10 @@ public class fabricaElGuardian {
     private static fabricaElGuardian instance;
 
     iControladorCliente iCC = new controladorCliente();
+    iControladorVentas iCV= new ControladorVentas();
+    IControlerProperties iCP = new ControladorProperties();
+    iControladorServicios iCS= new controladorServicios();
+    iControladorReservas iCR= new ControladorReservas();
     persistencia perInstance = persistencia.getInstance();
 
     public static fabricaElGuardian getInstance() {
@@ -36,4 +40,24 @@ public class fabricaElGuardian {
     public persistencia getInstancePersistencia() {
         return perInstance;
     }
+
+    public iControladorVentas getInstanceIControladorVentas() {
+        return iCV;
+    }
+
+    public IControlerProperties getInstanceIControladorProperties() {
+        return iCP;
+    }
+
+    public iControladorServicios getInstanceIControladorServicios() {
+        return iCS;
+    }
+
+    public iControladorReservas getInstanceIControladorReservas() {
+        return iCR;
+    }
+
+    
+
+    
 }

@@ -5,9 +5,11 @@
  */
 package Persistencia;
 
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.Query;
 
 /**
  *
@@ -18,7 +20,6 @@ public class persistencia {
     private static persistencia instance;
     private static String unidadPersistencia = "elGuardianServidorPU";
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(unidadPersistencia);
-    private static final clientePersistencia clientePer = new clientePersistencia();
     private static final EntityManager em = emf.createEntityManager();
 
     /**
@@ -35,10 +36,6 @@ public class persistencia {
         return instance;
     }
 
-    public clientePersistencia getClientePersistencia() {
-        return clientePer;
-    }
-
     public String getUnidadPersistencia() {
         return unidadPersistencia;
     }
@@ -49,10 +46,12 @@ public class persistencia {
 
     public boolean persis(Object obj) {
         try {
+            System.out.println("Metodo persis inicio");
             em.getTransaction().begin();
             em.persist(obj);
             em.getTransaction().commit();
-
+            System.out.println("Agrege: " + obj.getClass().getName());
+            System.out.println("Metodo persis fin");
             return true;
         } catch (Exception e) {
             System.err.println("Error al agregar: " + e.getMessage() + " Causa: " + e.getCause());
@@ -68,7 +67,7 @@ public class persistencia {
             em.getTransaction().commit();
             return true;
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error al modificar: " + e.getMessage() + " Causa: " + e.getCause());
             return false;
         }
 
@@ -81,8 +80,74 @@ public class persistencia {
             em.getTransaction().commit();
             return true;
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.err.println("Error al eliminar: " + e.getMessage() + " Causa: " + e.getCause());
             return false;
         }
+    }
+
+    public List<Object> getListaObjetos(String sql, Class clase) {
+        try {
+            em.getTransaction().begin();
+            List resultList = em.createNativeQuery(sql, clase).getResultList();
+            em.getTransaction().commit();
+            return resultList;
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage() + " CAUSA " + e.getCause());
+        }
+
+        return null;
+
+    }
+
+    public boolean existe(Object obj) {
+
+        try {
+            em.getTransaction().begin();
+            boolean ret = em.contains(obj);
+            em.getTransaction().commit();
+            return ret;
+        } catch (Exception e) {
+            System.err.println(e.getMessage() + " CAUSA " + e.getCause());
+            return false;
+        }
+    }
+
+    public boolean ejecutarSql(String sql) {
+        try {
+            em.getTransaction().begin();
+            Query resultQuery = em.createNativeQuery(sql);
+            resultQuery.executeUpdate();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println(e.getMessage() + " CAUSA " + e.getCause());
+            return false;
+        }
+        return true;
+    }
+
+    public Object getObjeto(String id, Class clase) {
+        Object obj = null;
+        try {
+            em.getTransaction().begin();
+            obj = (Object) em.find(clase, id);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println(e.getMessage() + " CAUSA " + e.getCause());
+        }
+        return obj;
+    }
+
+    public Object getObjeto(Long id, Class clase) {
+        Object obj = null;
+        try {
+            em.getTransaction().begin();
+            obj = (Object) em.find(clase, id);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.err.println(e.getMessage() + " CAUSA " + e.getCause());
+        }
+        return obj;
+
     }
 }

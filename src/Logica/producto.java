@@ -6,12 +6,12 @@
 package Logica;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -24,9 +24,46 @@ public class producto implements Serializable {
     @Id
     @Column(length = 100)
     private String codigo;
+    private String nombre;
+    private int cantidad;
+    @ManyToMany(mappedBy = "listaProducto")
+    private List<detalleVenta> detalleVentas;
+    private String foto;
     private float precio;
     private boolean disponible;
     private String descripcion;
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public List<detalleVenta> getDetalleVentas() {
+        return detalleVentas;
+    }
+
+    public void setDetalleVentas(List<detalleVenta> detalleVentas) {
+        this.detalleVentas = detalleVentas;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
     @Override
     public int hashCode() {
@@ -67,7 +104,7 @@ public class producto implements Serializable {
 
     @Override
     public String toString() {
-        return "producto{" + "codigo=" + codigo + ", precio=" + precio + ", disponible=" + disponible + ", descicion=" + descripcion + '}';
+        return "Codigo/" + codigo + "/Precio/" + precio + "/Disponible/" + disponible + "/Descripcion/" + descripcion;
     }
 
     public String getCodigo() {
@@ -103,6 +140,8 @@ public class producto implements Serializable {
     }
 
     public producto() {
+        this.cantidad = 1;
+     
     }
 
 }
