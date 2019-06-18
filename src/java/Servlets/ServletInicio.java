@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import servicios.Cliente;
-import servicios.PublicadorConsultarUsuario;
-import servicios.PublicadorConsultarUsuarioService;
+import servicios.ServicioContCliente;
+import servicios.WSContCliente;
 
 /**
  *
@@ -29,7 +29,7 @@ import servicios.PublicadorConsultarUsuarioService;
 @WebServlet("/inicio")
 public class ServletInicio extends HttpServlet {
 
-    private PublicadorConsultarUsuario port;
+    private WSContCliente port;
     private configuracion conf = new configuracion();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,8 +46,8 @@ public class ServletInicio extends HttpServlet {
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
         URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
-        PublicadorConsultarUsuarioService webService = new PublicadorConsultarUsuarioService(url);
-        this.port = webService.getPublicadorConsultarUsuarioPort();
+        ServicioContCliente webService = new ServicioContCliente(url);
+        this.port = webService.getWSContClientePort();
         
         Cliente cliente = null;
         HttpSession session = request.getSession();

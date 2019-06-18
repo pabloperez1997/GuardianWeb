@@ -17,8 +17,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import servicios.Cliente;
-import servicios.PublicadorConsultarUsuario;
-import servicios.PublicadorConsultarUsuarioService;
+import servicios.ServicioContCliente;
+import servicios.WSContCliente;
 
 /**
  *
@@ -27,7 +27,7 @@ import servicios.PublicadorConsultarUsuarioService;
 @WebServlet("/recuperar-contrasenia")
 public class ServletContrasenia extends HttpServlet {
     
-    private PublicadorConsultarUsuario port;
+     private WSContCliente port;
      configuracion conf = new configuracion();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,12 +40,13 @@ public class ServletContrasenia extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+      
         ServletContext context;
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
         URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
-        PublicadorConsultarUsuarioService webService = new PublicadorConsultarUsuarioService(url);
-        this.port = webService.getPublicadorConsultarUsuarioPort();
+        ServicioContCliente webService = new ServicioContCliente(url);
+        this.port = webService.getWSContClientePort();
         
          request.getRequestDispatcher("Vistas/OlvidoContrasenia.jsp").forward(request, response);
     }
@@ -80,8 +81,8 @@ public class ServletContrasenia extends HttpServlet {
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
         URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
-        PublicadorConsultarUsuarioService webService = new PublicadorConsultarUsuarioService(url);
-        this.port = webService.getPublicadorConsultarUsuarioPort();
+        ServicioContCliente webService = new ServicioContCliente(url);
+        this.port = webService.getWSContClientePort();
         
         String email = request.getParameter("recuperarpass");
         Cliente cliente = null;

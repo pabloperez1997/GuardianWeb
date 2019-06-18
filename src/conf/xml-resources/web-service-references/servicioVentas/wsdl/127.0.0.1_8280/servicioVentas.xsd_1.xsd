@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.9-b130926.1035 svn-revision#5f6196f2b90e9460065a4c2f4e30e065b245e51e. --><xs:schema xmlns:tns="http://servicios/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://servicios/">
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.9-b130926.1035 svn-revision#5f6196f2b90e9460065a4c2f4e30e065b245e51e. --><xs:schema xmlns:tns="http://Servicios/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://Servicios/">
 
 <xs:complexType name="listProductos">
 <xs:sequence>
@@ -9,7 +9,7 @@
 <xs:complexType name="producto">
 <xs:sequence>
 <xs:element name="cantidad" type="xs:int"></xs:element>
-<xs:element name="codigo" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="codigo" type="xs:long" minOccurs="0"></xs:element>
 <xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
 <xs:element name="detalleVentas" type="tns:detalleVenta" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="disponible" type="xs:boolean"></xs:element>

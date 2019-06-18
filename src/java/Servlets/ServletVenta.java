@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import servicios.Cliente;
 import servicios.DetalleVenta;
 import servicios.Producto;
-import servicios.PublicadorVentas;
-import servicios.PublicadorVentasService;
+import servicios.WSContVentas;
+import servicios.ServicioContVentas;
 import servicios.Venta;
 
 /**
@@ -37,7 +37,7 @@ import servicios.Venta;
 @WebServlet("/venta")
 public class ServletVenta extends HttpServlet {
 
-    private PublicadorVentas port;
+    private WSContVentas port;
     configuracion conf = new configuracion();
    // List<Producto> Productosavender= new ArrayList<>();
     
@@ -57,8 +57,8 @@ public class ServletVenta extends HttpServlet {
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
         URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sVentas", ruta));
-        PublicadorVentasService webService = new PublicadorVentasService(url);
-        this.port = webService.getPublicadorVentasPort();
+        ServicioContVentas webService = new ServicioContVentas(url);
+        this.port = webService.getWSContVentasPort();
         
        
         
@@ -79,15 +79,7 @@ public class ServletVenta extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-        
-     
-      
-        
-   
-       RequestDispatcher dispatcher = request.getRequestDispatcher("Vistas/Venta.jsp");
-       dispatcher.forward(request, response);
+
     }
 
     /**
@@ -105,11 +97,12 @@ public class ServletVenta extends HttpServlet {
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
         URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sVentas", ruta));
-        PublicadorVentasService webService = new PublicadorVentasService(url);
-        this.port = webService.getPublicadorVentasPort();
+        ServicioContVentas webService = new ServicioContVentas(url);
+        this.port = webService.getWSContVentasPort();
         
         
-        String codigoprod = request.getParameter("codigoprod");
+        String cod = request.getParameter("codigoprod");
+        Long codigoprod = Long.parseLong(cod);
         if(codigoprod!=null){
             Producto p = port.obtenerProducto(codigoprod);
             Cliente c= (Cliente) request.getSession().getAttribute("usuario_logueado");
@@ -126,12 +119,12 @@ public class ServletVenta extends HttpServlet {
             c.getCompra().getDetalles().getListaProducto().add(p);
             
             
-            request.setAttribute("CantidadProdVend", c.getCompra().getDetalles().getListaProducto().size());
+            request.getSession().setAttribute("CantidadProdVend", c.getCompra().getDetalles().getListaProducto().size());
             request.setAttribute("ProdsVenta", c.getCompra().getDetalles().getListaProducto());
         }
 
-      
-       String eliminarprod = request.getParameter("eliminarprod");
+       String codelim = request.getParameter("codigoprod");
+       Long eliminarprod = Long.parseLong(codelim);
         
         if(eliminarprod!=null){
         
@@ -150,7 +143,7 @@ public class ServletVenta extends HttpServlet {
                 it.remove();
                 
             }
-            request.setAttribute("CantidadProdVend", Productosavender.size());
+            request.getSession().setAttribute("CantidadProdVend", Productosavender.size());
             request.setAttribute("ProdsVenta", Productosavender);
         }
         

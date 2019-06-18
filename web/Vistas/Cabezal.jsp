@@ -79,9 +79,9 @@
       <%}%>
     </ul>
       
-<% if (request.getAttribute("CantidadProdVend")!=null) {%>
+<% if (request.getSession().getAttribute("CantidadProdVend")!=null) {%>
 <div id="ex2">
-   <%int i=(Integer)request.getAttribute("CantidadProdVend");%>
+   <%int i=(Integer)request.getSession().getAttribute("CantidadProdVend");%>
    <a href="venta"><span class="fa-stack  has-badge" data-count="<%=i%>">
     <i class="fa fa-circle fa-stack-2x"></i>
     <i class="fa fa-shopping-cart fa-stack-1x fa-inverse"></i>

@@ -21,9 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import servicios.ListProductos;
 import servicios.Producto;
-import servicios.PublicadorVentas;
-import servicios.PublicadorVentasService;
-
+import servicios.ServicioContVentas;
+import servicios.WSContVentas;
 /**
  *
  * @author PabloP
@@ -31,7 +30,7 @@ import servicios.PublicadorVentasService;
 @WebServlet("/ver-productos")
 public class ServletProductos extends HttpServlet {
     
-    private PublicadorVentas port;
+    private WSContVentas port;
     configuracion conf = new configuracion();
     //List<Producto> Productosavender = new ArrayList<>();
 
@@ -51,8 +50,8 @@ public class ServletProductos extends HttpServlet {
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
         URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sVentas", ruta));
-        PublicadorVentasService webService = new PublicadorVentasService(url);
-        this.port = webService.getPublicadorVentasPort();
+        ServicioContVentas webService = new ServicioContVentas(url);
+        this.port = webService.getWSContVentasPort();
 
         List<Producto> productos = this.port.obtenerProductos().getLista();
         request.setAttribute("Productos", productos);

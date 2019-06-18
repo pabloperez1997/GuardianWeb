@@ -25,8 +25,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import servicios.Cliente;
-import servicios.PublicadorConsultarUsuario;
-import servicios.PublicadorConsultarUsuarioService;
+import servicios.ServicioContCliente;
+import servicios.WSContCliente;
+
 
 /**
  *
@@ -37,7 +38,7 @@ public class Registrarse extends HttpServlet {
     
    
         
-    private PublicadorConsultarUsuario port;
+    private WSContCliente port;
     configuracion conf = new configuracion();
     
     /**
@@ -90,12 +91,12 @@ public class Registrarse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        
-        ServletContext context;
+         ServletContext context;
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
         URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
-        PublicadorConsultarUsuarioService webService = new PublicadorConsultarUsuarioService(url);
-        this.port = webService.getPublicadorConsultarUsuarioPort();
+        ServicioContCliente webService = new ServicioContCliente(url);
+        this.port = webService.getWSContClientePort();
         
         
         cliente usuLogeado = (cliente) request.getSession().getAttribute("usuario_logueado");
