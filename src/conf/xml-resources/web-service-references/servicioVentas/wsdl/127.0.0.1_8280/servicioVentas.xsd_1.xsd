@@ -27,4 +27,73 @@
 <xs:element name="precioTotalProductos" type="xs:float"></xs:element>
 </xs:sequence>
 </xs:complexType>
+
+<xs:complexType name="cliente">
+<xs:sequence>
+<xs:element name="apellido" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="cedula" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="compra" type="tns:venta" minOccurs="0"></xs:element>
+<xs:element name="correo" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="direccion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="mascotasCliente" type="tns:mascota" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="password" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="reservasCliente" type="tns:reserva" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="tel_cel" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="venta">
+<xs:sequence>
+<xs:element name="detalles" type="tns:detalleVenta" minOccurs="0"></xs:element>
+<xs:element name="fecha" type="xs:dateTime" minOccurs="0"></xs:element>
+<xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="mascota">
+<xs:sequence>
+<xs:element name="cliente" type="tns:cliente" minOccurs="0"></xs:element>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="foto" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="raza" type="tns:raza" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="raza">
+<xs:sequence>
+<xs:element name="raza" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="reserva">
+<xs:sequence>
+<xs:element name="bozal" type="xs:boolean"></xs:element>
+<xs:element name="correa" type="xs:boolean"></xs:element>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="fechaReserva" type="xs:dateTime" minOccurs="0"></xs:element>
+<xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
+<xs:element name="listaMascotas" type="tns:mascota" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="listaServicios" type="tns:servicio" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="listaTurnos" type="tns:turno" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="servicio" abstract="true">
+<xs:sequence>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="duracion" type="xs:int"></xs:element>
+<xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
+<xs:element name="precio" type="xs:float"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="turno">
+<xs:sequence>
+<xs:element name="hora" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
 </xs:schema>

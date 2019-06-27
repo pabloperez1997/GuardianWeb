@@ -4,26 +4,32 @@
 <xsd:import namespace="http://Servicios/" schemaLocation="http://127.0.0.1:8280/servicioVentas?xsd=1"></xsd:import>
 </xsd:schema>
 </types>
-<message name="publicar"></message>
-<message name="publicarResponse"></message>
 <message name="obtenerProductos"></message>
 <message name="obtenerProductosResponse">
 <part name="return" type="tns:listProductos"></part>
 </message>
+<message name="publicar"></message>
+<message name="publicarResponse"></message>
 <message name="productosaVender"></message>
 <message name="productosaVenderResponse">
 <part name="return" type="tns:listProductos"></part>
 </message>
-<message name="eliminaraVender">
-<part name="codigo" type="xsd:long"></part>
-</message>
-<message name="eliminaraVenderResponse"></message>
 <message name="limpiarVenta"></message>
 <message name="limpiarVentaResponse"></message>
+<message name="finalizarVenta">
+<part name="cliente" type="tns:cliente"></part>
+</message>
+<message name="finalizarVentaResponse">
+<part name="return" type="xsd:boolean"></part>
+</message>
 <message name="setaVender">
 <part name="codigo" type="xsd:long"></part>
 </message>
 <message name="setaVenderResponse"></message>
+<message name="eliminaraVender">
+<part name="codigo" type="xsd:long"></part>
+</message>
+<message name="eliminaraVenderResponse"></message>
 <message name="despublicar"></message>
 <message name="despublicarResponse">
 <part name="return" type="xsd:boolean"></part>
@@ -35,29 +41,33 @@
 <part name="return" type="tns:producto"></part>
 </message>
 <portType name="WSContVentas">
-<operation name="publicar">
-<input wsam:Action="http://Servicios/WSContVentas/publicarRequest" message="tns:publicar"></input>
-<output wsam:Action="http://Servicios/WSContVentas/publicarResponse" message="tns:publicarResponse"></output>
-</operation>
 <operation name="obtenerProductos">
 <input wsam:Action="http://Servicios/WSContVentas/obtenerProductosRequest" message="tns:obtenerProductos"></input>
 <output wsam:Action="http://Servicios/WSContVentas/obtenerProductosResponse" message="tns:obtenerProductosResponse"></output>
+</operation>
+<operation name="publicar">
+<input wsam:Action="http://Servicios/WSContVentas/publicarRequest" message="tns:publicar"></input>
+<output wsam:Action="http://Servicios/WSContVentas/publicarResponse" message="tns:publicarResponse"></output>
 </operation>
 <operation name="productosaVender">
 <input wsam:Action="http://Servicios/WSContVentas/productosaVenderRequest" message="tns:productosaVender"></input>
 <output wsam:Action="http://Servicios/WSContVentas/productosaVenderResponse" message="tns:productosaVenderResponse"></output>
 </operation>
-<operation name="eliminaraVender">
-<input wsam:Action="http://Servicios/WSContVentas/eliminaraVenderRequest" message="tns:eliminaraVender"></input>
-<output wsam:Action="http://Servicios/WSContVentas/eliminaraVenderResponse" message="tns:eliminaraVenderResponse"></output>
-</operation>
 <operation name="limpiarVenta">
 <input wsam:Action="http://Servicios/WSContVentas/limpiarVentaRequest" message="tns:limpiarVenta"></input>
 <output wsam:Action="http://Servicios/WSContVentas/limpiarVentaResponse" message="tns:limpiarVentaResponse"></output>
 </operation>
+<operation name="finalizarVenta">
+<input wsam:Action="http://Servicios/WSContVentas/finalizarVentaRequest" message="tns:finalizarVenta"></input>
+<output wsam:Action="http://Servicios/WSContVentas/finalizarVentaResponse" message="tns:finalizarVentaResponse"></output>
+</operation>
 <operation name="setaVender">
 <input wsam:Action="http://Servicios/WSContVentas/setaVenderRequest" message="tns:setaVender"></input>
 <output wsam:Action="http://Servicios/WSContVentas/setaVenderResponse" message="tns:setaVenderResponse"></output>
+</operation>
+<operation name="eliminaraVender">
+<input wsam:Action="http://Servicios/WSContVentas/eliminaraVenderRequest" message="tns:eliminaraVender"></input>
+<output wsam:Action="http://Servicios/WSContVentas/eliminaraVenderResponse" message="tns:eliminaraVenderResponse"></output>
 </operation>
 <operation name="despublicar">
 <input wsam:Action="http://Servicios/WSContVentas/despublicarRequest" message="tns:despublicar"></input>
@@ -70,7 +80,7 @@
 </portType>
 <binding name="WSContVentasPortBinding" type="tns:WSContVentas">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"></soap:binding>
-<operation name="publicar">
+<operation name="obtenerProductos">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
@@ -79,7 +89,7 @@
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
 </output>
 </operation>
-<operation name="obtenerProductos">
+<operation name="publicar">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
@@ -97,15 +107,6 @@
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
 </output>
 </operation>
-<operation name="eliminaraVender">
-<soap:operation soapAction=""></soap:operation>
-<input>
-<soap:body use="literal" namespace="http://Servicios/"></soap:body>
-</input>
-<output>
-<soap:body use="literal" namespace="http://Servicios/"></soap:body>
-</output>
-</operation>
 <operation name="limpiarVenta">
 <soap:operation soapAction=""></soap:operation>
 <input>
@@ -115,7 +116,25 @@
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
 </output>
 </operation>
+<operation name="finalizarVenta">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal" namespace="http://Servicios/"></soap:body>
+</input>
+<output>
+<soap:body use="literal" namespace="http://Servicios/"></soap:body>
+</output>
+</operation>
 <operation name="setaVender">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal" namespace="http://Servicios/"></soap:body>
+</input>
+<output>
+<soap:body use="literal" namespace="http://Servicios/"></soap:body>
+</output>
+</operation>
+<operation name="eliminaraVender">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>

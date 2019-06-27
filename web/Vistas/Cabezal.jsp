@@ -70,7 +70,7 @@
               aria-haspopup="true" aria-expanded="false">
               <i class="fas fa-user"></i>Mi cuenta</a>
             <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
-              <a class="dropdown-item" href="#">Perfil</a>
+              <a class="dropdown-item" href="perfil">Perfil</a>
               <a class="dropdown-item" href="cerrar-sesion">Cerrar Sesión</a>
       
             </div>

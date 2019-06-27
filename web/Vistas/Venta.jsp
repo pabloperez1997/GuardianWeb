@@ -12,17 +12,17 @@
 
 <head>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-        <!-- Bootstrap core CSS -->
-        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Material Design Bootstrap -->
-        <link href="bootstrap/css/mdb.min.css" rel="stylesheet">
-        <!-- Your custom styles (optional) -->
-        <link href="bootstrap/css/style.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="bootstrap/css/mdb.min.css" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="bootstrap/css/style.css" rel="stylesheet">
   
   <title>Guardian:: Carro de Compras</title>
   
@@ -34,6 +34,8 @@
     <br>
     <br>
     <br>
+    <form id="finalizar" action="finalizarventa" method="post"></form>
+    
     <div class="container">      
     <div class="card shopping-cart">
             <div class="card-header bg-dark text-light">
@@ -54,7 +56,7 @@
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-2 text-center" >
                             <%if (producto.getFoto().compareTo("sinfoto")!=0){%>
-             <img class="img-responsive" src="img/<%=producto.getFoto()%>" alt="imagen del producto" width="120" height="80">
+             <img class="img-responsive" src="img/imgprod/<%=producto.getFoto()%>.png" alt="imagen del producto" width="120" height="80">
              <%}else{%>
              <img class="img-responsive" src="img/default.jpg" alt="imagen del producto" width="120" height="80">
              <%}%>  
@@ -69,23 +71,29 @@
                             <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
                                 <h6><strong>$<%=Math.round(producto.getPrecio())%><span class="text-muted">x</span></strong></h6>
                             </div>
+                            
                             <div class="col-4 col-sm-4 col-md-4">
                                 <div class="quantity">
-                                    <input type="button" value="+" class="plus">
-                                    <input type="number" step="1" max="99" min="1" value="1" title="Qty" class="qty"
-                                           size="4">
-                                    <input type="button" value="-" class="minus">
+                                    <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp();calcularTotal(<%=producto.getPrecio()%>);" class="plus">+</button>
+                                    <input form="finalizar" name="<%=producto.getCodigo()%>" id="<%=producto.getCodigo()%>" type="number" max="99" min="1" value="1" title="Cantidad"  class="qty"
+                                           size="5" readonly>
+                                   <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown();calcularTotalrestar(<%=producto.getPrecio()%>);" class="minus"><b>-</b></button>
                                 </div>
+                                
                             <div class="col-3 col-sm-2 col-md-2 text-right">
+             
                                 <form method="post" action="venta">
                                 <button type="submit" id="eliminarprod" 
                                   name="eliminarprod" value="<%=producto.getCodigo()%>" class="btn btn-outline-danger btn-xs" >
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                 </button>
                                 </form>
-        
+                               
+
                             </div>
                             </div>
+                                  
+                                   
                         </div>
                     </div>
                     <hr>
@@ -97,9 +105,7 @@
           <% } else {%>
             <h1>No hay productos por el momento...</h1>
           <%}%>
-                            
-                            
-                    
+                               
                     <div class="float-right">
                     <a href="ver-productos" class="btn btn-secondary float-right">
                         Continuar Comprando...
@@ -108,7 +114,7 @@
             </div>
             <div class="card-footer">
                 <div class="float-right" style="margin: 10px">
-                    <a href="" class="btn btn-success float-right">Finalizar compra</a>
+                    <a onclick="finalizarventa()" class="btn btn-success float-right">Finalizar compra</a>
                     <div class="float-right" style="margin: 5px">
                     <%List<Producto> prods = (List<Producto>) request.getAttribute("ProdsVenta");
                     float precio=0;
@@ -116,7 +122,7 @@
                     for (Producto producto : prods) {
                       precio=precio+producto.getPrecio();
                     }}%>
-                       Precio Total: <b><%=precio%></b>
+                    Precio Total: <b>$</b><b id="total"><%=Math.round(precio)%></b>
                     </div>
                 </div>
             </div>
@@ -125,12 +131,16 @@
     <br>
     <br>
     <br>
-    
-        
+    <script>
+        function finalizarventa(){
+        document.getElementById("finalizar").submit();
+    }
+        </script>
         
         
 <jsp:include page="/Vistas/Footer.jsp" />
 </body>
 
+<script type="text/javascript" src="bootstrap/js/myjs.js"></script>
 </html>
 

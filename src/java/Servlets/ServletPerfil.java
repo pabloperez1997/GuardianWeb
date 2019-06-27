@@ -5,21 +5,32 @@
  */
 package Servlets;
 
+import Logica.configuracion;
+import clases.EstadoSesion;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.net.URL;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import servicios.Cliente;
+import servicios.ServicioContCliente;
+import servicios.WSContCliente;
 
 /**
  *
  * @author PabloP
  */
-@WebServlet("/reserva")
-public class ServletReservas extends HttpServlet {
+@WebServlet("/perfil")
+public class ServletPerfil extends HttpServlet {
+    
+    private WSContCliente port;
+    private configuracion conf = new configuracion();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,16 +43,22 @@ public class ServletReservas extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+             ServletContext context;
+        context = request.getServletContext();
+        String ruta = context.getResource("").getPath();
+        URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
+        ServicioContCliente webService = new ServicioContCliente(url);
+        this.port = webService.getWSContClientePort();
         
-         if (request.getSession().getAttribute("usuario_logueado") == null) {
-            request.setAttribute("mensaje", "No existe una sesion en el sistema, "
-                    + "Debe iniciar sesion para poder hacer una reserva");
-            request.getRequestDispatcher("/Vistas/Mensaje_Recibido.jsp").forward(request, response);
-            }
-         
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/Vistas/Reserva.jsp");
-        dispatcher.forward(request, response);
+        Cliente cliente = null;
+        HttpSession session = request.getSession();
+        if (session.getAttribute("usuario_logueado") == null) {
+           request.getRequestDispatcher("Vistas/Inicio.jsp").forward(request, response);
+           
+        }
+        else{
+            request.getRequestDispatcher("Vistas/Perfil.jsp").forward(request, response);
+        }  
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -70,7 +87,9 @@ public class ServletReservas extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+   
+            
+        
     }
 
     /**

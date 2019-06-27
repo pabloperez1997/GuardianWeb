@@ -4,11 +4,7 @@
     Author     : PabloP
 --%>
 
-<!DOCTYPE html>
-<html>
-
-    
- <footer class="page-footer font-small unique-color-dark pt-4">
+<footer class="page-footer font-small black pt-4">
 
     <!-- Footer Elements -->
     <div  class="container">
@@ -60,11 +56,12 @@
     <!-- Footer Elements -->
 
     <!-- Copyright -->
-    <div class="footer-copyright text-center py-3">El Guardián es más que solo estética! 
-Nos preocupamos por el bienestar de tu mascota y la salud de su piel.
+    
+    
+    <div class="footer-copyright text-center py-3">
+        <hr style="border-top:1px solid white; width: 80%">
+        El Guardián es más que solo estética! Nos preocupamos por el bienestar de tu mascota y la salud de su piel.
     </div>
     <!-- Copyright -->
   </footer>
   
-    </body>
-</html>

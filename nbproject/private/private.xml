@@ -3,22 +3,18 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Inicio.jsp</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/clases/codificador.java</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/ServletVenta.java</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/ServletContrasenia.java</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/Registrarse.java</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/VerProductos.jsp</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/GaleriaFotos.jsp</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Venta.jsp</file>
             <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Cabezal.jsp</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/ServletCerrarSesion.java</file>
+            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Inicio.jsp</file>
+            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/bootstrap/js/myjs.js</file>
+            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/ServletVenta.java</file>
             <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Registrarse.jsp</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/IniciarSesion.java</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Reserva.jsp</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/ServletProductos.java</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/ServletReservas.java</file>
+            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Perfil.jsp</file>
+            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Footer.jsp</file>
+            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/css/mycss.css</file>
+            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Mensaje_Recibido.jsp</file>
+            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/GaleriaFotos.jsp</file>
             <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Login.jsp</file>
+            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/ServletReservas.java</file>
         </group>
     </open-files>
 </project-private>

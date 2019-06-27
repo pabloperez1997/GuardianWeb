@@ -11,6 +11,7 @@
     <head>
         
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Guardian::Iniciar Sesion</title>
         
         <!-- Font Awesome -->
@@ -30,8 +31,6 @@
         <br>
         <br>
         <br>
-        
-     
     <div class="d-flex justify-content-center align-items-center h-100"> 
     <div class="container"> 
     <!-- Grid row --> 
@@ -88,11 +87,9 @@
     <!-- Default form login -->
     </div>
     </div>
+    </div>   
     </div>
-    
-        
-    </div>
-        
+    <br>
     </main>
 
   <script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>

@@ -9,7 +9,7 @@
 <html>
     
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">        
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -45,31 +45,31 @@
     <div class="form-row mb-4">
         <div class="col">
             <!-- Nombre -->
-            <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre">
+            <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Nombre" required>
         </div>
         <div class="col">
             <!-- Apellido -->
-            <input type="text" name="apellido" id="apellido" class="form-control" placeholder="Apellido">
+            <input type="text" name="apellido" id="apellido" class="form-control" placeholder="Apellido" required>
         </div>
     </div>
     <!-- E-mail -->
-    <input type="text" name="cedula" id="cedula" class="form-control mb-4" placeholder="Cedula">
+    <input type="text" name="cedula" id="cedula" class="form-control mb-4" placeholder="Cedula" required>
 
     <!-- E-mail -->
-    <input type="Email" name="email" id="email" class="form-control mb-4" placeholder="E-mail">
+    <input type="Email" name="email" id="email" class="form-control mb-4" placeholder="E-mail" required>
 
     <!-- Password -->
-    <input type="password" name="pass" id="pass" class="form-control mb-3" placeholder="Contraseña">
-    <input type="password" name="pass" id="pass" class="form-control" placeholder="Repetir Contraseña">
+    <input type="password" name="pass" id="pass" class="form-control mb-3" placeholder="Contraseña" required>
+    <input type="password" name="pass" id="pass" class="form-control" placeholder="Repetir Contraseña" required>
     <small id="defaultRegisterFormPasswordHelpBlock" class="form-text text-muted mb-4">
         Al menos 6 caracteres
     </small>
 
     <!-- Telefono -->
-    <input type="text" name="telefono" id="telefono" class="form-control mb-4" placeholder="Teléfono" >
+    <input type="text" name="telefono" id="telefono" class="form-control mb-4" placeholder="Teléfono" required>
 
     <!-- Direccion -->
-    <input type="text" name="direccion" id="direccion" class="form-control mb-4" placeholder="Dirección" >
+    <input type="text" name="direccion" id="direccion" class="form-control mb-4" placeholder="Dirección" required>
 
     <!-- Boton Registrarse -->
     <button class="btn btn-dark my-4 btn-block" type="submit">Registrarme</button>
@@ -83,7 +83,7 @@
     </div>
     </div>
     </div>
-        
+    <br>   
     </main>
 <!-- Default form register -->
 <script type="text/javascript" src="bootstrap/js/jquery-3.3.1.min.js"></script>

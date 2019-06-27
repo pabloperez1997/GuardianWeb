@@ -11,6 +11,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" type="text/css" href="css/mycss.css">
         <title>Guardian:: Galeria de Fotos</title>
          
     </head>
@@ -32,8 +34,8 @@
         <%for (String imagen : imagenes) {%>
 
        <div class="col-lg-3 col-md-4 col-6">
-           <a href="img/galeria/<%=imagen%>" class="d-block mb-4 h-100">
-            <img class="img-fluid img-responsive img-thumbnail" src="img/galeria/<%=imagen%>" alt="">
+           <a class="d-block mb-4 h-100">
+            <img class="myImg img-fluid img-responsive img-thumbnail" src="img/galeria/<%=imagen%>" alt="">
            </a>
            </div>
         <br>
@@ -45,12 +47,17 @@
     </div>
    
     
-    
-    
   </div>
-</div>
-<!-- /.container -->
+    
 
-   
+<!-- The Modal -->
+
+<div id="myModal" class="modal">
+   <span id="close">&times;</span>
+  <img class="modal-content" id="img01">
+  <div id="caption"></div>
+</div>
+
+   <script type="text/javascript" src="bootstrap/js/myjs.js"></script>
     <jsp:include page="/Vistas/Footer.jsp" />
 </html>

@@ -50,7 +50,7 @@
             <div class="card h-100">
                 
              <%if (producto.getFoto().compareTo("sinfoto")!=0){%>
-             <img class="card-img-top" src="img/<%=producto.getFoto()%>" alt="">
+             <img class="card-img-top" src="img/imgprod/<%=producto.getFoto()%>.png" alt="">
              <%}else{%>
              <img class="card-img-top" src="img/default.jpg" alt="">
              <%}%>

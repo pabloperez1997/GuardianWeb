@@ -5,16 +5,12 @@
  */
 package Servlets;
 
-import Logica.cliente;
 import Logica.configuracion;
-import Logica.producto;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,25 +18,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import servicios.Cliente;
-import servicios.DetalleVenta;
 import servicios.Producto;
-import servicios.WSContVentas;
 import servicios.ServicioContVentas;
-import servicios.Venta;
+import servicios.WSContVentas;
 
 /**
  *
  * @author PabloP
  */
-//
-//
-@WebServlet("/venta")
-public class ServletVenta extends HttpServlet {
-
+@WebServlet("/finalizarventa")
+public class FinalizarVenta extends HttpServlet {
     private WSContVentas port;
     configuracion conf = new configuracion();
-   // List<Producto> Productosavender= new ArrayList<>();
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -52,7 +41,7 @@ public class ServletVenta extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         
+        response.setContentType("text/html;charset=UTF-8");
         ServletContext context;
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
@@ -60,14 +49,26 @@ public class ServletVenta extends HttpServlet {
         ServicioContVentas webService = new ServicioContVentas(url);
         this.port = webService.getWSContVentasPort();
         
-       
+        Cliente c= (Cliente) request.getSession().getAttribute("usuario_logueado");
         
-       RequestDispatcher dispatcher = request.getRequestDispatcher("/Vistas/Venta.jsp");
-       dispatcher.forward(request, response);
+        String parameter = request.getParameter("8");
+        List<Producto> Productosavender= (List<Producto>) c.getCompra().getDetalles().getListaProducto();
+            Iterator it = Productosavender.iterator();
+            int i;
+            while (it.hasNext()){
+               Producto pr=(Producto) it.next();
+               int cantidad= Integer.parseInt(request.getParameter(pr.getCodigo().toString()));
+               pr.setCantidad(cantidad);
+                
+            }
+            
+        this.port.finalizarVenta(c);
+          
         
-        
+    
     }
 
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -79,7 +80,7 @@ public class ServletVenta extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        processRequest(request, response);
     }
 
     /**
@@ -93,6 +94,7 @@ public class ServletVenta extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         response.setContentType("text/html;charset=UTF-8");
         ServletContext context;
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
@@ -100,75 +102,22 @@ public class ServletVenta extends HttpServlet {
         ServicioContVentas webService = new ServicioContVentas(url);
         this.port = webService.getWSContVentasPort();
         
+        Cliente c= (Cliente) request.getSession().getAttribute("usuario_logueado");
         
-        String cod = request.getParameter("codigoprod");
-        
-        if(cod!=null){
-            Long codigoprod = Long.parseLong(cod);
-            Producto p = port.obtenerProducto(codigoprod);
-            Cliente c= (Cliente) request.getSession().getAttribute("usuario_logueado");
-            
-            if (c == null) {
-            request.setAttribute("mensaje", "No existe una sesion en el sistema, "
-                    + "Debe iniciar sesion para poder comprar un producto");
-            request.getRequestDispatcher("/Vistas/Mensaje_Recibido.jsp").forward(request, response);
-            }
-           
-                
-            
-            if(c.getCompra()==null){
-                Venta v= new Venta();
-                DetalleVenta dv= new DetalleVenta();
-                List<Producto> listPr= new ArrayList<>();
-                c.setCompra(v);
-                v.setDetalles(dv); 
-            }
-            
-            boolean existelista= false;
-            List<Producto> Productosavender= (List<Producto>) c.getCompra().getDetalles().getListaProducto();
+        String parameter = request.getParameter("8");
+        List<Producto> Productosavender= (List<Producto>) c.getCompra().getDetalles().getListaProducto();
             Iterator it = Productosavender.iterator();
             int i;
             while (it.hasNext()){
-                Producto pr=(Producto) it.next();
-                if(pr.getCodigo().compareTo(codigoprod)==0)
-                existelista=true;
+               Producto pr=(Producto) it.next();
+               int cantidad= Integer.parseInt(request.getParameter(pr.getCodigo().toString()));
+               pr.setCantidad(cantidad);
                 
             }
-            if(!existelista)
-               c.getCompra().getDetalles().getListaProducto().add(p);
-           
             
+        this.port.finalizarVenta(c);
             
-            request.getSession().setAttribute("CantidadProdVend", c.getCompra().getDetalles().getListaProducto().size());
-            request.setAttribute("ProdsVenta", c.getCompra().getDetalles().getListaProducto());
-        }
-
-       String codelim = request.getParameter("eliminarprod");
-        
-        if(codelim!=null){
-         Long eliminarprod = Long.parseLong(codelim);
-            Producto p = port.obtenerProducto(eliminarprod);
-            Cliente c= (Cliente) request.getSession().getAttribute("usuario_logueado");
-                               
-            //c.getCompra().getDetalles().getListaProducto().remove(p);
-            
-            List<Producto> Productosavender= (List<Producto>) c.getCompra().getDetalles().getListaProducto();
-            
-            Iterator it = Productosavender.iterator();
-            int i;
-            while (it.hasNext()){
-                Producto pr=(Producto) it.next();
-                if(pr.getCodigo().compareTo(eliminarprod)==0)
-                it.remove();
-                
-            }
-            request.getSession().setAttribute("CantidadProdVend", Productosavender.size());
-            request.setAttribute("ProdsVenta", Productosavender);
-        }
-        
-        RequestDispatcher dispatcher = request.getRequestDispatcher("Vistas/Venta.jsp");
-        dispatcher.forward(request, response);
-
+        processRequest(request, response);
     }
 
     /**

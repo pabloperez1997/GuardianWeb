@@ -40,6 +40,14 @@
         <servlet-name>ServletReservas</servlet-name>
         <servlet-class>Servlets.ServletReservas</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ServletPerfil</servlet-name>
+        <servlet-class>Servlets.ServletPerfil</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FinalizarVenta</servlet-name>
+        <servlet-class>Servlets.FinalizarVenta</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ServletInicio</servlet-name>
         <url-pattern>/ServletInicio</url-pattern>
@@ -79,6 +87,14 @@
     <servlet-mapping>
         <servlet-name>ServletReservas</servlet-name>
         <url-pattern>/ServletReservas</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ServletPerfil</servlet-name>
+        <url-pattern>/ServletPerfil</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FinalizarVenta</servlet-name>
+        <url-pattern>/FinalizarVenta</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
