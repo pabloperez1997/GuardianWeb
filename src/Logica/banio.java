@@ -5,8 +5,15 @@
  */
 package Logica;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 
 import org.hibernate.annotations.Entity;
@@ -16,12 +23,22 @@ import org.hibernate.annotations.Entity;
  * @author jp
  */
 @Entity
-public class banio extends servicio {
 
-    @ManyToOne
+public class banio implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @OneToOne
     private tipoBanio tipoDeBanio;
 
     public banio() {
+
     }
 
     public tipoBanio getTipoDeBanio() {
@@ -34,8 +51,8 @@ public class banio extends servicio {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 73 * hash + Objects.hashCode(this.tipoDeBanio);
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.tipoDeBanio);
         return hash;
     }
 
@@ -55,11 +72,6 @@ public class banio extends servicio {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public String toString() {
-        return "tipoDeBanio/" + tipoDeBanio;
     }
 
 }

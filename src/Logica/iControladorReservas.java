@@ -30,5 +30,6 @@ public interface iControladorReservas {
     public abstract reserva getReserva(Long id);
     public abstract boolean nuevaReserva(reserva r);
     public abstract boolean eliminarReserva(Long id);
+    public abstract List getReservasDelDia();
     
 }

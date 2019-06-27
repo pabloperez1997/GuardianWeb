@@ -5,9 +5,12 @@
  */
 package Logica;
 
-import java.util.Objects;
 
-import javax.persistence.ManyToOne;
+import java.io.Serializable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import org.hibernate.annotations.Entity;
 
 /**
@@ -15,13 +18,29 @@ import org.hibernate.annotations.Entity;
  * @author jp
  */
 @Entity
-public class esquila extends servicio {
+public class esquila implements Serializable {
 
-    @ManyToOne
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @OneToOne
     private tipoEsquila tipoDeEsquila;
 
     public esquila() {
+        super();
     }
+
+  
 
     public tipoEsquila getTipoDeEsquila() {
         return tipoDeEsquila;
@@ -29,37 +48,6 @@ public class esquila extends servicio {
 
     public void setTipoDeEsquila(tipoEsquila tipoDeEsquila) {
         this.tipoDeEsquila = tipoDeEsquila;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-
-        hash = 59 * hash + Objects.hashCode(this.tipoDeEsquila);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final esquila other = (esquila) obj;
-        if (!Objects.equals(this.tipoDeEsquila, other.tipoDeEsquila)) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return  "tipoDeEsquila/" + tipoDeEsquila;
     }
 
 }

@@ -5,16 +5,21 @@
  */
 package Logica;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -32,40 +37,43 @@ public class reserva implements Serializable {
     private Date fechaReserva;
     private String descripcion;
     private boolean correa, bozal;
-    @OneToMany
-    private List<mascota> listaMascotas;
-    @OneToMany
-    private List<servicio> listaServicios;
-    @OneToMany
-    private List<turno> listaTurnos;
+    @ManyToOne
+    private mascota mascota;
+
+    @ManyToOne
+    private servicio servicio;
+    @ManyToOne
+    private turno turno;
     @ManyToOne
     private cliente cliente;
 
     public reserva() {
+        
     }
 
-    public List<mascota> getListaMascotas() {
-        return listaMascotas;
+    public servicio getServicio() {
+        return servicio;
     }
 
-    public void setListaMascotas(List<mascota> listaMascotas) {
-        this.listaMascotas = listaMascotas;
+    public void setServicio(servicio servicio) {
+        this.servicio = servicio;
     }
 
-    public List<servicio> getListaServicios() {
-        return listaServicios;
+
+    public mascota getMascota() {
+        return mascota;
     }
 
-    public void setListaServicios(List<servicio> listaServicios) {
-        this.listaServicios = listaServicios;
+    public void setMascota(mascota mascota) {
+        this.mascota = mascota;
     }
 
-    public List<turno> getListaTurnos() {
-        return listaTurnos;
+    public cliente getCliente() {
+        return cliente;
     }
 
-    public void setListaTurnos(List<turno> listaTurnos) {
-        this.listaTurnos = listaTurnos;
+    public void setCliente(cliente cliente) {
+        this.cliente = cliente;
     }
 
     public Long getId() {
@@ -109,16 +117,30 @@ public class reserva implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "Id/" + id + "/FechaReserva/" + fechaReserva.toString() + "/Descripcion/" + descripcion + "/Correa/" + correa + "/bozal/" + bozal + "/mascota/" + mascota.getNombre() + "/Cliente/" + cliente.getCorreo();
+    }
+
+    public turno getTurno() {
+        return turno;
+    }
+
+    public void setTurno(turno turno) {
+        this.turno = turno;
+    }
+
+    @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + Objects.hashCode(this.id);
-        hash = 41 * hash + Objects.hashCode(this.fechaReserva);
-        hash = 41 * hash + Objects.hashCode(this.descripcion);
-        hash = 41 * hash + (this.correa ? 1 : 0);
-        hash = 41 * hash + (this.bozal ? 1 : 0);
-        hash = 41 * hash + Objects.hashCode(this.listaMascotas);
-        hash = 41 * hash + Objects.hashCode(this.listaServicios);
-        hash = 41 * hash + Objects.hashCode(this.listaTurnos);
+        int hash = 5;
+        hash = 23 * hash + Objects.hashCode(this.id);
+        hash = 23 * hash + Objects.hashCode(this.fechaReserva);
+        hash = 23 * hash + Objects.hashCode(this.descripcion);
+        hash = 23 * hash + (this.correa ? 1 : 0);
+        hash = 23 * hash + (this.bozal ? 1 : 0);
+        hash = 23 * hash + Objects.hashCode(this.mascota);
+        hash = 23 * hash + Objects.hashCode(this.servicio);
+        hash = 23 * hash + Objects.hashCode(this.turno);
+        hash = 23 * hash + Objects.hashCode(this.cliente);
         return hash;
     }
 
@@ -149,23 +171,19 @@ public class reserva implements Serializable {
         if (!Objects.equals(this.fechaReserva, other.fechaReserva)) {
             return false;
         }
-        if (!Objects.equals(this.listaMascotas, other.listaMascotas)) {
+        if (!Objects.equals(this.mascota, other.mascota)) {
             return false;
         }
-        if (!Objects.equals(this.listaServicios, other.listaServicios)) {
+        if (!Objects.equals(this.servicio, other.servicio)) {
             return false;
         }
-        if (!Objects.equals(this.listaTurnos, other.listaTurnos)) {
+        if (!Objects.equals(this.turno, other.turno)) {
+            return false;
+        }
+        if (!Objects.equals(this.cliente, other.cliente)) {
             return false;
         }
         return true;
     }
-
-    @Override
-    public String toString() {
-        return "reserva{" + "id=" + id + ", fechaReserva=" + fechaReserva + ", descripcion=" + descripcion + ", correa=" + correa + ", bozal=" + bozal + ", listaMascotas=" + listaMascotas + ", listaServicios=" + listaServicios + ", listaTurnos=" + listaTurnos + '}';
-    }
-
-    
 
 }

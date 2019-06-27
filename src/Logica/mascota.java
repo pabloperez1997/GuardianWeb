@@ -109,7 +109,7 @@ public class mascota implements Serializable {
 
     @Override
     public String toString() {
-        return "Id/" + id + "/Nombre/" + nombre + "/Raza/" + raza.getRaza() +"/Cliente/" + cliente.getCedula()+"/Descripcion/"+descripcion ;
+        return "Id/" + id + "/Nombre/" + nombre + "/Raza/" + raza.getRaza() +"/Cliente/" + cliente.getCorreo()+"/Descripcion/"+descripcion ;
     }
 
     public String getDescripcion() {

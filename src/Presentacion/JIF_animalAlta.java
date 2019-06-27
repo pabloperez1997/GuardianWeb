@@ -38,7 +38,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     private utilidades util = utilidades.getInstance();
     private DefaultListModel modelo = null;
     private HashMap<String, String> clientes = new HashMap<>();
-    String rutaFoto = "/home/jp/Escritorio/java2019/elGuardianServidor/ImagenesMascotas/";
+    String rutaFoto = contC.getRutaFotoImagenesMascotaLevantar();
 ///////////////GET-SET////////////////
 
     public HashMap<String, String> getClientes() {
@@ -253,13 +253,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
 
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
         limpiar();
-        JInternalFrame[] allFrames = this.escritorio.getAllFrames();
-        for (JInternalFrame jif : allFrames) {
-            if (jif instanceof JIF_animal) {
-                JIF_animal animal = (JIF_animal) jif;
-                animal.cargarMascotas();
-            }
-        }
+        recargarMascota();
         this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
@@ -373,10 +367,12 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
             if (res == 0) {
                 boolean altaAnimal = contC.altaAnimal(this.construirMascota());
                 if (altaAnimal) {
-                    util.salvarImagen(fotoMascota, rutaFoto, generarNombreFoto(), 0);
-
+                    if (fotoMascota != null) {
+                        util.salvarImagen(fotoMascota, rutaFoto, generarNombreFoto(), 0);
+                    }
                     JOptionPane.showMessageDialog(this, "La mascota: " + JText_nomMascota.getText() + " fue dada de alta con exito!");
                     limpiar();
+                    recargarMascota();
                     this.dispose();
                 }
 
@@ -391,7 +387,9 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
             msctNew.setDescripcion(jTextArea1.getText());
         }
         if (fotoMascota != null) {
-            msctNew.setFoto(rutaFoto + generarNombreFoto() + ".png");
+            msctNew.setFoto(generarNombreFoto() + ".png");
+        } else {
+            msctNew.setFoto("N/A");
         }
         msctNew.setRaza((raza) contC.getRaza((String) jListRaza.getSelectedValue()));
         msctNew.setCliente(contC.getCliente(this.getId()));
@@ -410,8 +408,18 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
 
     private String generarNombreFoto() {
         String nombre;
-        nombre = "MASCOTA_" + JText_nomMascota.getText() + "_CLIENTE_" + contC.getCliente(this.getId()).getTel_cel();
+        nombre = "MASCOTA" + JText_nomMascota.getText() + "CLIENTE" + contC.getCliente(this.getId()).getTel_cel();
         return nombre;
+    }
+
+    private void recargarMascota() {
+        JInternalFrame[] allFrames = this.escritorio.getAllFrames();
+        for (JInternalFrame jif : allFrames) {
+            if (jif instanceof JIF_animal) {
+                JIF_animal animal = (JIF_animal) jif;
+                animal.cargarMascotas();
+            }
+        }
     }
 
 }

@@ -40,11 +40,12 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
     private controladorCliente contC = (controladorCliente) fabricaElGuardian.getInstance().getInstanceIControladorCliente();
     private DefaultListModel modelo = null;
     private HashMap<String, String> clientes = new HashMap<>();
-    String rutaFoto = "/home/jp/Escritorio/elGuardianServidor/ImagenesMascotas/";
+    String rutaFoto = contC.getRutaFotoImagenesMascotaLevantar();
     private final Long idMascota;
     utilidades util = utilidades.getInstance();
     private DefaultListModel dlm = new DefaultListModel();
     private final JDesktopPane jPadre;
+    private String rutaImagenVieja;
 
     /**
      * Creates new form JIF_animalModificar
@@ -340,7 +341,9 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
         JLab_nombreCliente.setText(this.msc.getCliente().getNombre() + " " + this.msc.getCliente().getApellido());
         jListRaza.setSelectedValue(this.msc.getRaza().getRaza(), true);
         System.err.println(msc.getFoto());
-        levantarImg(msc.getFoto());
+        if (!msc.getFoto().equals("N/A")) {
+            levantarImg(msc.getFoto());
+        }
     }
 
     public DefaultListModel getModelo() {
@@ -382,14 +385,18 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
                     this.msc.setDescripcion(jtxtA_descricpcion.getText());
                 }
                 if (fotoMascotaNueva != null) {
-                    this.msc.setFoto(rutaFoto + generarNombreFoto() + ".png");
+                    this.msc.setFoto(generarNombreFoto() + ".png");
                 }
                 boolean modificarAnimal = contC.modificarAnimal(this.msc);
                 if (modificarAnimal) {
-                    util.salvarImagen(fotoMascotaNueva, rutaFoto, generarNombreFoto(), 0);
-
+                    if (fotoMascotaNueva != null) {
+                        util.eliminarArchivo(new File(this.rutaImagenVieja));
+                        util.salvarImagen(fotoMascotaNueva, rutaFoto, generarNombreFoto(), 0);
+                    }
+//nota: agrege que elimine las imagenes una vez se elimine la mascota. jp
                     JOptionPane.showMessageDialog(this, "Se ha modificado con exito la mascota!");
                     limpiar();
+                    recargarMascota();
                     this.dispose();
 
                 }
@@ -400,16 +407,27 @@ public class JIF_animalModificar extends javax.swing.JInternalFrame {
     }
 
     public void levantarImg(String rutImg) {
-        BufferedImage image = (BufferedImage) util.dameEstaImagen(rutImg);
+        BufferedImage image = (BufferedImage) util.dameEstaImagen(contC.getRutaFotoImagenesMascotaLevantar() + "/" + rutImg);
         Jlab_foto.setIcon(new ImageIcon(rutImg));
         Image scaledInstance = image.getScaledInstance(231, 184, Image.SCALE_DEFAULT);
         Jlab_foto.setIcon(new ImageIcon(scaledInstance));
         fotoMascota = image;
+        this.rutaImagenVieja = contC.getRutaFotoImagenesMascotaLevantar() + "/" + rutImg;
     }
 
     private String generarNombreFoto() {
         String nombre = "sample";
-        nombre = "MASCOTA_" + JText_nomMascota.getText() + "_CLIENTE_" + msc.getCliente().getCorreo();
+        nombre = "MASCOTA" + JText_nomMascota.getText() + "CLIENTE" + msc.getCliente().getCorreo();
         return nombre;
+    }
+
+    private void recargarMascota() {
+
+        JInternalFrame[] jifCollection = this.jPadre.getAllFrames();
+        for (JInternalFrame jif : jifCollection) {
+            if (jif instanceof JIF_animal) {
+                ((JIF_animal) jif).cargarMascotas();
+            }
+        }
     }
 }

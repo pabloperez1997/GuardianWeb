@@ -5,6 +5,11 @@
  */
 package Logica;
 
+import java.io.Serializable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import org.hibernate.annotations.Entity;
 
 
@@ -13,30 +18,26 @@ import org.hibernate.annotations.Entity;
  *
  * @author jp
  */
-@Entity
-public class paseo extends servicio {
+@Entity 
+public class paseo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+  
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getId() {
+        return id;
+    }
 
     public paseo() {
+    
     }
 
-    @Override
-    public float getPrecio() {
-        return super.getPrecio(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int getDuracion() {
-        return super.getDuracion(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getDescripcion() {
-        return super.getDescripcion(); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String toString() {
-        return "Precio/" + getPrecio() + "/Duracion/" + getDuracion() + "/Descripcion/" + getDescripcion();
-    }
-
+   
+  
 }

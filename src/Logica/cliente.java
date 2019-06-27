@@ -27,6 +27,8 @@ public class cliente implements Serializable {
     @Column(length = 100)
     private String correo;
 
+    @OneToMany
+    private List<venta> compras;
 
     @Column(length = 100)
     private String cedula;
@@ -98,7 +100,7 @@ public class cliente implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = this.autoEncriptarPasswdMD5(password);
+        this.password = password;
     }
 
     public List<reserva> getReservasCliente() {
@@ -181,7 +183,7 @@ public class cliente implements Serializable {
         return "Nombre/" + nombre + "/Apellido/" + apellido + "/Cedula/" + cedula + "/Telefono/" + tel_cel + "/Direccion/" + direccion + "/Email/" + correo;
     }
 
-    private String autoEncriptarPasswdMD5(String pass) {
+   /* private String autoEncriptarPasswdMD5(String pass) {
         try {
 
             java.security.MessageDigest md = java.security.MessageDigest
@@ -198,7 +200,7 @@ public class cliente implements Serializable {
             System.out.println(e.getMessage());
         }
         return null;
-    }
+    }*/
 
     /*
   

@@ -9,14 +9,10 @@ import Persistencia.persistencia;
 import Logica.cliente;
 import Logica.controladorCliente;
 import Logica.fabricaElGuardian;
-import Logica.raza;
-import Logica.utilidades;
-import java.awt.Component;
-import java.awt.FocusTraversalPolicy;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import jdk.nashorn.internal.scripts.JO;
+
 
 /**
  *
@@ -78,27 +74,17 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Telefono");
 
-        jT_nombre.setFocusCycleRoot(true);
         jT_nombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jT_nombreActionPerformed(evt);
             }
         });
 
-        jT_apellido.setFocusCycleRoot(true);
         jT_apellido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jT_apellidoActionPerformed(evt);
             }
         });
-
-        jT_cedula.setFocusCycleRoot(true);
-
-        jT_correo.setFocusCycleRoot(true);
-
-        jT_direccion.setFocusCycleRoot(true);
-
-        jT_telefono.setFocusCycleRoot(true);
 
         jButton1.setText("Aceptar");
         jButton1.setFocusCycleRoot(true);
@@ -120,7 +106,6 @@ public class JIF_clientesAlta extends javax.swing.JInternalFrame {
 
         jTA_comentario.setColumns(20);
         jTA_comentario.setRows(5);
-        jTA_comentario.setFocusCycleRoot(true);
         jScrollPane1.setViewportView(jTA_comentario);
 
         javax.swing.GroupLayout panelClientesLayout = new javax.swing.GroupLayout(panelClientes);

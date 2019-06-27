@@ -5,6 +5,7 @@
  */
 package Logica;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public interface iControladorVentas {
 
     public abstract producto ObtenerProducto(String codigo);
 
-    public abstract boolean AltaVenta(List<producto> listaventa);
+    public abstract boolean AltaVenta(HashMap<producto,Integer> listaventa, String id);
 
     public abstract List<producto> productosaVender();
 

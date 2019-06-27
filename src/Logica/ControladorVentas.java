@@ -16,12 +16,16 @@ import Persistencia.persistencia;
 import Persistencia.productoPersistencia;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 
 public class ControladorVentas implements iControladorVentas {
 
+    persistencia per = persistencia.getInstance();
     ventaPersistencia ventapersist = ventaPersistencia.getventaPersisInstace();
+    controladorCliente contC = controladorCliente.getInstance();
     List<producto> productos;
     List<producto> avender = new ArrayList<>();
     private String rutaGuardarimgProductos;
@@ -123,8 +127,27 @@ public class ControladorVentas implements iControladorVentas {
 
     }
 
-    public boolean AltaVenta(List<producto> listaventa) {
-        float preciototal = this.calcularpreciototal(listaventa);
+    /**
+     *
+     * @param listaProducto
+     * @param listaventa
+     * @return
+     */
+    public boolean AltaVenta(HashMap<producto, Integer> listaProducto, String Idcli) {
+        venta nVenta = new venta();
+        for (Map.Entry<producto, Integer> entry : listaProducto.entrySet()) {
+            producto key = entry.getKey();
+            Integer value = entry.getValue();
+            detalleVenta nDetalleVenta = new detalleVenta();
+            nDetalleVenta.setCantidad(value);
+            nDetalleVenta.setProducto(key);
+            nVenta.setDetalles(nDetalleVenta);
+        }
+        nVenta.setFecha(utilidades.getInstance().getFechaActual());
+        nVenta.setCliente(contC.getCliente(Idcli));
+        return ventapersist.persis((Object) nVenta);
+
+        /* float preciototal = this.calcularpreciototal(listaventa);
         int cantidad = 0;
         for (int x = listaventa.size() - 1; x >= 0; x--) {
             producto produ = (producto) listaventa.get(x);
@@ -140,7 +163,7 @@ public class ControladorVentas implements iControladorVentas {
         v.setFecha(fecha);
         v.setDetalles(dv);
         boolean ok = Persistencia.persistencia.getInstance().persis(v);
-        return ok;
+        return ok;*/
     }
 
     public String getRutaGuardarimgProductos() {

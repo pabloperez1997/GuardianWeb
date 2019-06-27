@@ -302,7 +302,11 @@ public class AltaVenta extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Debe agregar productos a la venta");
             return;
         }
-        boolean funciono=ICV.AltaVenta(listaventa);
+        //aca va el altaventa 
+        
+       boolean funciono=true;
+      
+   //   ICV.AltaVenta(listaventa);
         if (funciono) {
             JOptionPane.showMessageDialog(null, "Venta realizada");
         } else {
@@ -352,32 +356,7 @@ public class AltaVenta extends javax.swing.JInternalFrame {
         this.Preciototal.setText("" + PrecioTotal);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-
-       
-    try { 
-
-        //UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-    } catch(Exception ignored){}
-
-        //</editor-fold>
-
-        /* Create and display the form */
-       java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AltaVenta().setVisible(true);
-            }
-        });
-       
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Preciototal;

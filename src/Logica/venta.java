@@ -6,6 +6,7 @@
 package Logica;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -30,34 +31,34 @@ public class venta implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fecha;
-    
-    
-  
-    
-    @OneToOne
-    private detalleVenta detalles;
 
-    public detalleVenta getDetalles() {
+    @OneToOne
+    cliente cliente;
+
+    @OneToMany(mappedBy = "venta")
+    private ArrayList<detalleVenta> detalles;
+
+    public ArrayList getDetalles() {
         return detalles;
     }
 
     public void setDetalles(detalleVenta detalles) {
-        this.detalles = detalles;
+        this.detalles.add(detalles);
     }
+
     public venta() {
     }
 
-   /* public float getPrecioTotalFinal() {
-        float precioF = 0;
-        Iterator<detalleVenta> iterator = detalles.iterator();
-        while (iterator.hasNext()) {
-            precioF = +(float) iterator.next().getPrecioTotalProductos();
-        }
-        return precioF;
-    }*/
+    public cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(cliente cliente) {
+        this.cliente = cliente;
+    }
 
     public Long getId() {
         return id;
@@ -108,7 +109,5 @@ public class venta implements Serializable {
     public String toString() {
         return "venta{" + "id=" + id + ", fecha=" + fecha + ", detalles=" + detalles + '}';
     }
-
-  
 
 }

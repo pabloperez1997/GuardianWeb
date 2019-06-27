@@ -14,14 +14,17 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import javax.ws.rs.core.MediaType;
+import static sun.net.www.http.HttpClient.New;
 
 /**
  *
@@ -38,6 +41,7 @@ public class apiCliente {
         return instance;
     }
 ///////////////////////////////////////RAZAS/////////////RAZAS////////////////////////////////
+
     public List<String> getRazas() {
         List<String> listaRazas = new ArrayList<>();
         try {
@@ -53,11 +57,13 @@ public class apiCliente {
             }
 //si no falla
             InputStreamReader in = new InputStreamReader((InputStream) conUrl.getInputStream()); //recibo lo que devuelve con un inpustreamreader
-            BufferedReader br = new BufferedReader(in);//otra opcion pireee
-            Reader rd = new BufferedReader(in);//creo un reader con lo que vino 
+            JsonReader rd = new JsonReader(in);//creo un reader con lo que vino
             GsonBuilder gson = new GsonBuilder();//el builder de json
-            JsonObject jsonRazas = gson.create().fromJson(rd, JsonObject.class);//creo un objeto json con todo los datos que vinieron
-            listaRazas.addAll((ArrayList<String>)getDecerializar(jsonRazas));//deserializo el json en un arraylist de String
+            BufferedReader br = new BufferedReader(in);
+            JsonReader irj = new JsonReader(br);
+            JsonObject jsonRazas = new GsonBuilder().create().fromJson(irj, JsonObject.class);//creo un objeto json con todo los datos que vinieron
+            // JsonObject coso = new GsonBuilder().create().fromJson(irj, JsonObject.class);
+            listaRazas = (ArrayList<String>) getDecerializar(jsonRazas);//deserializo el json en un arraylist de String
             /*
             String raza;
 
@@ -69,7 +75,7 @@ public class apiCliente {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
-     return listaRazas;
+        return listaRazas;
     }
 
     public List<String> getRazas2() {
@@ -88,26 +94,38 @@ public class apiCliente {
 
     private List getDecerializar(JsonObject fromJson) {
         List<String> razas = new ArrayList<>();
-        Set<Map.Entry<String, JsonElement>> entrySet = fromJson.entrySet();//creo el primer set del contenido del json
-        Iterator<Map.Entry<String, JsonElement>> iterator = entrySet.iterator();//creo el set de claves iteradoras
-        ArrayList<String> arrJSEle = new ArrayList<>();//arreglo que contiene las claves de los elementos
-        while (iterator.hasNext()) {//recorro el set de claves
-            Map.Entry<String, JsonElement> next = iterator.next(); 
-            arrJSEle.add(next.getKey());//obtengo la clave y la cargo
-        }
-        Set<Map.Entry<String, JsonElement>> entrySet1 = fromJson.getAsJsonObject((String) arrJSEle.get(1)).entrySet();//obtengo el arreglo de objetos que tiene adentro
+        try {
+            Set<Map.Entry<String, JsonElement>> entrySet = fromJson.entrySet();//creo el primer set del contenido del json
+            Iterator<Map.Entry<String, JsonElement>> iterator = entrySet.iterator();//creo el set de claves iteradoras
+            ArrayList<String> arrJSEle = new ArrayList<>();//arreglo que contiene las claves de los elementos
+            while (iterator.hasNext()) {//recorro el set de claves
+                Map.Entry<String, JsonElement> next = iterator.next();
+                arrJSEle.add(next.getKey());//obtengo la clave y la cargo
+            }
+            Iterator it = arrJSEle.iterator();
+            fromJson.getAsJsonObject(arrJSEle.get(0)).entrySet();
+            Iterator<Map.Entry<String, JsonElement>> iterator1 = fromJson.getAsJsonObject(arrJSEle.get(0)).entrySet().iterator();
+            int contador = 0;
+            int arreglos = 0;
+            while (iterator1.hasNext()) {
+                System.out.println(contador++);
+                Map.Entry<String, JsonElement> ele = iterator1.next();
+                JsonElement value = ele.getValue();
+                String key = ele.getKey();
+                if (value.getAsJsonArray().size() > 0) {
+                    System.out.print(arreglos++);
+                    razas.addAll((ArrayList<String>) esArreglo(value, key));
+                } else {
+                    razas.add(key);
+                }
 
-        Iterator<Map.Entry<String, JsonElement>> iterator1 = entrySet1.iterator(); //el iterador de objetos es un diccionario con claves
-        //GsonBuilder gsBuild = new GsonBuilder().
-        while (iterator1.hasNext()) {
-            String key = (String) iterator1.next().getKey();//obtengo la key o la raza
-            if (fromJson.getAsJsonObject((String) arrJSEle.get(1)).get(key).getAsJsonArray().size() > 0) {//pregunto si ese objeto es un arreglo 
-                razas.addAll((ArrayList<String>)esArreglo(fromJson.getAsJsonObject((String) arrJSEle.get(1)).get(key), key));//si es un arreglo deserializo el arreglo
-            }else{razas.add(key);}//si no agrego la raza o key a la lista
-            
-
+            }
+        } catch (Exception e) {
+            System.err.print("Error " + e.getMessage() + " CAUSA: " + e.getCause());
         }
+
         return razas;
+
     }
 
     private List esArreglo(JsonElement value, String key) {
@@ -129,8 +147,7 @@ public class apiCliente {
         return razasNombre;
     }
 ///////////////////////////////////////////////////////////////////////FIN____RAZAS///////////////////////////////////////////////////////////////////////////////////
-    
-///////////////////////////////////////////////INTERCAMBIO___IP//////////////////////////////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////INTERCAMBIO___IP//////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////FIN___INTERCAMBIO__IP/////////////////////////////////////////////////////////////////////////////////////////////////
 }

@@ -57,6 +57,8 @@ public class persistencia {
             System.err.println("Error al agregar: " + e.getMessage() + " Causa: " + e.getCause());
             em.getTransaction().rollback();
             return false;
+        }finally{
+        
         }
     }
 
@@ -65,6 +67,7 @@ public class persistencia {
             em.getTransaction().begin();
             em.merge(obj);
             em.getTransaction().commit();
+            
             return true;
         } catch (Exception e) {
             System.err.println("Error al modificar: " + e.getMessage() + " Causa: " + e.getCause());
@@ -78,6 +81,7 @@ public class persistencia {
             em.getTransaction().begin();
             em.remove(obj);
             em.getTransaction().commit();
+            
             return true;
         } catch (Exception e) {
             System.err.println("Error al eliminar: " + e.getMessage() + " Causa: " + e.getCause());
@@ -90,6 +94,8 @@ public class persistencia {
             em.getTransaction().begin();
             List resultList = em.createNativeQuery(sql, clase).getResultList();
             em.getTransaction().commit();
+            
+
             return resultList;
 
         } catch (Exception e) {
@@ -106,6 +112,7 @@ public class persistencia {
             em.getTransaction().begin();
             boolean ret = em.contains(obj);
             em.getTransaction().commit();
+           
             return ret;
         } catch (Exception e) {
             System.err.println(e.getMessage() + " CAUSA " + e.getCause());
@@ -119,11 +126,27 @@ public class persistencia {
             Query resultQuery = em.createNativeQuery(sql);
             resultQuery.executeUpdate();
             em.getTransaction().commit();
+           
         } catch (Exception e) {
             System.err.println(e.getMessage() + " CAUSA " + e.getCause());
             return false;
         }
         return true;
+    }
+
+    public Object ejecutarSqlConRes(String sql) {
+        Object retornar = null;
+        try {
+            em.getTransaction().begin();
+            Query reQuery = em.createNativeQuery(sql);
+            retornar = reQuery.getSingleResult();
+            em.getTransaction().commit();
+           
+        } catch (Exception e) {
+            System.err.println(e.getMessage() + " CAUSA " + e.getCause());
+
+        }
+        return retornar;
     }
 
     public Object getObjeto(String id, Class clase) {
@@ -132,6 +155,7 @@ public class persistencia {
             em.getTransaction().begin();
             obj = (Object) em.find(clase, id);
             em.getTransaction().commit();
+            
         } catch (Exception e) {
             System.err.println(e.getMessage() + " CAUSA " + e.getCause());
         }
@@ -144,6 +168,7 @@ public class persistencia {
             em.getTransaction().begin();
             obj = (Object) em.find(clase, id);
             em.getTransaction().commit();
+            
         } catch (Exception e) {
             System.err.println(e.getMessage() + " CAUSA " + e.getCause());
         }

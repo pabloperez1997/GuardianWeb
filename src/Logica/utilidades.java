@@ -15,7 +15,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -196,6 +201,13 @@ public class utilidades {
         return false;
     }
 
+    public boolean eliminarArchivo(File archivo) {
+        if (archivo.exists()) {
+            return archivo.delete();
+        }
+        return false;
+    }
+
     public boolean salvarImagen(BufferedImage imagen, String ruta, String nombre, int extencion) {
 
         String ext = ".png";
@@ -211,8 +223,9 @@ public class utilidades {
         File outputfile = new File(ruta + "/" + nombre + ext);
         boolean write = false;
         try {
-
-            write = ImageIO.write(imagen, "png", outputfile);
+            if (!outputfile.exists()) {
+                write = ImageIO.write(imagen, "png", outputfile);
+            }
 
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
@@ -249,6 +262,30 @@ public class utilidades {
         return imagenUp;
     }
 
+    public List levantarImagenconRuta(JTextField jt) {
+        List<Object> listaAretornar = new ArrayList<Object>();
+        BufferedImage imagenUp = null;
+        JFileChooser buscarArchivo = new JFileChooser();
+        try {
+
+            FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("JPG, PNG & GIF", "jpg", "png", "gif");
+            buscarArchivo.setFileFilter(filtroImagen);
+            int sele = buscarArchivo.showOpenDialog(jt);
+            if (sele == JFileChooser.APPROVE_OPTION) {
+                //  imagenUp = ImageIO.read(new File(buscarArchivo.getSelectedFile().getPath()));
+                System.out.println(buscarArchivo.getSelectedFile().getPath());
+                imagenUp = this.dameEstaImagen(buscarArchivo.getSelectedFile().getPath());
+                listaAretornar.add((Object) imagenUp);
+                listaAretornar.add((Object) buscarArchivo.getSelectedFile().getPath());
+            }
+
+        } catch (HeadlessException e) {
+            System.err.println(e.getMessage() + " Causa: " + e.getCause());
+        }
+        return listaAretornar;
+
+    }
+
     public File levantarArchivo(String ruta) {
         File archivo = null;
         try {
@@ -283,7 +320,8 @@ public class utilidades {
         } catch (IOException e) {
             System.err.println(e.getMessage() + " Causa: " + e.getCause());
         }
-        return null;
+
+        return imgbf;
     }
 
     /**
@@ -407,5 +445,42 @@ public class utilidades {
         if ((car < '0' || car > '9') && (car < ',' || car > '.')) {
             evt.consume();
         }
+    }
+
+    /**
+     * Funcion que retorna la fecha y hora actual del sistema
+     *
+     * @return Date
+     */
+    public Date getFechaActual() {
+        Date d = new Date();//puntero date
+        Format formato = null;//puntero format
+        Calendar c = null;
+        try {
+            c = new GregorianCalendar();
+            d = c.getTime();
+            formato = new SimpleDateFormat("dd/MM/yyyy HH:mm");//le asigno un formato a la fecha
+            //    d = new Date(formato.format((Date) c.getTime()));//creo un nuevo objeto date con la fecha devuelta por el sistema ya con formato 
+        } catch (Exception e) {
+            System.err.println("Error getFechaActual: " + e.getMessage() + " CAUSA: " + e.getCause());
+        }
+        System.out.println(formato.format((Date) c.getTime()));
+        return d;
+    }
+
+    public String getFechaActualParseoformato(String formato) {
+        String fecha = null;
+        Date d = new Date();
+        Format forma = null;
+        Calendar c = null;
+        try {
+            c = new GregorianCalendar();
+            d = c.getTime();
+            forma = new SimpleDateFormat(formato);
+            fecha = forma.format(d);
+
+        } catch (Exception e) {
+        }
+        return fecha;
     }
 }
