@@ -190,7 +190,7 @@ JDesktopPane escritorio=null;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         
-        String codigo =  jTextField1.getText();
+        Long codigo =  Long.parseLong(jTextField1.getText());
         
         int respuesta = JOptionPane.showConfirmDialog(null, "Esta a punto de modificar este producto\n Desea continuar?", "ADVERTENCIA", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (respuesta == 0) {

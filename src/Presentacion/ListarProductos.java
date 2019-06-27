@@ -5,13 +5,17 @@
  */
 package Presentacion;
 
+import Logica.GenerarPDF;
 import Logica.fabricaElGuardian;
 import Logica.iControladorVentas;
 import Logica.producto;
 import Logica.utilidades;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -134,7 +138,7 @@ public class ListarProductos extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(82, Short.MAX_VALUE)
+                .addContainerGap(86, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -146,7 +150,7 @@ public class ListarProductos extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(57, 57, 57)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(25, 112, Short.MAX_VALUE))
         );
 
         pack();
@@ -196,7 +200,7 @@ public class ListarProductos extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int index = TablaProd.getSelectedRow();
         TableModel model = TablaProd.getModel();
-        String codigo = model.getValueAt(index, 0).toString();
+        Long codigo = Long.parseLong(model.getValueAt(index, 0).toString());
 
         int respuesta = JOptionPane.showConfirmDialog(null, "Este producto será eliminado\n Desea continuar?", "ADVERTENCIA", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (respuesta == 0) {
@@ -261,9 +265,10 @@ public class ListarProductos extends javax.swing.JInternalFrame {
 
         List<producto> listaP =null;
         listaP = (List<producto>) iCV.ListarProductos();
-        String[] cabeceras = util.cabeceras(listaP.get(0));
+        
       
         if (listaP.size() > 0) {
+            String[] cabeceras = util.cabeceras(listaP.get(0));
             DefaultTableModel modelo = (DefaultTableModel) TablaProd.getModel();
         //  DefaultTableModel modelo = new DefaultTableModel(cabeceras, 0);
             modelo.setRowCount(0);
@@ -284,7 +289,7 @@ public class ListarProductos extends javax.swing.JInternalFrame {
           //  TablaProd.setModel(modelo);
        } else {
             JOptionPane.showMessageDialog(null, "No existen productos en el sistema!");
-            TablaProd.setEnabled(false);
+            TablaProd.setVisible(false);
         }
 
     }

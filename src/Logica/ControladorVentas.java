@@ -14,9 +14,12 @@ import java.util.Iterator;
  */
 import Persistencia.persistencia;
 import Persistencia.productoPersistencia;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 
 public class ControladorVentas implements iControladorVentas {
@@ -24,7 +27,7 @@ public class ControladorVentas implements iControladorVentas {
     ventaPersistencia ventapersist = ventaPersistencia.getventaPersisInstace();
     List<producto> productos;
     List<producto> avender = new ArrayList<>();
-    private String rutaGuardarimgProductos;
+    private String rutaGuardarimgProductos="C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/img/imgprod/";
 
     @Override
     public List<producto> productosaVender() {
@@ -32,13 +35,13 @@ public class ControladorVentas implements iControladorVentas {
     }
 
     @Override
-    public void setaVender(String codigo) {
+    public void setaVender(Long codigo) {
         producto p = ObtenerProducto(codigo);
         this.avender.add(p);
     }
 
     @Override
-    public void eliminaraVender(String codigo) {
+    public void eliminaraVender(Long codigo) {
         producto p = ObtenerProducto(codigo);
         this.avender.remove(p);
     }
@@ -97,7 +100,7 @@ public class ControladorVentas implements iControladorVentas {
     }
 
     @Override
-    public boolean EliminarProducto(String codigo) {
+    public boolean EliminarProducto(Long codigo) {
 
         boolean ok = false;
         producto p = this.ObtenerProducto(codigo);
@@ -116,7 +119,7 @@ public class ControladorVentas implements iControladorVentas {
     }
 
     @Override
-    public producto ObtenerProducto(String codigo) {
+    public producto ObtenerProducto(Long codigo) {
 
         producto p = prodPer.ObtenerProducto(codigo);
         return p;
@@ -149,6 +152,20 @@ public class ControladorVentas implements iControladorVentas {
 
     public void setRutaGuardarimgProductos(String rutaGuardarimgProductos) {
         this.rutaGuardarimgProductos = rutaGuardarimgProductos;
+    }
+    
+    @Override
+    public boolean finalizarVenta(cliente c){
+        
+        try {
+            GenerarPDF gpdf= new GenerarPDF();
+            gpdf.createPdf(c);
+            return true;
+        } catch (IOException ex) {
+            Logger.getLogger(ControladorVentas.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        
     }
 
 }

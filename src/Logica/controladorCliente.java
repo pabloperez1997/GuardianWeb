@@ -145,12 +145,17 @@ public class controladorCliente implements iControladorCliente {
      */
     @Override
     public boolean resetearPassword(String email) {
-      try {
+     try {
             cliente cliPassCambio = this.getCliente(email);
-            String passEncr = this.generarPassword();
-            cliPassCambio.setPassword(passEncr);
-            if (persistencia.modificar((Object) cliPassCambio)) {
-                utilidades.enviarConGMail(cliPassCambio.getCorreo(), "Reseteo de contraseña", "SU contraseña a sido reseteada con exito, puede ingresar al sitio con la siguiente contraseña: " + passEncr, null, null);
+            codificador a = new codificador();
+            String pass = this.generarPassword();
+            String hash = a.sha1(pass);
+            cliPassCambio.setPassword(hash);
+            if (persistencia.getInstance().modificar((Object)cliPassCambio)) {
+                utilidades.enviarConGMail(cliPassCambio.getCorreo(), 
+                        "Reseteo de contraseña", "Su contraseña a sido reseteada con exito, "
+                                + "puede ingresar al sitio con la siguiente contraseña: " + 
+                                pass, null, null);
 
                 return true;
             }
@@ -440,6 +445,20 @@ public class controladorCliente implements iControladorCliente {
             System.err.println(e.getMessage());
         }
         return mascotasSistema;
+    }
+    
+    @Override
+    public boolean altaClienteWeb(cliente clienteNuevo) {
+       
+            if (!persistencia.existe(clienteNuevo)) {
+                if (persistencia.persis((Object) clienteNuevo)) {
+
+                    return true;
+
+                }
+            }
+
+        return false;
     }
 //////////////////////////////////middleware para WebService///////////////
     @Override

@@ -18,7 +18,7 @@ import javax.persistence.Query;
 public class persistencia {
 
     private static persistencia instance;
-    private static String unidadPersistencia = "elGuardianServidorPU";
+    private static String unidadPersistencia = "GuardianSrvPU";
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(unidadPersistencia);
     private static final EntityManager em = emf.createEntityManager();
 

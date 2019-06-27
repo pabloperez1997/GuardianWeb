@@ -29,7 +29,8 @@ public class WSContCliente {
     private WebServiceContext context;
     private Endpoint endpoint = null;
     private String direccion;
-
+    
+    
     public WSContCliente(String direccionV) {
         this.direccion = direccionV;
     }
@@ -74,7 +75,7 @@ public class WSContCliente {
         clie.setDireccion(direccion);
         clie.setPassword(hash);
 
-        fabricaElGuardian.getInstance().getInstanceIControladorCliente().altaCliente(clie);
+        fabricaElGuardian.getInstance().getInstanceIControladorCliente().altaClienteWeb(clie);
     }
 
     @WebMethod

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
@@ -22,8 +24,10 @@ public class producto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(length = 100)
-    private String codigo;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long codigo;
+    
+    
     private String nombre;
     private int cantidad;
     @ManyToMany(mappedBy = "listaProducto")
@@ -107,11 +111,11 @@ public class producto implements Serializable {
         return "Codigo/" + codigo + "/Precio/" + precio + "/Disponible/" + disponible + "/Descripcion/" + descripcion;
     }
 
-    public String getCodigo() {
+    public Long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
 

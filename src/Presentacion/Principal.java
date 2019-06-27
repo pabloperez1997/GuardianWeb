@@ -9,11 +9,18 @@ import Logica.fabricaElGuardian;
 import Logica.iControladorCliente;
 import Logica.iControladorVentas;
 import Logica.utilidades;
+import Servicios.WSContCliente;
+import Servicios.WSContVentas;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.internet.AddressException;
 import javax.persistence.EntityManager;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,6 +33,7 @@ public class Principal extends javax.swing.JFrame {
     String cuerpo = "coso", asunto = "cospe";
     iControladorCliente ICC = fabricaElGuardian.getInstance().getInstanceIControladorCliente();
     iControladorVentas ICV = fabricaElGuardian.getInstance().getInstanceIControladorVentas();
+    
         //ICC.cargarMascotas();
     // private JDesktopPane escritorioPrincipal = new JDesktopPane();
 
@@ -40,6 +48,7 @@ public class Principal extends javax.swing.JFrame {
 
         // this.setVisible(true);
         initComponents();
+        this.PublicarServicios();
         // eM= controladorCliente.getEm();
     }
 
@@ -370,4 +379,48 @@ public class Principal extends javax.swing.JFrame {
     public void setEscritorioPrincipal(JDesktopPane escritorioPrincipal) {
         this.escritorioPrincipal = escritorioPrincipal;
     }
+    
+      public String LeerProperties(String caso) {
+        String URL = "";
+        Properties prop = new Properties();
+
+        InputStream archivo = null;
+
+        try { //C:\\Users\\Martin\\Documents\\PA\\Tarea 1\\culturarte
+            archivo = new FileInputStream(System.getProperty("user.dir") + "\\config\\config.properties");
+            prop.load(archivo);
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        //      http://     127.0.0.1               :      8280                     /servicio        Login
+        URL = "http://" + prop.getProperty("Ip") + ":" + prop.getProperty("Porth") + "/servicio" + prop.getProperty(caso);
+        return URL;
+    }
+      
+    
+//       
+
+    private void PublicarServicios() {
+        
+        String URL;
+        URL = this.LeerProperties("ConsultaUsuario");
+        WSContCliente WSCC = new WSContCliente(URL);
+        WSCC.publicar();
+
+        URL = this.LeerProperties("Ventas");
+        WSContVentas WSCV = new WSContVentas(URL);
+        WSCV.publicar();
+       
+//        URL = this.LeerProperties("ConsultaUsuario");
+//        WSContVentas WSCV = new WSContVentas(URL);
+//        WSCV.publicar();
+//        
+//        URL = this.LeerProperties("ConsultaUsuario");
+//        WSContVentas WSCV = new WSContVentas(URL);
+//        WSCV.publicar();
+    }
+
+    
+
 }

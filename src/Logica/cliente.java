@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -26,8 +27,6 @@ public class cliente implements Serializable {
     @Id
     @Column(length = 100)
     private String correo;
-
-
     @Column(length = 100)
     private String cedula;
     private String nombre;
@@ -35,6 +34,16 @@ public class cliente implements Serializable {
     private String direccion;
     private String tel_cel;
     
+    @OneToOne
+    private venta compra;
+
+    public venta getCompra() {
+           return compra;
+    }
+
+    public void setCompra(venta compra) {
+        this.compra = compra;
+    }
     private String password;
 
     public cliente() {
@@ -98,7 +107,7 @@ public class cliente implements Serializable {
     }
 
     public void setPassword(String password) {
-        this.password = this.autoEncriptarPasswdMD5(password);
+        this.password = password;
     }
 
     public List<reserva> getReservasCliente() {

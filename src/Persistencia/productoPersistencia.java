@@ -32,7 +32,7 @@ public class productoPersistencia extends persistencia {
         return res;
     }
 
-    public producto ObtenerProducto(String codigo) {
+    public producto ObtenerProducto(Long codigo) {
         producto p = null;
         try {
 

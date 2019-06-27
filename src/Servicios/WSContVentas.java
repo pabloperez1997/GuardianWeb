@@ -6,6 +6,7 @@
 package Servicios;
 
 import ListServicios.ListProductos;
+import Logica.cliente;
 import Logica.fabricaElGuardian;
 import Logica.producto;
 import javax.annotation.Resource;
@@ -60,7 +61,7 @@ public class WSContVentas {
     }
     
     @WebMethod
-    public producto obtenerProducto(@WebParam(name = "Codigo") String Codigo){
+    public producto obtenerProducto(@WebParam(name = "Codigo") Long Codigo){
         return (fabricaElGuardian.getInstance().getInstanceIControladorVentas().ObtenerProducto(Codigo));
     }
     
@@ -70,12 +71,12 @@ public class WSContVentas {
     }
 
     @WebMethod 
-    public void setaVender(@WebParam(name = "codigo")String codigo){
+    public void setaVender(@WebParam(name = "codigo")Long codigo){
         fabricaElGuardian.getInstance().getInstanceIControladorVentas().setaVender(codigo);
     }
 
     @WebMethod 
-    public void eliminaraVender(@WebParam(name = "codigo")String codigo){
+    public void eliminaraVender(@WebParam(name = "codigo")Long codigo){
         fabricaElGuardian.getInstance().getInstanceIControladorVentas().eliminaraVender(codigo);
     }
 
@@ -83,5 +84,10 @@ public class WSContVentas {
     @WebMethod
     public void limpiarVenta(){
          fabricaElGuardian.getInstance().getInstanceIControladorVentas().limpiarVenta();
+    }
+    
+    @WebMethod
+    public boolean finalizarVenta(@WebParam(name = "cliente")cliente cliente){
+         return fabricaElGuardian.getInstance().getInstanceIControladorVentas().finalizarVenta(cliente);
     }
 }

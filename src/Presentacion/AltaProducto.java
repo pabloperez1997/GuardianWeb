@@ -11,12 +11,16 @@ import Logica.producto;
 import Logica.utilidades;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.apache.commons.io.FilenameUtils;
 
 /**
  *
@@ -62,12 +66,10 @@ public class AltaProducto extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -86,8 +88,6 @@ public class AltaProducto extends javax.swing.JInternalFrame {
         });
 
         jLabel1.setText("Nombre:");
-
-        jLabel2.setText("Codigo:");
 
         jLabel3.setText("Descripción:");
 
@@ -151,15 +151,12 @@ public class AltaProducto extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addComponent(jCheckBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
@@ -179,10 +176,7 @@ public class AltaProducto extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jButton3))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(38, 38, 38)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -196,7 +190,7 @@ public class AltaProducto extends javax.swing.JInternalFrame {
                             .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(16, 16, 16)
                 .addComponent(jCheckBox1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
@@ -231,9 +225,9 @@ public class AltaProducto extends javax.swing.JInternalFrame {
         producto p = new producto();
         float precio = Float.parseFloat(jTextField3.getText());
 
-        int codigo = this.ICV.obtenerProductos().size() + 1;
+        //int codigo = this.ICV.obtenerProductos().size() + 1;
 
-        p.setCodigo(Integer.toString(codigo));
+        //p.setCodigo(Integer.toString(codigo));
         p.setNombre(jTextField2.getText());
         p.setPrecio(precio);
         p.setDescripcion(jTextField4.getText());
@@ -245,6 +239,7 @@ public class AltaProducto extends javax.swing.JInternalFrame {
             p.setDisponible(false);
         }
         util.salvarImagen(fotoProducto, ruta, generarNombreFoto(), 0);
+        
         /*  String extension = FilenameUtils.getExtension(path);
 
         InputStream inStream = null;
@@ -275,7 +270,7 @@ public class AltaProducto extends javax.swing.JInternalFrame {
         }*/
 
         if (fotoProducto != null) {
-            p.setFoto(ruta + generarNombreFoto());
+            p.setFoto(generarNombreFoto());
         } else {
             p.setFoto("sinfoto");
         }
@@ -342,18 +337,16 @@ public class AltaProducto extends javax.swing.JInternalFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
 
     private void selecImagen() {
-        BufferedImage image = util.levantarImagen(jTextField1);
+        BufferedImage image = util.levantarImagen(jTextField2);
         Foto.setIcon(new ImageIcon(image));
         System.out.println(Foto.getWidth() + "//" + Foto.getHeight());
         Image scaledInstance = image.getScaledInstance(Foto.getWidth(), Foto.getHeight(), Image.SCALE_DEFAULT);
@@ -363,8 +356,10 @@ public class AltaProducto extends javax.swing.JInternalFrame {
     }
 
     private String generarNombreFoto() {
+        
+
         String nombre;
-        nombre = "CODIGO:" + jTextField1.getText() + ":NOMBRE:" + jTextField2.getText();
+        nombre = jTextField2.getText()+"_"+jTextField4.getText();
         return nombre;
     }
 }

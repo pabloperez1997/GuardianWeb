@@ -74,7 +74,7 @@ public interface iControladorCliente {
     public abstract boolean modificarClienteWS(clienteWS clienteMod);
     
     
-    
+    public abstract boolean altaClienteWeb(cliente clienteNuevo);
     
     
     

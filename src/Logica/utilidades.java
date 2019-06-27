@@ -111,8 +111,8 @@ public class utilidades {
         try {
             message.setFrom(new InternetAddress(username));
             message.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(destinatario));
-            message.setSubject("prueba");
-            message.setText("cosop");
+            message.setSubject(asunto);
+            message.setText(cuerpo);
             javax.mail.Transport t = session.getTransport("smtp");
             t.connect(username, password);
             t.sendMessage(message, message.getAllRecipients());
