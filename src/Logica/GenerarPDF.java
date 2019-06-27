@@ -24,6 +24,8 @@ import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
  
 /**
  *
@@ -35,6 +37,7 @@ public class GenerarPDF {
     public static final String NEWLINE = "\n";
     public final PdfFont regular;
     public final PdfFont bold;
+    
 
  
     public GenerarPDF() throws IOException {
@@ -44,6 +47,8 @@ public class GenerarPDF {
         
     }
     public void createPdf(cliente c) throws IOException {
+        
+        List<producto> listaProd= c.getCompra().getDetalles().getListaProducto();
         File file = new File(DEST);
         file.getParentFile().mkdirs();
         PdfDocument pdf = new PdfDocument(new PdfWriter(DEST));
@@ -111,11 +116,11 @@ public class GenerarPDF {
         table.addHeaderCell(cell);
       //  for (int i = 0; i < 3; i++) {
             Cell[] headerFooter = new Cell[]{
-                    new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("#")),
+                    new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("Nro")),
                     new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("Producto")),
                     new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("Cantidad")),
                     new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("Precio Unitario")),
-                    new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("Total"))
+                    new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("SubTotal"))
             };
             for (Cell hfCell : headerFooter) {
                
@@ -123,20 +128,39 @@ public class GenerarPDF {
                 
             }
         //}
-        for (int counter = 1; counter < 9; counter++) {
+        
+         Iterator it = listaProd.iterator();
+         int counter = 1;
+         float total=0;
+            while (it.hasNext()){
+            producto pr=(producto) it.next();
             table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(String.valueOf(counter))));
-            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("key " + counter)));
-            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("value " + counter)));
-            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("value " + counter)));
-            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("value " + counter)));
-
-        }
+            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(pr.getNombre())));
+            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(String.valueOf(pr.getCantidad()))));
+            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("$"+String.valueOf((pr.getPrecio())))));
+            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("$"+String.valueOf((pr.getPrecio()*pr.getCantidad())))));
+            counter++;
+            total=total+(pr.getPrecio()*pr.getCantidad());
+                
+            }
+            
         
+        Paragraph p1 = new Paragraph()
+                .setMultipliedLeading(1.0f)
+                .add(new Text("Total: $"+total).setFont(bold)).add(NEWLINE);
+               
+        Cell total1 = new Cell()
+                .setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.RIGHT)
+                .add(p1);
         
+        table.addCell(new Cell().setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.RIGHT).add(new Paragraph("")));
+        table.addCell(new Cell().setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.RIGHT).add(new Paragraph("")));
+        table.addCell(new Cell().setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.RIGHT).add(new Paragraph("")));
+        table.addCell(new Cell().setBorder(Border.NO_BORDER).setTextAlignment(TextAlignment.RIGHT).add(new Paragraph("")));
+        table.addCell(total1);
         
-        
-       
         document.add(table);
+        
         document.close();
     }
     
