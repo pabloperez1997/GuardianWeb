@@ -11,16 +11,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
+
 
 /**
  *
  * @author jp
  */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public class servicio implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,7 +27,9 @@ public class servicio implements Serializable {
     private String descripcion;
     private int duracion;
     private float precio;
-    private Object tipoServicio;
+    private banio tipoBanio = null;
+    private esquila tipoEsquila = null;
+    private paseo tipoPaseo = null;
 
     public servicio() {
         super();
@@ -43,35 +42,40 @@ public class servicio implements Serializable {
     }
 
     public void setTipoServicio(Object objSrv) {
-        this.tipoServicio = objSrv;
-
+        if (objSrv instanceof banio) {
+            this.tipoBanio = (banio) objSrv;
+        }
+        if (objSrv instanceof esquila) {
+            this.tipoEsquila = (esquila) objSrv;
+        }
+        if (objSrv instanceof paseo) {
+            this.tipoPaseo = (paseo) objSrv;
+        }
     }
 
     public Object getTipoServicio() {
-        return this.tipoServicio;
+        if (isBanio() != null) {
+            return isBanio();
+        }
+        if (isEsquila() != null) {
+            return isEsquila();
+        }
+        if (isPaseo() != null) {
+            return isPaseo();
+        }
+        return null;
     }
 
     public banio isBanio() {
-
-        if (this.tipoServicio instanceof banio) {
-            return (banio) this.tipoServicio;
-        }
-        return null;
+        return this.tipoBanio;
     }
 
     public esquila isEsquila() {
-
-        if (this.tipoServicio instanceof esquila) {
-            return (esquila) this.tipoServicio;
-        }
-        return null;
+        return this.tipoEsquila;
     }
 
     public paseo isPaseo() {
-        if (this.tipoServicio instanceof paseo) {
-            return (paseo) this.tipoServicio;
-        }
-        return null;
+        return this.tipoPaseo;
     }
 
     public Long getId() {

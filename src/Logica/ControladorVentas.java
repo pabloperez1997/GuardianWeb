@@ -62,7 +62,7 @@ public class ControladorVentas implements iControladorVentas {
         productos = ventapersist.getListaproductos();
         for (int x = productos.size() - 1; x >= 0; x--) {
             producto produ = (producto) productos.get(x);
-            produ.setCantidad(1);
+           // produ.setCantidad(1);
         }
     }
 
@@ -84,7 +84,7 @@ public class ControladorVentas implements iControladorVentas {
         Iterator it = listaventa.iterator();
         while (it.hasNext()) {
             producto p = (producto) it.next();
-            preciototal = preciototal + (p.getPrecio() * p.getCantidad());
+          //  preciototal = preciototal + (p.getPrecio() * p.getCantidad());
         }
         return preciototal;
     }

@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -38,15 +39,28 @@ public class venta implements Serializable {
     @OneToOne
     cliente cliente;
 
-    @OneToMany(mappedBy = "venta")
-    private ArrayList<detalleVenta> detalles;
+    @OneToMany
+    private List<detalleVenta> detalles;
 
-    public ArrayList getDetalles() {
+    public List getDetalles() {
         return detalles;
     }
 
     public void setDetalles(detalleVenta detalles) {
         this.detalles.add(detalles);
+    }
+
+    public float getPrecioTotalVenta() {
+        float precioTT = 0;
+        for (detalleVenta detalle : detalles) {
+            precioTT += calcularPrecioT(detalle);
+        }
+        return precioTT;
+    }
+
+    private float calcularPrecioT(detalleVenta detalle) {
+        return detalle.getCantidad()*detalle.getProducto().getPrecio();
+        
     }
 
     public venta() {
