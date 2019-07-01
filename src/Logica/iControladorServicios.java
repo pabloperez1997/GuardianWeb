@@ -5,10 +5,16 @@
  */
 package Logica;
 
+import java.util.List;
+
 /**
  *
  * @author jp
  */
 public interface iControladorServicios {
+    public abstract List getServiciosXtipo(String srv);
+    public boolean cargarTiposServicios();
+    public boolean setPrecioPaseo(float precio);
+    public float getPrecioPaseo();
     
 }

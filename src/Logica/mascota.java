@@ -14,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -28,11 +30,20 @@ public class mascota implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String nombre;
-    @ManyToOne
+    
+    
+
+
+    @OneToOne
     private raza raza;
+    
+
+
     @ManyToOne
     private cliente cliente;
+    
     private String descripcion;
+    
     private String foto;
 
     public mascota() {
@@ -109,7 +120,7 @@ public class mascota implements Serializable {
 
     @Override
     public String toString() {
-        return "Id/" + id + "/Nombre/" + nombre + "/Raza/" + raza.getRaza() +"/Cliente/" + cliente.getCedula()+"/Descripcion/"+descripcion ;
+        return "Id/" + id + "/Nombre/" + nombre + "/Raza/" + raza.getRaza() +"/Cliente/" + cliente.getCorreo()+"/Descripcion/"+descripcion ;
     }
 
     public String getDescripcion() {

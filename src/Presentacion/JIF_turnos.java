@@ -211,7 +211,7 @@ public class JIF_turnos extends javax.swing.JInternalFrame {
 
     private void cargarTurnos() {
         List<turno> turnos = contReser.getTurnos();
-        if (turnos.size() > 0) {
+        if (!turnos.isEmpty()) {
             String[] cabeceras = util.cabeceras(turnos.get(0));
             DefaultTableModel nuevoModelo = new DefaultTableModel(cabeceras, 0);
             
@@ -277,4 +277,6 @@ public class JIF_turnos extends javax.swing.JInternalFrame {
         }
         jcb_hora.setModel(comboHoras.getModel());
     }
+    
+    
 }

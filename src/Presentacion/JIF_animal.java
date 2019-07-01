@@ -26,7 +26,16 @@ public class JIF_animal extends javax.swing.JInternalFrame {
     Long idMascota = null;
     private final JDesktopPane escritorio;
     controladorCliente contCliente = (controladorCliente) fabricaElGuardian.getInstance().getInstanceIControladorCliente();
+    String rutaFoto = contCliente.getRutaFotoImagenesMascotaLevantar();
     utilidades util = utilidades.getInstance();
+
+    public String getRutaFoto() {
+        return rutaFoto;
+    }
+
+    public void setRutaFoto(String rutaFoto) {
+        this.rutaFoto = rutaFoto;
+    }
 
     /**
      * Creates new form JIF_animal
@@ -290,10 +299,13 @@ public class JIF_animal extends javax.swing.JInternalFrame {
 
     private void cargarFoto(Long idMascota) {
         mascota mascota = (mascota) contCliente.getMascota(idMascota);
-        BufferedImage image = (BufferedImage) util.dameEstaImagen(mascota.getFoto());
-        jLab_foto.setIcon(new ImageIcon(mascota.getFoto()));
-        Image scaledInstance = image.getScaledInstance(200, 180, Image.SCALE_DEFAULT);
-        jLab_foto.setIcon(new ImageIcon(scaledInstance));
+        if (!mascota.getFoto().equals("N/A")) {
+            BufferedImage image = (BufferedImage) util.dameEstaImagen(rutaFoto + mascota.getFoto());
+            jLab_foto.setIcon(new ImageIcon(mascota.getFoto()));
+            Image scaledInstance = image.getScaledInstance(200, 180, Image.SCALE_DEFAULT);
+            jLab_foto.setIcon(new ImageIcon(scaledInstance));
+        }
+
     }
 
 }

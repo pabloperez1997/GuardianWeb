@@ -5,6 +5,7 @@
  */
 package Logica;
 
+import ObjetosParaWeb.*;
 import java.util.List;
 
 /**
@@ -29,6 +30,11 @@ public interface iControladorReservas {
     public abstract List getReservas();
     public abstract reserva getReserva(Long id);
     public abstract boolean nuevaReserva(reserva r);
+    public abstract boolean modificarReserva(reserva r);
     public abstract boolean eliminarReserva(Long id);
-    
+    public abstract boolean altaReservaWS(reservaWS r);
+    public abstract boolean modificarReservaWS(reservaWS r);
+    public abstract boolean eliminarReservaWS(reservaWS r);
+    public abstract List getReservasDelDia();
+    public abstract List<turno> getTurnos(String fecha);
 }

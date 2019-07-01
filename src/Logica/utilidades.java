@@ -15,7 +15,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
@@ -76,6 +82,57 @@ public class utilidades {
     }
 
     /**
+     *
+     * Funcion que recibe un objeto date "fecha" y la contidad de dias a
+     * incrementar (dias>0) o restar (dias<0)
+     *
+     * @param fecha
+     * @param dias
+     * @return
+     */
+    public static Date sumaRestaDias(Date fecha, int dias) {
+        if (dias == 0) {//si viene 0 se retorna la fecha sin cambios
+            return fecha;
+        }
+        Calendar calendar = Calendar.getInstance();//obtengo la instancia calendar
+        calendar.setTime(fecha);//setteo la fecha
+        calendar.add(Calendar.DAY_OF_YEAR, dias);// add puede sumar o restar dias 
+        return calendar.getTime();
+    }
+
+    /**
+     *
+     * Funcion que recibe un objeto date "fecha" y la contidad de horas a
+     * incrementar (horas>0) o restar (horas<0)
+     */
+    public static Date sumaRestaHoras(Date fecha, int horas) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(fecha);
+
+        calendar.add(Calendar.HOUR, horas);
+
+        return calendar.getTime(); // Retorno la fecha con las horas
+
+    }
+
+    /**
+     * funcion que retorna un String con LA fecha contenida en el Date tiene dos
+     * opciones de formato tipo 0 = dd/MM/yyy tipo 1 = dd/MM/yyy HH:mm by Jp
+     */
+    public String fechaString(Date date, int tipoF) {
+        Format formato = null;
+        if (tipoF == 0) {
+            formato = new SimpleDateFormat("dd/MM/yyyy");
+        }
+        if (tipoF == 1) {
+            formato = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        }
+        return formato.format(date);
+
+    }
+
+    /**
      * Funcion que envia correos por gmail.
      *
      * @param asunto Asunto del mensaje
@@ -86,7 +143,6 @@ public class utilidades {
      * @return <ul>
      * <li>true: si se envio correctamente el mail</li>
      * <li>false: si no se pudo enviar el mail</li>
-     *
      * </ul>
      * @throws javax.mail.internet.AddressException
      *
@@ -196,6 +252,13 @@ public class utilidades {
         return false;
     }
 
+    public boolean eliminarArchivo(File archivo) {
+        if (archivo.exists()) {
+            return archivo.delete();
+        }
+        return false;
+    }
+
     public boolean salvarImagen(BufferedImage imagen, String ruta, String nombre, int extencion) {
 
         String ext = ".png";
@@ -211,8 +274,9 @@ public class utilidades {
         File outputfile = new File(ruta + "/" + nombre + ext);
         boolean write = false;
         try {
-
-            write = ImageIO.write(imagen, "png", outputfile);
+            if (!outputfile.exists()) {
+                write = ImageIO.write(imagen, "png", outputfile);
+            }
 
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
@@ -249,6 +313,30 @@ public class utilidades {
         return imagenUp;
     }
 
+    public List levantarImagenconRuta(JTextField jt) {
+        List<Object> listaAretornar = new ArrayList<Object>();
+        BufferedImage imagenUp = null;
+        JFileChooser buscarArchivo = new JFileChooser();
+        try {
+
+            FileNameExtensionFilter filtroImagen = new FileNameExtensionFilter("JPG, PNG & GIF", "jpg", "png", "gif");
+            buscarArchivo.setFileFilter(filtroImagen);
+            int sele = buscarArchivo.showOpenDialog(jt);
+            if (sele == JFileChooser.APPROVE_OPTION) {
+                //  imagenUp = ImageIO.read(new File(buscarArchivo.getSelectedFile().getPath()));
+                System.out.println(buscarArchivo.getSelectedFile().getPath());
+                imagenUp = this.dameEstaImagen(buscarArchivo.getSelectedFile().getPath());
+                listaAretornar.add((Object) imagenUp);
+                listaAretornar.add((Object) buscarArchivo.getSelectedFile().getPath());
+            }
+
+        } catch (HeadlessException e) {
+            System.err.println(e.getMessage() + " Causa: " + e.getCause());
+        }
+        return listaAretornar;
+
+    }
+
     public File levantarArchivo(String ruta) {
         File archivo = null;
         try {
@@ -283,7 +371,8 @@ public class utilidades {
         } catch (IOException e) {
             System.err.println(e.getMessage() + " Causa: " + e.getCause());
         }
-        return null;
+
+        return imgbf;
     }
 
     /**
@@ -407,5 +496,110 @@ public class utilidades {
         if ((car < '0' || car > '9') && (car < ',' || car > '.')) {
             evt.consume();
         }
+    }
+
+    /**
+     * Funcion que retorna la fecha y hora actual del sistema
+     *
+     * @return Date
+     */
+    public Date getFechaActual() {
+
+        Calendar c = null;
+        try {
+            c = new GregorianCalendar();
+
+            // d = 
+            //formato = new SimpleDateFormat("yyyy/mm/dd");//le asigno un formato a la fecha
+            //d = new Date(formato.format((Date) c.getTime()));//creo un nuevo objeto date con la fecha devuelta por el sistema ya con formato 
+        } catch (Exception e) {
+            System.err.println("Error getFechaActual: " + e.getMessage() + " CAUSA: " + e.getCause());
+        }
+        //  System.out.println(formato.format((Date) c.getTime()));
+        //  return d;
+        return c.getTime();
+    }
+
+    public String getFechaActualParseoformato(String formato) {
+        String fecha = null;
+        Date d = new Date();
+        Format forma = null;
+        Calendar c = null;
+        try {
+            c = new GregorianCalendar();
+            d = c.getTime();
+            forma = new SimpleDateFormat(formato);
+            fecha = forma.format(d);
+
+        } catch (Exception e) {
+        }
+        return fecha;
+    }
+
+    /**
+     * Funcionn que convierte un objeto tipo Date a String con un formato
+     * especifico
+     *
+     * @param fecha
+     * @param formato
+     * @return
+     */
+    public String DateAString(Date fecha, String formato) {
+        String fec = null;
+        try {
+            if (formato != null && fecha != null) {
+
+                Format forma = new SimpleDateFormat(formato);
+                fec = forma.format(fecha);
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage()
+                    + "Cause: " + e.getCause());
+        }
+        return fec;
+    }
+    
+    /**
+     * Funcion que retorna un objeto date (dd/MM/yyyy HH:mm) y recibe como
+     * parametros dos String
+     *
+     *
+     * f String - si es null se setea solo la hora date (HH:mm) h String - si es
+     * null se setea solo la fecha date (dd/MM/yyyy)
+     *
+     * @param f
+     * @param h
+     * @return 
+     * @return:
+     * @null si f == null y h == null
+     *
+     */
+    public static Date fechaDate(String f, String h) {
+
+        Date fecha = null;
+        try {
+
+            SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formato2 = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            SimpleDateFormat formato3 = new SimpleDateFormat("HH:mm");
+            if (f != null) {
+                if (h != null) {
+                    fecha = formato2.parse(f + " " + h);
+
+                }
+                if (h == null) {
+                    fecha = formato.parse(f);
+
+                }
+            }
+            if (f == null) {
+                fecha = formato3.parse(h);
+            }
+
+        } catch (ParseException ex) {
+            System.err.println(ex.getMessage());
+        }
+        return fecha;
+
     }
 }

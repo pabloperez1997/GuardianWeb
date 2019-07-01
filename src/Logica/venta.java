@@ -6,14 +6,17 @@
 package Logica;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -30,34 +33,48 @@ public class venta implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fecha;
-    
-    
-  
-    
-    @OneToOne
-    private detalleVenta detalles;
 
-    public detalleVenta getDetalles() {
+
+    @ManyToOne
+    cliente cliente;
+
+    @OneToMany (cascade = CascadeType.ALL)
+    private List<detalleVenta> detalles;
+
+    public List getDetalles() {
         return detalles;
     }
 
     public void setDetalles(detalleVenta detalles) {
-        this.detalles = detalles;
+        this.detalles.add(detalles);
     }
+
+    public float getPrecioTotalVenta() {
+        float precioTT = 0;
+        for (detalleVenta detalle : detalles) {
+            precioTT += calcularPrecioT(detalle);
+        }
+        return precioTT;
+    }
+
+    private float calcularPrecioT(detalleVenta detalle) {
+        return detalle.getCantidad()*detalle.getProducto().getPrecio();
+        
+    }
+
     public venta() {
     }
 
-   /* public float getPrecioTotalFinal() {
-        float precioF = 0;
-        Iterator<detalleVenta> iterator = detalles.iterator();
-        while (iterator.hasNext()) {
-            precioF = +(float) iterator.next().getPrecioTotalProductos();
-        }
-        return precioF;
-    }*/
+    public cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(cliente cliente) {
+        this.cliente = cliente;
+    }
 
     public Long getId() {
         return id;
@@ -108,7 +125,5 @@ public class venta implements Serializable {
     public String toString() {
         return "venta{" + "id=" + id + ", fecha=" + fecha + ", detalles=" + detalles + '}';
     }
-
-  
 
 }

@@ -8,6 +8,7 @@ package Logica;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,13 +22,15 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class cliente implements Serializable {
-
+    
     private static final long serialVersionUID = 1L;
     @Id
     @Column(length = 100)
     private String correo;
-
-
+    
+    @OneToMany
+    private List<venta> compras;
+    
     @Column(length = 100)
     private String cedula;
     private String nombre;
@@ -36,85 +39,89 @@ public class cliente implements Serializable {
     private String tel_cel;
     
     private String password;
-
+    
     public cliente() {
     }
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
     private List<reserva> reservasCliente;
-
-    @OneToMany(mappedBy = "cliente")
+    
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<mascota> mascotasCliente;
-
+    
     public String getCorreo() {
         return correo;
     }
-
+    
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-
+    
     public String getCedula() {
         return this.cedula;
     }
-
+    
     public void setCedula(String cedula) {
         this.cedula = cedula;
     }
-
+    
     public String getNombre() {
         return nombre;
     }
-
+    
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
     public String getApellido() {
         return apellido;
     }
-
+    
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
-
+    
     public String getDireccion() {
         return direccion;
     }
-
+    
     public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
-
+    
     public String getTel_cel() {
         return tel_cel;
     }
-
+    
     public void setTel_cel(String tel_cel) {
         this.tel_cel = tel_cel;
     }
-
+    
     public String getPassword() {
         return password;
     }
-
+    
     public void setPassword(String password) {
-        this.password = this.autoEncriptarPasswdMD5(password);
+        this.password = password;
     }
-
+    
     public List<reserva> getReservasCliente() {
         return reservasCliente;
     }
-
+    
     public void setReservasCliente(List<reserva> reservasCliente) {
         this.reservasCliente = reservasCliente;
     }
-
+    
     public List<mascota> getMascotasCliente() {
         return mascotasCliente;
     }
-
+    
     public void setMascotasCliente(List<mascota> mascotasCliente) {
         this.mascotasCliente = mascotasCliente;
+    }
+
+    public boolean setVenta(venta v) {
+         return this.compras.add(v);
     }
 
     @Override
@@ -131,7 +138,7 @@ public class cliente implements Serializable {
         hash = 37 * hash + Objects.hashCode(this.password);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -170,18 +177,18 @@ public class cliente implements Serializable {
         }
         return Objects.equals(this.mascotasCliente, other.mascotasCliente);
     }
-
+    
     @Override
     public String toString() {
         return "Nombre/" + nombre + "/Apellido/" + apellido + "/Cedula/" + cedula + "/Telefono/" + tel_cel + "/Direccion/" + direccion + "/Email/" + correo;
 //return "cliente{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + ", direccion=" + direccion + ", tel_cel=" + tel_cel + ", correo=" + correo + ", reservasCliente=" + reservasCliente + ", mascotasCliente=" + mascotasCliente + '}';
     }
-
+    
     public String toStringTabla() {
         return "Nombre/" + nombre + "/Apellido/" + apellido + "/Cedula/" + cedula + "/Telefono/" + tel_cel + "/Direccion/" + direccion + "/Email/" + correo;
     }
 
-    private String autoEncriptarPasswdMD5(String pass) {
+    /* private String autoEncriptarPasswdMD5(String pass) {
         try {
 
             java.security.MessageDigest md = java.security.MessageDigest
@@ -198,9 +205,9 @@ public class cliente implements Serializable {
             System.out.println(e.getMessage());
         }
         return null;
-    }
+    }*/
 
-    /*
+ /*
   
      */
     public cliente(cliente clienteCop) {
@@ -214,11 +221,11 @@ public class cliente implements Serializable {
         this.mascotasCliente = clienteCop.mascotasCliente;
         this.password = clienteCop.password;
     }
-
+    
     public boolean passwordValido(String passw) {
         return passw.equals(password);
     }
-
+    
     public void modificarme(cliente cli) {
         if (!this.getNombre().equals(cli.getNombre()) && cli.getNombre() != null) {
             this.setNombre(cli.getNombre());
@@ -240,6 +247,5 @@ public class cliente implements Serializable {
         }
         //revisar comparacion de arreglos cosas
     }
-
-   
+    
 }

@@ -5,15 +5,27 @@
  */
 package Presentacion;
 
+import Logica.ControladorReservas;
+import Logica.controladorServicios;
 import Logica.fabricaElGuardian;
+import Logica.hiloHijo;
+import Logica.hiloMadre;
 import Logica.iControladorCliente;
+import Logica.iControladorReservas;
 import Logica.iControladorVentas;
+import Logica.reserva;
 import Logica.utilidades;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.internet.AddressException;
 import javax.persistence.EntityManager;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -26,8 +38,10 @@ public class Principal extends javax.swing.JFrame {
     String cuerpo = "coso", asunto = "cospe";
     iControladorCliente ICC = fabricaElGuardian.getInstance().getInstanceIControladorCliente();
     iControladorVentas ICV = fabricaElGuardian.getInstance().getInstanceIControladorVentas();
-        //ICC.cargarMascotas();
+    iControladorReservas ICR = fabricaElGuardian.getInstance().getInstanceIControladorReservas();
+    //ICC.cargarMascotas();
     // private JDesktopPane escritorioPrincipal = new JDesktopPane();
+    private Long idReserva;
 
     /**
      * Creates new form Principal
@@ -36,10 +50,20 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         eM = Persistencia.persistencia.getInstance().getEm();
-        ICV.cargarproductos();
-
-        // this.setVisible(true);
+        eM.getTransaction().begin();
+        eM.flush();
+        eM.getTransaction().commit();
+        UIManager.LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
+        for (UIManager.LookAndFeelInfo laf : installedLookAndFeels) {
+        }
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+            System.err.println(e.getMessage());
+        }
         initComponents();
+        cargarInicio();
+
         // eM= controladorCliente.getEm();
     }
 
@@ -54,10 +78,10 @@ public class Principal extends javax.swing.JFrame {
 
         escritorioPrincipal = new javax.swing.JDesktopPane();
         btn_reservar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btn_modReserva = new javax.swing.JButton();
+        btn_eliminarReserva = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTableReservas = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jM_cliente = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -75,14 +99,28 @@ public class Principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        btn_reservar.setText("jButton1");
+        btn_reservar.setText("Reservar");
         btn_reservar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_reservarActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        btn_modReserva.setText("Modificar");
+        btn_modReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modReservaActionPerformed(evt);
+            }
+        });
+
+        btn_eliminarReserva.setText("Eliminar");
+        btn_eliminarReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarReservaActionPerformed(evt);
+            }
+        });
+
+        jTableReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -93,44 +131,46 @@ public class Principal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
-
-        jButton1.setText("jButton1");
-
-        jButton2.setText("jButton2");
+        jTableReservas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableReservasMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTableReservas);
 
         escritorioPrincipal.setLayer(btn_reservar, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        escritorioPrincipal.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        escritorioPrincipal.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        escritorioPrincipal.setLayer(jButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorioPrincipal.setLayer(btn_modReserva, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorioPrincipal.setLayer(btn_eliminarReserva, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorioPrincipal.setLayer(jScrollPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout escritorioPrincipalLayout = new javax.swing.GroupLayout(escritorioPrincipal);
         escritorioPrincipal.setLayout(escritorioPrincipalLayout);
         escritorioPrincipalLayout.setHorizontalGroup(
             escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioPrincipalLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 597, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btn_reservar, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(btn_modReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(btn_eliminarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(813, 813, 813))
+            .addGroup(escritorioPrincipalLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(115, Short.MAX_VALUE))
         );
         escritorioPrincipalLayout.setVerticalGroup(
             escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(escritorioPrincipalLayout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(escritorioPrincipalLayout.createSequentialGroup()
-                        .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioPrincipalLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_modReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_eliminarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(347, Short.MAX_VALUE))
         );
 
         jM_cliente.setText("Cliente");
@@ -223,11 +263,15 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorioPrincipal)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(escritorioPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorioPrincipal)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(escritorioPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -269,7 +313,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenANimalActionPerformed
 
     private void btn_reservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reservarActionPerformed
-        JIF_reservarTurno reservaTurno = new JIF_reservarTurno();
+        JIF_reservarTurno reservaTurno = new JIF_reservarTurno(escritorioPrincipal);
         this.escritorioPrincipal.add(reservaTurno);
         reservaTurno.setVisible(true);
     }//GEN-LAST:event_btn_reservarActionPerformed
@@ -282,53 +326,62 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenItem_banioEsquilaActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        
+        /*        
         AltaProducto altaP = new AltaProducto();
         this.escritorioPrincipal.add(altaP);
-        altaP.setVisible(true);        // TODO add your handling code here:
+        altaP.setVisible(true);     */   // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuIAltaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuIAltaVentaActionPerformed
-        AltaVenta altv = new AltaVenta();
+        /*        AltaVenta altv = new AltaVenta();
         this.escritorioPrincipal.add(altv);
-        altv.setVisible(true);        // TODO add your handling code here:
+        altv.setVisible(true);   */     // TODO add your handling code here:
     }//GEN-LAST:event_jMenuIAltaVentaActionPerformed
 
     private void jMenuListarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuListarProductosActionPerformed
-        ListarProductos lsProd = new ListarProductos(this.escritorioPrincipal);
+        /*        ListarProductos lsProd = new ListarProductos(this.escritorioPrincipal);
         this.escritorioPrincipal.add(lsProd);
-        lsProd.setVisible(true);
+        lsProd.setVisible(true);*/
 // TODO add your handling code here:
     }//GEN-LAST:event_jMenuListarProductosActionPerformed
+
+    private void btn_modReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modReservaActionPerformed
+        if (this.idReserva != null) {
+            if (JOptionPane.showConfirmDialog(this, "Desea modificar la reserva?") == 0) {
+                JIF_modificarReserva nuevoModificarReserva = new JIF_modificarReserva(this.escritorioPrincipal, this.idReserva);
+                escritorioPrincipal.add(nuevoModificarReserva);
+                nuevoModificarReserva.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_btn_modReservaActionPerformed
+
+    private void jTableReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableReservasMouseClicked
+        int row = jTableReservas.rowAtPoint(evt.getPoint());
+        this.idReserva = (Long) jTableReservas.getValueAt(row, 0);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTableReservasMouseClicked
+
+    private void btn_eliminarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarReservaActionPerformed
+        if (this.idReserva != null) {
+            if (JOptionPane.showConfirmDialog(this, "Desea eliminar la reserva?") == 0) {
+                if (ControladorReservas.getInstance().eliminarReserva(this.idReserva) == true) {
+                    JOptionPane.showMessageDialog(this, "Se ha eliminado la reserva!");
+                    cargarReservas();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar la reserva!");
+                }
+                
+            }
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_eliminarReservaActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -342,10 +395,10 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu JM_Configuracion;
+    private javax.swing.JButton btn_eliminarReserva;
+    private javax.swing.JButton btn_modReserva;
     private javax.swing.JButton btn_reservar;
     private javax.swing.JDesktopPane escritorioPrincipal;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jM_animal;
     private javax.swing.JMenu jM_cliente;
     private javax.swing.JMenuItem jMenANimal;
@@ -359,8 +412,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuListarProductos;
     private javax.swing.JMenu jMenuProductos;
     private javax.swing.JMenu jMenuVentas;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTableReservas;
     // End of variables declaration//GEN-END:variables
 
     public JDesktopPane getEscritorioPrincipal() {
@@ -369,5 +422,49 @@ public class Principal extends javax.swing.JFrame {
     
     public void setEscritorioPrincipal(JDesktopPane escritorioPrincipal) {
         this.escritorioPrincipal = escritorioPrincipal;
+    }
+    
+    private void cargarInicio() {
+        
+        ICV.cargarproductos();
+        // cargarReservas();
+        hiloMadre m = new hiloMadre();
+        m.start();
+        jTableReservas.setEnabled(true);
+        hiloHijo hhijo = new hiloHijo();
+        //  cargarReservas();
+        hhijo.setTablaParaLLenar(this.jTableReservas);
+        m.agregarHilo("h1", hhijo);
+        /* try {
+            m.sleep(1000);
+            } catch (Exception e) {
+            }*/
+        // m.pararHilo("h1");
+
+    }
+    
+    public void cargarModelo(DefaultTableModel model) {
+        jTableReservas.setModel(model);
+    }
+    
+    private void cargarReservas() {
+        try {
+            List<reserva> reservasDelDia = (List<reserva>) ICR.getReservasDelDia();
+            if (!reservasDelDia.isEmpty()) {
+                String[] cabeceras = util.cabeceras(reservasDelDia.get(0));
+                DefaultTableModel dtm = new DefaultTableModel(cabeceras, 0);
+                for (reserva r : reservasDelDia) {
+                    Object[] data = {r.getId(), r.getFechaReserva(), r.getDescripcion(), r.isCorrea(), r.isBozal(), r.getMascota().getNombre(), r.getCliente().getCorreo()};
+                    dtm.addRow(data);
+                }
+                //jTableReservas.setEnabled(true);
+                this.jTableReservas.setModel(dtm);
+            } else {
+                //  jTableReservas.setModel(new DefaultTableModel(0, 0));
+                this.jTableReservas.setEnabled(false);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
 }

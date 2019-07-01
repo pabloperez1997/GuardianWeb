@@ -12,8 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
-
 /**
  *
  * @author jp
@@ -36,6 +34,7 @@ public class tipoBanio implements Serializable {
     public void setPrecio(float precio) {
         this.precio = precio;
     }
+
     public tipoBanio() {
     }
 
@@ -57,6 +56,11 @@ public class tipoBanio implements Serializable {
      */
     public String getTipoBanio() {
         return tipoBanio;
+    }
+
+    public String getTipo() {
+        return this.tipoBanio;
+
     }
 
     public void setTipoBanio(String tipoBaño) {
@@ -108,11 +112,9 @@ public class tipoBanio implements Serializable {
         return true;
     }
 
-
-
     @Override
     public String toString() {
-        return "ID/" + id + "/Tipo de Baño/" + tipoBanio + "/Descripcion/" + descripcion+"/Precio/"+precio;
+        return "/Id/" + id + "/Tipo de Baño/" + tipoBanio + "/Descripcion/" + descripcion + "/Precio/" + precio;
     }
 
 }

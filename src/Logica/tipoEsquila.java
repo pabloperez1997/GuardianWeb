@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
 /**
  *
  * @author jp
@@ -39,6 +38,11 @@ public class tipoEsquila implements Serializable {
     }
 
     public tipoEsquila() {
+    }
+
+
+    public String getTipo() {
+        return this.tipoEsquila;
     }
 
     public String getTipoEsquila() {
@@ -104,7 +108,9 @@ public class tipoEsquila implements Serializable {
 
     @Override
     public String toString() {
-        return "ID/" + id + "/TIpo Esquila/" + tipoEsquila + "/Descripcion/" + descripcion + "/Precio/" + precio;
+        return "/Id/" + id + "/TIpo Esquila/" + tipoEsquila + "/Descripcion/" + descripcion + "/Precio/" + precio;
     }
+
+    
 
 }
