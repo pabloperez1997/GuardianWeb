@@ -22,21 +22,14 @@ import Logica.utilidades;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerListModel;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -44,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
  * @author jp
  */
 public class JIF_reservarTurno extends javax.swing.JInternalFrame {
+/////////////////variables
 
     private controladorCliente contC = controladorCliente.getInstance();
     private ControladorReservas contRes = ControladorReservas.getInstance();
@@ -52,16 +46,16 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
     private List<mascota> mascotasCli = null;
     private mascota mascotaCliente = null;
     List<turno> turnosDisponibles = new ArrayList<>();
-    private List<String> serviciosLista = new ArrayList<>();
     private controladorServicios contSrv = controladorServicios.getInstance();
     private JDesktopPane escritorio = null;
     ArrayList<Object> listaBanios = new ArrayList<>();
     ArrayList<Object> listaEsquilas = new ArrayList<>();
-    private HashMap<String, servicio> listaServicios = new HashMap<>();
     private String idCliente;
     private Long idMascota;
     private int conntador = 0;
+    private String turnoString;
 
+    /////////////////
     public cliente getCliente() {
         return cliente;
     }
@@ -73,12 +67,26 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
     /**
      * Creates new form JIF_reservarTurno
      */
+    private void controlJDATE() {
+
+        Date min = util.getFechaActual();//fecha minima
+        Date max = utilidades.sumaRestaDias(util.getFechaActual(), 7);//fecha maxima 7 dias a partir de la actual
+        JDTFechaReserva.getDateEditor().setEnabled(false);//desabilito el jtext editor
+        JDTFechaReserva.setMaxSelectableDate(max);//seteo ma fecha maxima
+        JDTFechaReserva.setMinSelectableDate(min);//seteo la fecha minima
+        //en este evento se le pueden agregar llamadas a opciones mentodos etc que se ejecutan cuando cambia la fecha (uso la interfaz lambda)
+        /* JDTFechaReserva.getDateEditor().addPropertyChangeListener((PropertyChangeEvent e) -> {
+            JOptionPane.showMessageDialog(rootPane, "la fecha es " + JDTFechaReserva.getDate());
+        // btn_turno.setEnabled(false);
+        });*/
+
+    }
+
     public JIF_reservarTurno(JDesktopPane escritorioP) {
         initComponents();
         this.escritorio = escritorioP;
         inicio();
-
-        // util.getFechaActual();
+        controlJDATE();
     }
 
     private void inicio() {
@@ -87,15 +95,15 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         jList_Clientes.setModel(limpio);
         jList_Tipo.setModel(limpio);
         jList_servicio.setModel(limpio);
-        SpinnerModel nnmodel = new SpinnerNumberModel(0, 0, 5, 1);//creo un modelo con los numeros
+        /*SpinnerModel nnmodel = new SpinnerNumberModel(0, 0, 2, 1);//creo un modelo con los numeros
         jSpinnerDuracion.setModel(nnmodel);
-        JSpinner.DefaultEditor defaultEditor = new JSpinner.DefaultEditor(new JSpinner(nnmodel));
-        jSpinnerDuracion.setEditor(defaultEditor);
-        //   jSpinnerDuracion.setEditor(new JSpinner.DefaultEditor(new JSpinner(nnmodel)));//seteo un editor con mi modelo, esto es para que no pueda editar
+        JSpinner.DefaultEditor defaultEditor = new JSpinner.DefaultEditor(new JSpinner(nnmodel));*/
+ /*jSpinnerDuracion.setEditor(defaultEditor);*/
         cargarClientes();//carga los clientes
-        cargarTurnosDisponibles();//carga los turnos
+        //cargarTurnosDisponibles();//carga los turnos
         cargarServiciosList();//carga los servicios la lista
         contSrv.cargarTiposServicios();//carga los tipos de servicios
+
     }
 
     /**
@@ -114,7 +122,6 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTabla_mascotas = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jCombo_Turnos = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtxt_descripcion = new javax.swing.JTextArea();
@@ -126,14 +133,15 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jList_Tipo = new javax.swing.JList<>();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         btn_aceptar = new javax.swing.JButton();
         btn_cancelar = new javax.swing.JButton();
         btn_nuevoTipo = new javax.swing.JButton();
         Jlab_foto = new javax.swing.JLabel();
-        jSpinnerDuracion = new javax.swing.JSpinner();
-        jLabTurnos = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        JDTFechaReserva = new com.toedter.calendar.JDateChooser();
+        btn_turno = new javax.swing.JButton();
+        jlabelTurno = new javax.swing.JLabel();
 
         setResizable(true);
 
@@ -171,8 +179,6 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Mascota");
 
-        jCombo_Turnos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel2.setText("Turno");
 
         jtxt_descripcion.setColumns(20);
@@ -206,8 +212,6 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
 
         jLabel6.setText("Tipo");
 
-        jLabel7.setText("Duracion");
-
         jSeparator3.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         btn_aceptar.setText("Aceptar");
@@ -233,7 +237,37 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
 
         Jlab_foto.setText("Foto");
 
-        jLabTurnos.setText("Turno/s");
+        jLabel4.setText("Fecha");
+
+        JDTFechaReserva.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                JDTFechaReservaMousePressed(evt);
+            }
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JDTFechaReservaMouseClicked(evt);
+            }
+        });
+        JDTFechaReserva.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+                JDTFechaReservaCaretPositionChanged(evt);
+            }
+        });
+        JDTFechaReserva.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                JDTFechaReservaPropertyChange(evt);
+            }
+        });
+
+        btn_turno.setText("Seleccionar Turno");
+        btn_turno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_turnoActionPerformed(evt);
+            }
+        });
+
+        jlabelTurno.setText("TURNO");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -256,8 +290,14 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(30, 30, 30)
+                        .addComponent(btn_aceptar)
+                        .addGap(50, 50, 50)
+                        .addComponent(btn_cancelar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -268,24 +308,22 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
                                     .addComponent(jScrollPane5)
                                     .addComponent(btn_nuevoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addGap(18, 18, 18)
-                                .addComponent(jSpinnerDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(jLabTurnos))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
-                                    .addComponent(jCombo_Turnos, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(btn_aceptar)
-                        .addGap(50, 50, 50)
-                        .addComponent(btn_cancelar)))
-                .addContainerGap(105, Short.MAX_VALUE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(118, 118, 118)
+                                        .addComponent(jLabel4))
+                                    .addComponent(btn_turno))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(JDTFechaReserva, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(25, 25, 25)
+                                        .addComponent(jlabelTurno)
+                                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,14 +347,20 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
             .addComponent(jSeparator3)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jCombo_Turnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel4))
+                    .addComponent(JDTFechaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(13, 13, 13)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_turno)
+                    .addComponent(jlabelTurno))
+                .addGap(49, 49, 49)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
@@ -327,12 +371,7 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
                         .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_nuevoTipo)))
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jSpinnerDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabTurnos))
-                .addGap(12, 12, 12)
+                .addGap(59, 59, 59)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_aceptar)
                     .addComponent(btn_cancelar))
@@ -343,7 +382,10 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -389,21 +431,48 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jList_ClientesMouseClicked
 
+    private void JDTFechaReservaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JDTFechaReservaMouseClicked
+
+    }//GEN-LAST:event_JDTFechaReservaMouseClicked
+
+    private void JDTFechaReservaCaretPositionChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_JDTFechaReservaCaretPositionChanged
+
+    }//GEN-LAST:event_JDTFechaReservaCaretPositionChanged
+
+    private void JDTFechaReservaMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JDTFechaReservaMousePressed
+
+
+    }//GEN-LAST:event_JDTFechaReservaMousePressed
+
+    private void JDTFechaReservaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_JDTFechaReservaPropertyChange
+
+    }//GEN-LAST:event_JDTFechaReservaPropertyChange
+
+    private void btn_turnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_turnoActionPerformed
+        if (JDTFechaReserva.getDate() != null) {
+            Object showInputDialog = JOptionPane.showInputDialog(this, "Seleccione un turno:", "Turnos", JOptionPane.DEFAULT_OPTION, null, getTurnos(), getTurnos()[0]);
+            this.turnoString = (String) showInputDialog;
+            this.jlabelTurno.setText((String) showInputDialog);
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una fecha!");
+        }
+    }//GEN-LAST:event_btn_turnoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JDateChooser JDTFechaReserva;
     private javax.swing.JLabel Jlab_foto;
     private javax.swing.JButton btn_aceptar;
     private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_nuevoTipo;
-    private javax.swing.JComboBox<String> jCombo_Turnos;
-    private javax.swing.JLabel jLabTurnos;
+    private javax.swing.JButton btn_turno;
     private javax.swing.JLabel jLab_idMascota;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JList<String> jList_Clientes;
     private javax.swing.JList<String> jList_Tipo;
     private javax.swing.JList<String> jList_servicio;
@@ -414,9 +483,9 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSpinner jSpinnerDuracion;
     private javax.swing.JTable jTabla_mascotas;
     private javax.swing.JLabel jlabClientes;
+    private javax.swing.JLabel jlabelTurno;
     private javax.swing.JTextArea jtxt_descripcion;
     // End of variables declaration//GEN-END:variables
 
@@ -492,16 +561,26 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         }
     }
 
-    private void cargarTurnosDisponibles() {
-        this.turnosDisponibles = (ArrayList<turno>) contRes.getTurnos();
+    private Object[] cargarTurnosDisponibles(Date fecha) {
         int numTurno = 1;
-        JComboBox<String> comboTurnos = new JComboBox<>();
-        comboTurnos.addItem("Seleccionar Turno");
-        for (turno turnoDisponible : turnosDisponibles) {
-            comboTurnos.addItem("Turno: " + numTurno + " -- " + turnoDisponible.getHora() + " Hs");
-            numTurno++;
+
+        String[] turnos = null;
+
+        if (fecha != null) {
+            this.turnosDisponibles = contRes.getTurnos(util.DateAString(fecha, "yyyy-MM-dd"));
+
+            turnos = new String[turnosDisponibles.size() + 1];
+            turnos[0] = "Seleccionar Turno";
+            Iterator it = turnosDisponibles.iterator();
+            while (it.hasNext()) {
+                turno name = (turno) it.next();
+                turnos[numTurno] = ("Turno: " + numTurno + " -- " + name.getHora() + " Hs");
+                numTurno++;
+            }
+
         }
-        jCombo_Turnos.setModel(comboTurnos.getModel());
+
+        return turnos;
     }
 
     private turno getTurno(String hora) {
@@ -519,10 +598,6 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         String[] corte1 = valorCombo.split(" -- ");
         String[] corteFInal = corte1[1].split(" ");
         return corteFInal[0];
-
-    }
-
-    private void cargarServiciosDisponibles() {
 
     }
 
@@ -586,13 +661,15 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         }
     }
 
+    private void limpiar() {
+        System.out.print("Limpiame todoooo");
+        JDTFechaReserva.setDate(new Date());
+        inicio();
+
+    }
+
     private boolean validarDatosServicio() {
 
-        if (jCombo_Turnos.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un turno!");
-            jCombo_Turnos.requestFocus(true);
-            return false;
-        }
         if (jList_servicio.getSelectedValue() == null) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar un servicio!");
             jList_servicio.requestFocus();
@@ -612,12 +689,7 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
                 return false;
             }
         }
-        if (((int) jSpinnerDuracion.getValue()) == 0) {
-            JOptionPane.showMessageDialog(this, "La duracion debe ser mayor a 0");
-            jSpinnerDuracion.requestFocus(true);
-            return false;
 
-        }
         return true;
     }
 
@@ -632,9 +704,9 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
             jTabla_mascotas.requestFocus(true);
             return false;
         }
-        if (jCombo_Turnos.getSelectedIndex() == 0) {
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un turno!");
-            jCombo_Turnos.requestFocus(true);
+        if (JDTFechaReserva.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una Fecha!");
+            JDTFechaReserva.requestFocus(true);
             return false;
         }
         if (jList_servicio.getSelectedValue() == null) {
@@ -651,42 +723,78 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         }
         if (jList_servicio.getSelectedValue().equals("Esquila")) {
             if (jList_Tipo.getSelectedValue() == null) {
-                JOptionPane.showMessageDialog(this, "Debe seleccionar unn tipo de esquila!");
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo de esquila!");
                 jList_Tipo.requestFocus(true);
                 return false;
             }
         }
-        if (((int) jSpinnerDuracion.getValue()) == 0) {
-            JOptionPane.showMessageDialog(this, "La duracion debe ser mayor a 0");
-            jSpinnerDuracion.requestFocus(true);
+        if (this.turnoString == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un turno!");
+            btn_turno.requestFocus(true);
             return false;
-
         }
         return true;
     }
 
     private servicio crearServicio() {
-        servicio nuevoServicio = new servicio();
-
+        //   servicio nuevoServicio = new servicio();
         try {
-
             if (jList_servicio.getSelectedValue().equals("Baño")) {
+                System.out.println("Creo un banio");
+                banio nuevoServicio = new banio();
                 nuevoServicio.setDescripcion("Descripcion: " + jtxt_descripcion.getText()
                         + " Descripcion Tipo Servicio: " + getTipoBanio().getDescripcion());
+//                nuevoServicio.setDuracion(Integer.parseInt(jSpinnerDuracion.getValue().toString()));
+                nuevoServicio.setTipoDeBanio(getTipoBanio());
+                nuevoServicio.setPrecio(getTipoBanio().getPrecio());
+                System.out.println("Retorno el banio");
+                return nuevoServicio;
+
+            }
+            if (jList_servicio.getSelectedValue().equals("Esquila")) {
+                System.out.println("Creo un esquila");
+                esquila nuevoServicio = new esquila();
+                nuevoServicio.setDescripcion("Descripcion: " + jtxt_descripcion.getText()
+                        + " Descripcion Tipo Servicio: " + getTipoEsquila().getDescripcion());
+//                nuevoServicio.setDuracion((int) jSpinnerDuracion.getValue());
+                nuevoServicio.setTipoDeEsquila(getTipoEsquila());
+                nuevoServicio.setPrecio(getTipoEsquila().getPrecio());
+                System.out.println("Retorno el esquila");
+                return nuevoServicio;
+
+            }
+            if (jList_servicio.getSelectedValue().equals("Paseo")) {
+                System.out.println("Creo un paseo");
+                paseo nuevoServicio = new paseo();
+                //    nuevoServicio.setDuracion((int) jSpinnerDuracion.getValue());
+                nuevoServicio.setPrecio(getPrecioActualPaseo());
+                nuevoServicio.setDescripcion("Descripcion: " + jtxt_descripcion.getText());
+                System.out.println("Retorno el paseo");
+                return nuevoServicio;
+            }
+
+            /*  if (jList_servicio.getSelectedValue().equals("Baño")) {
+                String descripcion = "Descripcion: " + jtxt_descripcion.getText();
+                descripcion += " Descripcion Tipo Servicio: " + getTipoBanio().getDescripcion();
+                nuevoServicio.setDescripcion(descripcion);
                 nuevoServicio.setDuracion(Integer.parseInt(jSpinnerDuracion.getValue().toString()));
                 banio nbanio = new banio();
                 nbanio.setTipoDeBanio(getTipoBanio());
                 nuevoServicio.setTipoServicio(nbanio);
                 nuevoServicio.setPrecio(getTipoBanio().getPrecio());
+                return nuevoServicio;
             }
             if (jList_servicio.getSelectedValue().equals("Esquila")) {
-                nuevoServicio.setDescripcion("Descripcion: " + jtxt_descripcion.getText()
-                        + " Descripcion Tipo Servicio: " + getTipoEsquila().getDescripcion());
+
+                String descripcion = "Descripcion: " + jtxt_descripcion.getText();
+                descripcion += " Descripcion Tipo Servicio: " + getTipoEsquila().getDescripcion();
+                nuevoServicio.setDescripcion(descripcion);
                 nuevoServicio.setDuracion((int) jSpinnerDuracion.getValue());
                 esquila nesquila = new esquila();
                 nesquila.setTipoDeEsquila(getTipoEsquila());
                 nuevoServicio.setTipoServicio(nesquila);
                 nuevoServicio.setPrecio(getTipoEsquila().getPrecio());
+                return nuevoServicio;
             }
             if (jList_servicio.getSelectedValue().equals("Paseo")) {
                 nuevoServicio.setDuracion((int) jSpinnerDuracion.getValue());
@@ -694,13 +802,13 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
                 paseo npaseo = new paseo();
                 nuevoServicio.setTipoServicio(npaseo);
                 nuevoServicio.setPrecio(getPrecioActualPaseo());
-            }
-
+                return nuevoServicio;
+            }*/
         } catch (Exception e) {
             System.err.println(e.getMessage());
 
         }
-        return nuevoServicio;
+        return null;
     }
 
     private void crearReserva() {
@@ -711,7 +819,7 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
             nuevaReserva.setServicio((servicio) crearServicio());
             nuevaReserva.setMascota(getMascota(this.idMascota));
             nuevaReserva.setDescripcion(jtxt_descripcion.getText());
-            nuevaReserva.setTurno(getTurno(obtenerHora((String) jCombo_Turnos.getSelectedItem())));
+            nuevaReserva.setTurno(getTurno(obtenerHora(this.turnoString)));
             if (contRes.nuevaReserva(nuevaReserva)) {
                 JOptionPane.showMessageDialog(this, "Se ha creado la reserva!");
                 limpiar();
@@ -763,9 +871,7 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         return this.conntador++;
     }
 
-    private void limpiar() {
-        jtxt_descripcion.setText("");
-        inicio();
-
+    private Object[] getTurnos() {
+        return cargarTurnosDisponibles(this.JDTFechaReserva.getDate());
     }
 }

@@ -5,6 +5,7 @@
  */
 package Logica;
 
+import Presentacion.Principal;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DesktopManager;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.validation.groups.Default;
@@ -30,8 +34,13 @@ public class hiloHijo extends hiloMadre implements iHilo {
     private Object obj;
     private boolean bol = true;
     private int cont = 1;
-    private JTable tablaParaLLenar = null;
+    private JTable tablaParaLLenar;
     private utilidades util = utilidades.getInstance();
+ 
+
+    public hiloHijo() {
+        
+    }
 
     public JTable getTablaParaLLenar() {
         return tablaParaLLenar;
@@ -46,7 +55,6 @@ public class hiloHijo extends hiloMadre implements iHilo {
         while (bol) {
             System.out.println("hilo1 corriendo");
             try {
-                contRes.getReservasDelDia();
                 cargarTablaReserva();
                 getIpPublica();
                 getIpLocalHost();
@@ -70,12 +78,19 @@ public class hiloHijo extends hiloMadre implements iHilo {
             String[] cabeceras = util.cabeceras(reservas.get(0));
             DefaultTableModel dtm = new DefaultTableModel(cabeceras, 0);
             for (reserva r : reservas) {
-                Object[] data = {r.getId(), r.getFechaReserva(), r.getDescripcion(), r.isCorrea(), r.isBozal(), r.getMascota().getNombre(), r.getCliente().getCorreo()};
+                Object[] data = {r.getId(), r.getFechaReserva(), r.getDescripcion(), r.isCorrea(), r.isBozal(),
+                    r.getMascota().getNombre(), r.getCliente().getCorreo(),r.getServicio().getId(),r.getServicio().getDescripcion(),
+                r.getServicio().getPrecio(),r.getServicio().getTipo()};
+     
+
                 dtm.addRow(data);
             }
-            this.getTablaParaLLenar().setModel(dtm);
+            
+            getTablaParaLLenar().setModel(dtm);
         }
     }
+//return "Id/" + id + "/Descripcion/" + this.getDescripcion() + "/Duracion/" + this.getDuracion() + "/Precio/"+precio+"/Tipo/"+this.getTipo();
+    
 
     public String getIpPublica() {
         String ip = null;

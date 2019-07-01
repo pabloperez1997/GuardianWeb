@@ -40,6 +40,11 @@ public class tipoEsquila implements Serializable {
     public tipoEsquila() {
     }
 
+
+    public String getTipo() {
+        return this.tipoEsquila;
+    }
+
     public String getTipoEsquila() {
         return tipoEsquila;
     }
@@ -103,11 +108,9 @@ public class tipoEsquila implements Serializable {
 
     @Override
     public String toString() {
-        return "ID/" + id + "/TIpo Esquila/" + tipoEsquila + "/Descripcion/" + descripcion + "/Precio/" + precio;
+        return "/Id/" + id + "/TIpo Esquila/" + tipoEsquila + "/Descripcion/" + descripcion + "/Precio/" + precio;
     }
 
-    public String getTipo() {
-        return this.tipoEsquila;
-    }
     
+
 }

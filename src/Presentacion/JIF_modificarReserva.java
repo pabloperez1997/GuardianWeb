@@ -20,19 +20,18 @@ import Logica.tipoEsquila;
 import Logica.turno;
 import Logica.utilidades;
 import java.awt.Image;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Filter;
-import javax.swing.ComboBoxModel;
+import javax.accessibility.Accessible;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JDesktopPane;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
@@ -44,6 +43,7 @@ import javax.swing.table.DefaultTableModel;
  * @author jp
  */
 public class JIF_modificarReserva extends javax.swing.JInternalFrame {
+/////variables
 
     private final JDesktopPane escritorio;
     private final long idReserva;
@@ -52,7 +52,7 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
     private ControladorReservas contRes = ControladorReservas.getInstance();
     private utilidades util = utilidades.getInstance();
     private cliente cliente = null;
-    private List<mascota> mascotasCli = null;
+    private List<mascota> mascotasCli = new ArrayList<>();
     private mascota mascotaCliente = null;
     List<turno> turnosDisponibles = new ArrayList<>();
     private List<String> serviciosLista = new ArrayList<>();
@@ -61,16 +61,35 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
     ArrayList<Object> listaEsquilas = new ArrayList<>();
     private HashMap<String, servicio> listaServicios = new HashMap<>();
     private String idCliente;
-    private JComboBox<String> modeloCombo;
+    private String[] turnosArreglo;
+    private String turnoString;
+    private int indiceTurnos;
+    private reserva reservaCliente;
+/////////////////
 
     /**
      * Creates new form JIF_modificarReserva
      */
     public JIF_modificarReserva(JDesktopPane escritorioViene, long idReserva) {
         this.escritorio = escritorioViene;
-        this.idReserva = 2;
+        this.idReserva = 1;
         initComponents();
         inicio();
+    }
+
+    private void controlJDATE() {
+
+        Date min = util.getFechaActual();//fecha minima
+        Date max = utilidades.sumaRestaDias(util.getFechaActual(), 7);//fecha maxima 7 dias a partir de la actual
+        JDTFechaReserva.getDateEditor().setEnabled(false);//desabilito el jtext editor
+        JDTFechaReserva.setMaxSelectableDate(max);//seteo ma fecha maxima
+        JDTFechaReserva.setMinSelectableDate(min);//seteo la fecha minima
+        //en este evento se le pueden agregar llamadas a opciones mentodos etc que se ejecutan cuando cambia la fecha (uso la interfaz lambda)
+        /* JDTFechaReserva.getDateEditor().addPropertyChangeListener((PropertyChangeEvent e) -> {
+            JOptionPane.showMessageDialog(rootPane, "la fecha es " + JDTFechaReserva.getDate());
+        // btn_turno.setEnabled(false);
+        });*/
+
     }
 
     public cliente getCliente() {
@@ -81,25 +100,18 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
         this.cliente = cliente;
     }
 
-    public JComboBox<String> getModeloCombo() {
-        return modeloCombo;
-    }
-
-    public void setModeloCombo(JComboBox<String> modeloCombo) {
-        this.modeloCombo = modeloCombo;
-    }
-
     private void inicio() {
         jtxt_descripcion.setText("");
         DefaultListModel limpio = new DefaultListModel();
         jList_Tipo.setModel(limpio);
         jList_servicio.setModel(limpio);
-        SpinnerModel nnmodel = new SpinnerNumberModel(0, 0, 5, 1);//creo un modelo con los numeros
-        jSpinnerDuracion.setModel(nnmodel);
+        // SpinnerModel nnmodel = new SpinnerNumberModel(0, 0, 5, 1);//creo un modelo con los numeros
+        /*  jSpinnerDuracion.setModel(nnmodel);
         JSpinner.DefaultEditor defaultEditor = new JSpinner.DefaultEditor(new JSpinner(nnmodel));
         jSpinnerDuracion.setEditor(defaultEditor);
         jSpinnerDuracion.setEditor(new JSpinner.DefaultEditor(new JSpinner(nnmodel)));//seteo un editor con mi modelo, esto es para que no pueda editar
-        //      cargarTurnosDisponibles();//carga los turnos
+         */  //      cargarTurnosDisponibles();//carga los turnos
+        controlJDATE();
         cargarServiciosList();//carga los servicios la lista
         contSrv.cargarTiposServicios();//carga los tipos de servicios
         cargarReserva();
@@ -115,6 +127,7 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel7 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jlabClientes = new javax.swing.JLabel();
         Jlab_foto = new javax.swing.JLabel();
@@ -129,17 +142,20 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
         jScrollPane5 = new javax.swing.JScrollPane();
         jList_Tipo = new javax.swing.JList<>();
         btn_nuevoTipo = new javax.swing.JButton();
-        jSpinnerDuracion = new javax.swing.JSpinner();
-        jLabel7 = new javax.swing.JLabel();
-        jLabTurnos = new javax.swing.JLabel();
         btn_cancelar = new javax.swing.JButton();
         btn_aceptar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jtxt_descripcion = new javax.swing.JTextArea();
         jLabel3 = new javax.swing.JLabel();
-        jCombo_Turnos = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabIdCliente = new javax.swing.JLabel();
+        btn_turno = new javax.swing.JButton();
+        JDTFechaReserva = new com.toedter.calendar.JDateChooser();
+        jLabel4 = new javax.swing.JLabel();
+        jlabelTurno = new javax.swing.JLabel();
+        jlabelTurno1 = new javax.swing.JLabel();
+
+        jLabel7.setText("jLabel7");
 
         jlabClientes.setText("Cliente:");
 
@@ -177,6 +193,11 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
                 jList_servicioMouseClicked(evt);
             }
         });
+        jList_servicio.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jList_servicioPropertyChange(evt);
+            }
+        });
         jScrollPane4.setViewportView(jList_servicio);
 
         jLabel5.setText("Servicio");
@@ -196,10 +217,6 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
                 btn_nuevoTipoActionPerformed(evt);
             }
         });
-
-        jLabel7.setText("Duracion");
-
-        jLabTurnos.setText("Turno/s");
 
         btn_cancelar.setText("Cancelar");
         btn_cancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -221,11 +238,22 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Descripcion");
 
-        jCombo_Turnos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel2.setText("Turno");
 
         jLabIdCliente.setText("idCliente");
+
+        btn_turno.setText("Seleccionar Turno");
+        btn_turno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_turnoActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Fecha:");
+
+        jlabelTurno.setText("TURNO");
+
+        jlabelTurno1.setText("TURNO");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -235,50 +263,53 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(72, 72, 72)
+                        .addComponent(jLabIdCliente)
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLab_idMascota))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Jlab_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabelTurno)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel4)
+                            .addGap(52, 52, 52)
+                            .addComponent(JDTFechaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jLabel2)
-                            .addComponent(jCombo_Turnos, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel6)
-                            .addComponent(jScrollPane5)
-                            .addComponent(btn_nuevoTipo, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel7)
-                            .addComponent(jSpinnerDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabTurnos)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btn_aceptar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
-                                .addComponent(btn_cancelar))))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(btn_turno, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jlabelTurno1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel6)
+                    .addComponent(jScrollPane5)
+                    .addComponent(btn_nuevoTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(72, 72, 72)
-                                .addComponent(jLabIdCliente)
-                                .addGap(39, 39, 39)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLab_idMascota))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 576, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Jlab_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(65, 65, 65))
+                        .addComponent(btn_aceptar)
+                        .addGap(54, 54, 54)
+                        .addComponent(btn_cancelar)))
+                .addGap(136, 136, 136))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jlabClientes)
-                    .addContainerGap(870, Short.MAX_VALUE)))
+                    .addContainerGap(858, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,38 +330,43 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addComponent(Jlab_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jCombo_Turnos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel3)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
+                        .addGap(48, 48, 48)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(jSpinnerDuracion, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabTurnos))))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(JDTFechaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(btn_nuevoTipo)
-                                    .addComponent(btn_aceptar)
-                                    .addComponent(btn_cancelar))))))
-                .addContainerGap(26, Short.MAX_VALUE))
+                                    .addComponent(jLabel2)
+                                    .addComponent(btn_turno))
+                                .addGap(18, 18, 18)
+                                .addComponent(jlabelTurno)
+                                .addGap(18, 18, 18)
+                                .addComponent(jlabelTurno1))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel5))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(btn_nuevoTipo))
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(51, 51, 51)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btn_aceptar)
+                            .addComponent(btn_cancelar))))
+                .addContainerGap(38, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(26, 26, 26)
@@ -342,7 +378,7 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -354,7 +390,7 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
 
     private void jTabla_mascotasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabla_mascotasMouseClicked
         int row = jTabla_mascotas.rowAtPoint(evt.getPoint());
-        // this.seleccionarMascota((Long) jTabla_mascotas.getValueAt(row, 0));
+        this.seleccionarMascota((Long) jTabla_mascotas.getValueAt(row, 0));
         this.idMascota = (Long) jTabla_mascotas.getValueAt(row, 0);
         // TODO add your handling code here:
     }//GEN-LAST:event_jTabla_mascotasMouseClicked
@@ -375,26 +411,37 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_cancelarActionPerformed
 
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
-        int res = JOptionPane.showConfirmDialog(this, "Desea reservar un turno?");
+        int res = JOptionPane.showConfirmDialog(this, "Desea modificar la reserva?");
         if (res == 0) {
-            // crearReserva();
+            modificarReserva();
 
         }
     }//GEN-LAST:event_btn_aceptarActionPerformed
 
+    private void btn_turnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_turnoActionPerformed
+        Object showInputDialog = JOptionPane.showInputDialog(this, "Seleccione un turno:", "Turnos", JOptionPane.DEFAULT_OPTION, null, this.turnosArreglo, turnosArreglo[this.indiceTurnos]);
+        this.turnoString = (String) showInputDialog;
+        this.jlabelTurno.setText((String) showInputDialog);        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_turnoActionPerformed
+
+    private void jList_servicioPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jList_servicioPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jList_servicioPropertyChange
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.toedter.calendar.JDateChooser JDTFechaReserva;
     private javax.swing.JLabel Jlab_foto;
     private javax.swing.JButton btn_aceptar;
     private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_nuevoTipo;
-    private javax.swing.JComboBox<String> jCombo_Turnos;
+    private javax.swing.JButton btn_turno;
     private javax.swing.JLabel jLabIdCliente;
-    private javax.swing.JLabel jLabTurnos;
     private javax.swing.JLabel jLab_idMascota;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -405,29 +452,32 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JSpinner jSpinnerDuracion;
     private javax.swing.JTable jTabla_mascotas;
     private javax.swing.JLabel jlabClientes;
+    private javax.swing.JLabel jlabelTurno;
+    private javax.swing.JLabel jlabelTurno1;
     private javax.swing.JTextArea jtxt_descripcion;
     // End of variables declaration//GEN-END:variables
 
     /////////////////////////////////////////////////////funnciones///////////////////////////////////////////
     private void cargarReserva() {
         reserva r = (reserva) contRes.getReserva(this.idReserva);
+        this.reservaCliente = r;
         this.cliente = (cliente) r.getCliente();
         cargarMascotasCliente(this.cliente.getMascotasCliente());
+        cargarMascotaReserva(r.getMascota());
+        this.mascotasCli = (List) this.cliente.getMascotasCliente();
         jLabIdCliente.setText((String) r.getCliente().getCorreo());
         jtxt_descripcion.setText(r.getDescripcion());
         this.mascotaCliente = (mascota) r.getMascota();
-
-        cargarTurnosDisponibles((turno) r.getTurno());
+        cargarTurnosDisponibles((List) r.getTurno(), util.DateAString(r.getFechaReserva(), "yyyy-MM-dd"));
         cargarServicioCliente(r.getServicio());
-
+        JDTFechaReserva.setDate(r.getFechaReserva());
     }
 
     private void cargarMascotasCliente(List<mascota> mascotasCliente) {
         if (!mascotasCliente.isEmpty()) {
-            // String[] cabeceras = util.cabeceras(mascotasCliente.get(0));
+
             String[] filtro = {"Cliente"};
             List<String> cabeceras = util.filtrarPalabras((String[]) util.cabeceras(mascotasCliente.get(0)), filtro);
             DefaultTableModel dtm = new DefaultTableModel(cabeceras.toArray(), 0);
@@ -441,29 +491,28 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
         }
     }
 
-    private void cargarServicio(servicio servicio) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    private void cargarTurnosDisponibles(turno turnoCliente) {
-        this.turnosDisponibles = (ArrayList<turno>) getTurnosSumaEldelCLiente((ArrayList<turno>) contRes.getTurnos(), turnoCliente);
-        int numTurno = 1;
-        JComboBox<String> comboTurnos = new JComboBox<>();
-        comboTurnos.addItem("Seleccionar Turno");
-        for (turno turnoDisponible : turnosDisponibles) {
-            comboTurnos.addItem("Turno: " + numTurno + " -- " + turnoDisponible.getHora() + " Hs");
-            if (turnoCliente.equals(turnoDisponible)) {
-                comboTurnos.setSelectedItem("Turno: " + numTurno + " -- " + turnoDisponible.getHora() + " Hs");
+    private void cargarTurnosDisponibles(List turnosCliente, String fecha) {
+        int numTurno = 0;
+        if (!turnosCliente.isEmpty()) {
+            for (Object turnoCliente : turnosCliente) {
+                this.turnosDisponibles = (List<turno>) getTurnosSumaEldelCLiente(contRes.getTurnos(fecha), (turno) turnoCliente);
             }
-            numTurno++;
-
         }
-        jCombo_Turnos.setModel(comboTurnos.getModel());
-        this.modeloCombo = comboTurnos;
 
+        this.turnosArreglo = new String[turnosDisponibles.size() + 1];
+        turnosArreglo[numTurno] = "Seleccionar Turno";
+        Iterator it = turnosDisponibles.iterator();
+        numTurno++;
+        while (it.hasNext()) {
+            turno name = (turno) it.next();
+
+            turnosArreglo[numTurno] = ("Turno: " + numTurno + " -- " + name.getHora() + " Hs");
+            numTurno++;
+        }
+        generarLabelConTurnos((List) turnosCliente);
     }
 
-    private ArrayList<turno> getTurnosSumaEldelCLiente(ArrayList<turno> turnos, turno turnoClie) {
+    private ArrayList<turno> getTurnosSumaEldelCLiente(List<turno> turnos, turno turnoClie) {
         ArrayList<turno> ListTurnos = new ArrayList<>();
 
         if (turnos.size() > 0) {
@@ -471,13 +520,14 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
 
                 ListTurnos.addAll(agregaTurnoEnOrden(turnos, turnoClie));
             }
-            ListTurnos.addAll(turnos);
+        } else {
+            ListTurnos.add(turnoClie);
         }
 
         return ListTurnos;
     }
 
-    private ArrayList<turno> agregaTurnoEnOrden(ArrayList<turno> turnos, turno turnoClie) {
+    private List<turno> agregaTurnoEnOrden(List<turno> turnos, turno turnoClie) {
         try {
 
             Iterator it = turnos.iterator();
@@ -488,7 +538,7 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
                 int horaTC = parsearHora(turnoClie.getHora());
                 if (horaTL > horaTC) {
                     int indice = turnos.indexOf(it.next());
-                    turnos.add(indice - 1, tur);
+                    turnos.add(indice - 1, turnoClie);
                 }
             }
         } catch (Exception e) {
@@ -507,7 +557,7 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
      * @param turnosSis
      * @return true or false
      */
-    private boolean contieneTurno(turno turnClie, ArrayList<turno> turnosSis) {
+    private boolean contieneTurno(turno turnClie, List<turno> turnosSis) {
         if (!turnosSis.isEmpty()) {
             for (turno tur : turnosSis) {
                 if (tur.getHora().equals(turnClie.getHora())) {
@@ -542,17 +592,16 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
 
     private void cargarListTipoSrv(String selectedValue) {
         if (selectedValue.equals("Baño")) {
-            //    if ((List) contSrv.getServiciosXtipo("BANIO") != null) {
+
             listaBanios = (ArrayList<Object>) contSrv.getServiciosXtipo("BANIO");
             modeloBanio(listaBanios);
-            //   }
 
         }
         if (selectedValue.equals("Esquila")) {
-            //if ((List) contSrv.getServiciosXtipo("ESQUILA") != null) {
+
             listaEsquilas = (ArrayList<Object>) contSrv.getServiciosXtipo("ESQUILA");
             modeloEsquila(listaEsquilas);
-            //   }
+
         }
 
         if (selectedValue.equals("Paseo")) {
@@ -594,26 +643,252 @@ public class JIF_modificarReserva extends javax.swing.JInternalFrame {
     private void cargarServicioCliente(servicio servicio) {
         try {
 
-            if (servicio.getTipoServicio() instanceof banio) {
-                jList_servicio.setSelectedValue("Baño", false);
-                banio ban = (banio) servicio.getTipoServicio();
-                jList_Tipo.setSelectedValue(ban.getTipoDeBanio().getTipoBanio(), false);
+            if (servicio instanceof banio) {
+                jList_servicio.setSelectedValue("Baño", true);
+                banio ban = (banio) servicio;
+                cargarListTipoSrv("Baño");
+                jList_Tipo.setSelectedValue(ban.getTipoDeBanio().getTipoBanio(), true);
 
             }
-            if (servicio.getTipoServicio() instanceof esquila) {
+            if (servicio instanceof esquila) {
                 jList_servicio.setSelectedValue("Esquila", false);
-                esquila esq = (esquila) servicio.getTipoServicio();
-                jList_Tipo.setSelectedValue(esq.getTipoDeEsquila().getTipoEsquila(), false);
+                esquila esq = (esquila) servicio;
+                cargarListTipoSrv("Esquila");
+                jList_Tipo.setSelectedValue(esq.getTipoDeEsquila().getTipoEsquila(), true);
 
             }
-            if (servicio.getTipoServicio() instanceof paseo) {
-                jList_servicio.setSelectedValue("Paseo", false);
-                jList_Tipo.setSelectedValue("Paseo", false);
+            if (servicio instanceof paseo) {
+                jList_servicio.setSelectedValue("Paseo", true);
+                cargarListTipoSrv("Paseo");
+                jList_Tipo.setSelectedValue("Paseo", true);
             }
 
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage() + " Causa: " + e.getCause());
         }
+
+    }
+
+    private void generarLabelConTurnos(List turnos) {
+        List<String> listaEtiquetas = new ArrayList<>();
+
+        if (!turnos.isEmpty()) {
+            for (int i = 1; i < this.turnosArreglo.length; i++) { //posicion 0 = "Seleccionar Turno"
+                for (Object t : turnos) {
+                    int horaTurnos = parsearHora(obtenerHora(turnosArreglo[i]));
+                    int horacliente = parsearHora(((turno) t).getHora());
+                    if (horaTurnos == horacliente) {
+                        listaEtiquetas.add(turnosArreglo[i]);
+                        this.indiceTurnos = i;
+
+                    }
+                }
+            }
+            if (listaEtiquetas.size() == 1) {
+                jlabelTurno.setText(listaEtiquetas.get(0));
+            }
+            if (listaEtiquetas.size() == 2) {
+                jlabelTurno.setText(listaEtiquetas.get(0));
+                jlabelTurno1.setText(listaEtiquetas.get(1));
+            }
+
+        }
+    }
+
+    private boolean validarDatos() {
+
+        if (this.idMascota == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una mascota!");
+            jTabla_mascotas.requestFocus(true);
+            return false;
+        }
+        if (JDTFechaReserva.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una Fecha!");
+            JDTFechaReserva.requestFocus(true);
+            return false;
+        }
+        if (jList_servicio.getSelectedValue() == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un servicio!");
+            jList_servicio.requestFocus();
+            return false;
+        }
+        if (jList_servicio.getSelectedValue().equals("Baño")) {
+            if (jList_Tipo.getSelectedValue() == null) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo de baño!");
+                jList_Tipo.requestFocus(true);
+                return false;
+            }
+        }
+        if (jList_servicio.getSelectedValue().equals("Esquila")) {
+            if (jList_Tipo.getSelectedValue() == null) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un tipo de esquila!");
+                jList_Tipo.requestFocus(true);
+                return false;
+            }
+        }
+        if (this.turnoString == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un turno!");
+            btn_turno.requestFocus(true);
+            return false;
+        }
+
+        return true;
+    }
+
+    private void seleccionarMascota(Long id) {
+        this.mascotaCliente = (mascota) this.getMascota(id);
+        cargarFoto(this.mascotaCliente);
+        jLab_idMascota.setText(String.valueOf(id));
+    }
+
+    private mascota getMascota(Long id) {
+
+        for (mascota msc : this.mascotasCli) {
+            if (msc.getId().compareTo(id) == 0) {
+                return msc;
+            }
+
+        }
+
+        return null;
+    }
+
+    private void cargarFoto(mascota mascotaCliente) {
+        if (!mascotaCliente.getFoto().equals("N/A")) {
+            BufferedImage image = (BufferedImage) util.dameEstaImagen(contC.getRutaFotoImagenesMascotaLevantar() + mascotaCliente.getFoto());
+            Image scaledInstance = image.getScaledInstance(200, 180, Image.SCALE_DEFAULT);
+            Jlab_foto.setIcon(new ImageIcon(scaledInstance));
+            Jlab_foto.setText(null);
+        }
+    }
+
+    private void cargarMascotaReserva(mascota mascota) {
+        jLab_idMascota.setText(String.valueOf(mascota.getId()));
+        this.idMascota = mascota.getId();
+        cargarFoto(mascota);
+    }
+
+    private turno getTurno(String hora) {
+        turno tr = null;
+        for (turno turD : this.turnosDisponibles) {
+            if (turD.getHora().equals(hora)) {
+                tr = turD;
+            }
+
+        }
+        return tr;
+    }
+
+    private void modificarReserva() {
+        if (validarDatos()) {
+
+            if ((!reservaCliente.getDescripcion().equals(jtxt_descripcion.getText())) && (!jtxt_descripcion.getText().isEmpty())) {
+                reservaCliente.setDescripcion(jtxt_descripcion.getText());
+            }
+            if (!reservaCliente.getFechaReserva().equals(JDTFechaReserva.getDate()) && JDTFechaReserva.getDate() != null) {
+                reservaCliente.setFechaReserva(JDTFechaReserva.getDate());
+            }
+            if (!reservaCliente.getTurno().get(0).equals(getTurno(obtenerHora(this.turnoString))) && this.turnoString != null) {
+                reservaCliente.setTurno(getTurno(obtenerHora(this.turnoString)));
+            }
+            if (!reservaCliente.getMascota().getId().equals(this.idMascota) && this.idMascota != null) {
+                this.reservaCliente.setMascota(getMascota(this.idMascota));
+            }
+            if (!reservaCliente.getServicio().getTipo().equals(jList_Tipo.getSelectedValue())) {
+                this.reservaCliente.setServicio((servicio) crearServicio());
+            }
+            if (contRes.modificarReserva(this.reservaCliente)) {
+                JOptionPane.showMessageDialog(this, "Se modifico la reserva!");
+                limpiar();
+            }
+        }
+    }
+
+    private servicio crearServicio() {
+
+        try {
+            if (jList_servicio.getSelectedValue().equals("Baño")) {
+                System.out.println("Creo un banio");
+                banio nuevoServicio = new banio();
+                nuevoServicio.setDescripcion("Descripcion: " + jtxt_descripcion.getText()
+                        + " Descripcion Tipo Servicio: " + getTipoBanio().getDescripcion());
+
+                nuevoServicio.setTipoDeBanio(getTipoBanio());
+                nuevoServicio.setPrecio(getTipoBanio().getPrecio());
+                System.out.println("Retorno el banio");
+                return nuevoServicio;
+
+            }
+            if (jList_servicio.getSelectedValue().equals("Esquila")) {
+                System.out.println("Creo un esquila");
+                esquila nuevoServicio = new esquila();
+                nuevoServicio.setDescripcion("Descripcion: " + jtxt_descripcion.getText()
+                        + " Descripcion Tipo Servicio: " + getTipoEsquila().getDescripcion());
+
+                nuevoServicio.setTipoDeEsquila(getTipoEsquila());
+                nuevoServicio.setPrecio(getTipoEsquila().getPrecio());
+                System.out.println("Retorno el esquila");
+                return nuevoServicio;
+
+            }
+            if (jList_servicio.getSelectedValue().equals("Paseo")) {
+                System.out.println("Creo un paseo");
+                paseo nuevoServicio = new paseo();
+
+                nuevoServicio.setPrecio(getPrecioActualPaseo());
+                nuevoServicio.setDescripcion("Descripcion: " + jtxt_descripcion.getText());
+                System.out.println("Retorno el paseo");
+                return nuevoServicio;
+            }
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+
+        }
+        return null;
+    }
+
+    private tipoBanio getTipoBanio() {
+        tipoBanio tpBanio = null;
+        String tipoSrv = jList_Tipo.getSelectedValue();
+        String servicio = jList_servicio.getSelectedValue();
+        if (servicio.equals("Baño")) {
+            Iterator it = listaBanios.iterator();
+            while (it.hasNext()) {
+                Object next = it.next();
+                if (((tipoBanio) next).getTipoBanio().equals(tipoSrv)) {
+                    tpBanio = (tipoBanio) next;
+                }
+            }
+        }
+        return tpBanio;
+    }
+
+    private tipoEsquila getTipoEsquila() {
+        tipoEsquila tpEsquila = null;
+        String tipoSrv = jList_Tipo.getSelectedValue();
+        String servicio = jList_servicio.getSelectedValue();
+
+        if (servicio.equals("Esquila")) {
+            Iterator it = listaEsquilas.iterator();
+            while (it.hasNext()) {
+                Object next = it.next();
+                if (((tipoEsquila) next).getTipoEsquila().equals(tipoSrv)) {
+                    tpEsquila = (tipoEsquila) next;
+                }
+            }
+        }
+        return tpEsquila;
+    }
+
+    private float getPrecioActualPaseo() {
+        return (float) contSrv.getPrecioPaseo();
+    }
+
+    private void limpiar() {
+        System.out.print("Limpiame todoooo");
+        JDTFechaReserva.setDate(new Date());
+        inicio();
 
     }
 }

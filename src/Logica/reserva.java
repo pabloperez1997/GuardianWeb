@@ -5,7 +5,6 @@
  */
 package Logica;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,22 +32,27 @@ public class reserva implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fechaReserva;
-    private String descripcion;
-    private boolean correa, bozal;
-    @ManyToOne
-    private mascota mascota;
 
-    @ManyToOne
+    private String descripcion;
+
+    private boolean correa, bozal;
+
+    @OneToOne
+    private mascota mascota;
+    @OneToOne(cascade = CascadeType.ALL)
     private servicio servicio;
-    @ManyToOne
-    private turno turno;
+    
+    @OneToMany
+    private List< turno> turno= new ArrayList<>();
+    
     @ManyToOne
     private cliente cliente;
 
     public reserva() {
-        
+
     }
 
     public servicio getServicio() {
@@ -58,7 +62,6 @@ public class reserva implements Serializable {
     public void setServicio(servicio servicio) {
         this.servicio = servicio;
     }
-
 
     public mascota getMascota() {
         return mascota;
@@ -118,15 +121,17 @@ public class reserva implements Serializable {
 
     @Override
     public String toString() {
-        return "Id/" + id + "/FechaReserva/" + fechaReserva.toString() + "/Descripcion/" + descripcion + "/Correa/" + correa + "/bozal/" + bozal + "/mascota/" + mascota.getNombre() + "/Cliente/" + cliente.getCorreo();
+        return "Id/" + id + "/FechaReserva/" + fechaReserva.toString() + "/Descripcion/"
+                + descripcion + "/Correa/" + correa + "/bozal/" + bozal + "/mascota/" + mascota.getNombre() + "/Cliente/" + cliente.getCorreo()
+                + servicio.toString();
     }
 
-    public turno getTurno() {
+    public List getTurno() {
         return turno;
     }
 
     public void setTurno(turno turno) {
-        this.turno = turno;
+        this.turno.add(turno);
     }
 
     @Override

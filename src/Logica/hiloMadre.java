@@ -7,6 +7,8 @@ package Logica;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,15 +26,18 @@ public class hiloMadre extends Thread {
     @Override
     public void run() {
         System.out.println("Hilo madre"); //To change body of generated methods, choose Tools | Templates.
-     /*   hiloHijo hhijo = new hiloHijo();
+        /*   hiloHijo hhijo = new hiloHijo();
 
         agregarHilo("h1", hhijo);*/
-    
+
     }
 
     public void agregarHilo(String h1, hiloHijo hhijo) {
-        this.listaHilos.put(h1, hhijo);
+        
+            this.listaHilos.put(h1, hhijo);
             hhijo.start();
+        
+
     }
 
     public Iterator<String> getNombreHilos() {

@@ -239,7 +239,7 @@ public class controladorCliente implements iControladorCliente {
     public boolean eliminarAnimal(Long id) {
         try {
             mascota mascota = (mascota) aPer.getMascota(id);
-            eliminarFoto(getRutaFotoImagenesMascotaLevantar()+mascota.getFoto());
+            eliminarFoto(getRutaFotoImagenesMascotaLevantar() + mascota.getFoto());
             if (aPer.eliminar((Object) mascota)) {
                 return true;
             }
@@ -331,10 +331,12 @@ public class controladorCliente implements iControladorCliente {
     public List<String> getRazasDB() {
         List<String> razas = new ArrayList<>();
         List<Object> ra = (List<Object>) persistencia.getListaObjetos("select * from raza", raza.class);
-        Iterator it = ra.iterator();
-        while (it.hasNext()) {
-            raza next = (raza) it.next();
-            razas.add((String) next.getRaza());
+        if (!ra.isEmpty()) {
+            Iterator it = ra.iterator();
+            while (it.hasNext()) {
+                raza next = (raza) it.next();
+                razas.add((String) next.getRaza());
+            }
         }
         return razas;
     }
@@ -495,10 +497,10 @@ public class controladorCliente implements iControladorCliente {
     }
 
     private void eliminarFoto(String string) {
-       File f = new File(string);
-       if(f.exists()){
-       f.delete();
-       }
+        File f = new File(string);
+        if (f.exists()) {
+            f.delete();
+        }
     }
 
 }

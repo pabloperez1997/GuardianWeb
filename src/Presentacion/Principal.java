@@ -5,6 +5,8 @@
  */
 package Presentacion;
 
+import Logica.ControladorReservas;
+import Logica.controladorServicios;
 import Logica.fabricaElGuardian;
 import Logica.hiloHijo;
 import Logica.hiloMadre;
@@ -19,10 +21,11 @@ import java.util.logging.Logger;
 import javax.mail.internet.AddressException;
 import javax.persistence.EntityManager;
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
-
 
 /**
  *
@@ -47,8 +50,9 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         eM = Persistencia.persistencia.getInstance().getEm();
-        cargarInicio();
-        
+        eM.getTransaction().begin();
+        eM.flush();
+        eM.getTransaction().commit();
         UIManager.LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
         for (UIManager.LookAndFeelInfo laf : installedLookAndFeels) {
         }
@@ -57,8 +61,9 @@ public class Principal extends javax.swing.JFrame {
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
             System.err.println(e.getMessage());
         }
-        
         initComponents();
+        cargarInicio();
+
         // eM= controladorCliente.getEm();
     }
 
@@ -73,10 +78,10 @@ public class Principal extends javax.swing.JFrame {
 
         escritorioPrincipal = new javax.swing.JDesktopPane();
         btn_reservar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        btn_modReserva = new javax.swing.JButton();
+        btn_eliminarReserva = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
         jTableReservas = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jM_cliente = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -101,6 +106,20 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btn_modReserva.setText("Modificar");
+        btn_modReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modReservaActionPerformed(evt);
+            }
+        });
+
+        btn_eliminarReserva.setText("Eliminar");
+        btn_eliminarReserva.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_eliminarReservaActionPerformed(evt);
+            }
+        });
+
         jTableReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -117,49 +136,41 @@ public class Principal extends javax.swing.JFrame {
                 jTableReservasMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTableReservas);
-
-        jButton1.setText("Modificar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Eliminar");
+        jScrollPane2.setViewportView(jTableReservas);
 
         escritorioPrincipal.setLayer(btn_reservar, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        escritorioPrincipal.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        escritorioPrincipal.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        escritorioPrincipal.setLayer(jButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorioPrincipal.setLayer(btn_modReserva, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorioPrincipal.setLayer(btn_eliminarReserva, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorioPrincipal.setLayer(jScrollPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout escritorioPrincipalLayout = new javax.swing.GroupLayout(escritorioPrincipal);
         escritorioPrincipal.setLayout(escritorioPrincipalLayout);
         escritorioPrincipalLayout.setHorizontalGroup(
             escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioPrincipalLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 597, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
-                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btn_reservar, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46)
+                .addComponent(btn_modReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(43, 43, 43)
+                .addComponent(btn_eliminarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(813, 813, 813))
+            .addGroup(escritorioPrincipalLayout.createSequentialGroup()
+                .addGap(35, 35, 35)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(115, Short.MAX_VALUE))
         );
         escritorioPrincipalLayout.setVerticalGroup(
             escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(escritorioPrincipalLayout.createSequentialGroup()
-                .addGap(72, 72, 72)
-                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(escritorioPrincipalLayout.createSequentialGroup()
-                        .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(39, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioPrincipalLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_modReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_eliminarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(347, Short.MAX_VALUE))
         );
 
         jM_cliente.setText("Cliente");
@@ -252,11 +263,15 @@ public class Principal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorioPrincipal)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(escritorioPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(escritorioPrincipal)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(escritorioPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -330,16 +345,37 @@ public class Principal extends javax.swing.JFrame {
 // TODO add your handling code here:
     }//GEN-LAST:event_jMenuListarProductosActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JIF_modificarReserva modReserva = new JIF_modificarReserva(this.escritorioPrincipal, 1);        
-        this.escritorioPrincipal.add(modReserva);
-        modReserva.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btn_modReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modReservaActionPerformed
+        if (this.idReserva != null) {
+            if (JOptionPane.showConfirmDialog(this, "Desea modificar la reserva?") == 0) {
+                JIF_modificarReserva nuevoModificarReserva = new JIF_modificarReserva(this.escritorioPrincipal, this.idReserva);
+                escritorioPrincipal.add(nuevoModificarReserva);
+                nuevoModificarReserva.setVisible(true);
+            }
+        }
+    }//GEN-LAST:event_btn_modReservaActionPerformed
 
     private void jTableReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableReservasMouseClicked
-        int rowAtPoint = jTableReservas.rowAtPoint(evt.getPoint()); // TODO add your handling code here:
-        this.idReserva = (Long) jTableReservas.getValueAt(rowAtPoint, 0);
+        int row = jTableReservas.rowAtPoint(evt.getPoint());
+        this.idReserva = (Long) jTableReservas.getValueAt(row, 0);
+        // TODO add your handling code here:
     }//GEN-LAST:event_jTableReservasMouseClicked
+
+    private void btn_eliminarReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarReservaActionPerformed
+        if (this.idReserva != null) {
+            if (JOptionPane.showConfirmDialog(this, "Desea eliminar la reserva?") == 0) {
+                if (ControladorReservas.getInstance().eliminarReserva(this.idReserva) == true) {
+                    JOptionPane.showMessageDialog(this, "Se ha eliminado la reserva!");
+                    cargarReservas();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar la reserva!");
+                }
+                
+            }
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_eliminarReservaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -359,10 +395,10 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu JM_Configuracion;
+    private javax.swing.JButton btn_eliminarReserva;
+    private javax.swing.JButton btn_modReserva;
     private javax.swing.JButton btn_reservar;
     private javax.swing.JDesktopPane escritorioPrincipal;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jM_animal;
     private javax.swing.JMenu jM_cliente;
     private javax.swing.JMenuItem jMenANimal;
@@ -376,7 +412,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuListarProductos;
     private javax.swing.JMenu jMenuProductos;
     private javax.swing.JMenu jMenuVentas;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableReservas;
     // End of variables declaration//GEN-END:variables
 
@@ -389,19 +425,26 @@ public class Principal extends javax.swing.JFrame {
     }
     
     private void cargarInicio() {
+        
         ICV.cargarproductos();
         // cargarReservas();
         hiloMadre m = new hiloMadre();
         m.start();
+        jTableReservas.setEnabled(true);
         hiloHijo hhijo = new hiloHijo();
-        hhijo.setTablaParaLLenar(jTableReservas);
-        
+        //  cargarReservas();
+        hhijo.setTablaParaLLenar(this.jTableReservas);
         m.agregarHilo("h1", hhijo);
         /* try {
             m.sleep(1000);
-        } catch (Exception e) {
-        }*/
+            } catch (Exception e) {
+            }*/
         // m.pararHilo("h1");
+
+    }
+    
+    public void cargarModelo(DefaultTableModel model) {
+        jTableReservas.setModel(model);
     }
     
     private void cargarReservas() {
@@ -414,11 +457,11 @@ public class Principal extends javax.swing.JFrame {
                     Object[] data = {r.getId(), r.getFechaReserva(), r.getDescripcion(), r.isCorrea(), r.isBozal(), r.getMascota().getNombre(), r.getCliente().getCorreo()};
                     dtm.addRow(data);
                 }
-                jTableReservas.setEnabled(true);
-                jTableReservas.setModel(dtm);
+                //jTableReservas.setEnabled(true);
+                this.jTableReservas.setModel(dtm);
             } else {
                 //  jTableReservas.setModel(new DefaultTableModel(0, 0));
-                jTableReservas.setEnabled(false);
+                this.jTableReservas.setEnabled(false);
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
