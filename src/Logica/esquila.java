@@ -5,10 +5,15 @@
  */
 package Logica;
 
+import java.io.Serializable;
 import java.util.Objects;
-
-import javax.persistence.ManyToOne;
-import org.hibernate.annotations.Entity;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import org.eclipse.persistence.internal.oxm.schema.model.All;
 
 /**
  *
@@ -17,10 +22,32 @@ import org.hibernate.annotations.Entity;
 @Entity
 public class esquila extends servicio {
 
-    @ManyToOne
+    /*implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;*/
+
+    @OneToOne
     private tipoEsquila tipoDeEsquila;
 
     public esquila() {
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getTipo() {
+        return this.tipoDeEsquila.getTipo();
     }
 
     public tipoEsquila getTipoDeEsquila() {
@@ -33,9 +60,8 @@ public class esquila extends servicio {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-
-        hash = 59 * hash + Objects.hashCode(this.tipoDeEsquila);
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.tipoDeEsquila);
         return hash;
     }
 
@@ -56,10 +82,10 @@ public class esquila extends servicio {
         }
         return true;
     }
-
-    @Override
+ //defino el metodo en el hijo, para que imprima lo del padre tambien (herencia)
+   @Override
     public String toString() {
-        return  "tipoDeEsquila/" + tipoDeEsquila;
+        return "Id/" + id + "/Descripcion/" + this.getDescripcion() + "/Precio/"+precio+"/Tipo/"+this.getTipo();
     }
 
 }

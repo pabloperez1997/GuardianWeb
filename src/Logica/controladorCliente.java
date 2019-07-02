@@ -18,6 +18,7 @@ import ClientesRest.apiCliente;
 import ObjetosParaWeb.clienteWS;
 import ObjetosParaWeb.mascotaWS;
 import Persistencia.animalPersistencia;
+import java.io.File;
 import java.util.Iterator;
 
 /**
@@ -34,6 +35,7 @@ public class controladorCliente implements iControladorCliente {
     private animalPersistencia aPer = animalPersistencia.getInstance();
     private clientePersistencia cPer = clientePersistencia.getInstance();
     private apiCliente restCliente = apiCliente.getInstance();
+    private String rutaFotoMascota = "/home/jp/Escritorio/java2019/elGuardianServidor/ImagenesMascotas/";
     ////////////Arreglos////////////////
     private HashMap<String, cliente> clientes = new HashMap<>();
     private HashMap<String, mascota> mascotas = new HashMap<>();
@@ -242,6 +244,7 @@ public class controladorCliente implements iControladorCliente {
     public boolean eliminarAnimal(Long id) {
         try {
             mascota mascota = (mascota) aPer.getMascota(id);
+            eliminarFoto(getRutaFotoImagenesMascotaLevantar() + mascota.getFoto());
             if (aPer.eliminar((Object) mascota)) {
                 return true;
             }
@@ -333,10 +336,12 @@ public class controladorCliente implements iControladorCliente {
     public List<String> getRazasDB() {
         List<String> razas = new ArrayList<>();
         List<Object> ra = (List<Object>) persistencia.getListaObjetos("select * from raza", raza.class);
-        Iterator it = ra.iterator();
-        while (it.hasNext()) {
-            raza next = (raza) it.next();
-            razas.add((String) next.getRaza());
+        if (!ra.isEmpty()) {
+            Iterator it = ra.iterator();
+            while (it.hasNext()) {
+                raza next = (raza) it.next();
+                razas.add((String) next.getRaza());
+            }
         }
         return razas;
     }
@@ -461,6 +466,7 @@ public class controladorCliente implements iControladorCliente {
         return false;
     }
 //////////////////////////////////middleware para WebService///////////////
+
     @Override
     public List getMascotasWS() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -499,6 +505,21 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean modificarClienteWS(clienteWS clienteMod) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String getRutaFotoImagenesMascotaLevantar() {
+        return this.rutaFotoMascota;
+    }
+
+    public void setRutaFotoImagenesMascotaLevantar(String ruta) {
+        this.rutaFotoMascota = ruta;
+    }
+
+    private void eliminarFoto(String string) {
+        File f = new File(string);
+        if (f.exists()) {
+            f.delete();
+        }
     }
 
 }

@@ -264,7 +264,7 @@ public class AltaVenta extends javax.swing.JInternalFrame {
             producto pro = (producto) listaventa.get(i);
             if (pro.getCodigo() == p.getCodigo()) {
                 esta = true;
-                pro.setCantidad(pro.getCantidad() + 1);
+                //pro.setCantidad(pro.getCantidad() + 1);
             }
         }
         if (!esta) {
@@ -275,9 +275,9 @@ public class AltaVenta extends javax.swing.JInternalFrame {
         PrecioTotal = 0;
         for (int x = 0; x < listaventa.size(); x++) {
             producto produ = (producto) listaventa.get(x);
-            PrecioTotal = PrecioTotal + (produ.getPrecio() * produ.getCantidad());
-            Object[] datos = {produ.getCodigo(), produ.getNombre(), produ.getPrecio(), produ.getCantidad()};
-            modelo.addRow(datos);
+          //  PrecioTotal = PrecioTotal + (produ.getPrecio() * produ.getCantidad());
+         /*   Object[] datos = {produ.getCodigo(), produ.getNombre(), produ.getPrecio(), produ.getCantidad()};
+            modelo.addRow(datos);*/
         }
         this.Preciototal.setText("" + PrecioTotal);
     }//GEN-LAST:event_agregarproductoActionPerformed
@@ -286,12 +286,12 @@ public class AltaVenta extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         for (int x = listaventa.size() - 1; x >= 0; x--) {
             producto produ = (producto) listaventa.get(x);
-            produ.setCantidad(1);
+         //   produ.setCantidad(1);
             listaventa.remove(produ);
         }
          for (int x = listaproductos.size() - 1; x >= 0; x--) {
             producto produ = (producto) listaproductos.get(x);
-            produ.setCantidad(1);
+         //   produ.setCantidad(1);
             listaventa.remove(produ);
         }
         this.setVisible(false);
@@ -302,7 +302,11 @@ public class AltaVenta extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Debe agregar productos a la venta");
             return;
         }
-        boolean funciono=ICV.AltaVenta(listaventa);
+        //aca va el altaventa 
+        
+       boolean funciono=true;
+      
+   //   ICV.AltaVenta(listaventa);
         if (funciono) {
             JOptionPane.showMessageDialog(null, "Venta realizada");
         } else {
@@ -312,12 +316,12 @@ public class AltaVenta extends javax.swing.JInternalFrame {
         modelo.setRowCount(0);
         for (int x = listaventa.size() - 1; x >= 0; x--) {
             producto produ = (producto) listaventa.get(x);
-            produ.setCantidad(1);
+//            produ.setCantidad(1);
             listaventa.remove(produ);
         }
            for (int x = listaproductos.size() - 1; x >= 0; x--) {
             producto produ = (producto) listaproductos.get(x);
-            produ.setCantidad(1);
+         //   produ.setCantidad(1);
             listaventa.remove(produ);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -332,11 +336,11 @@ public class AltaVenta extends javax.swing.JInternalFrame {
         for (int i = 0; i < listaventa.size(); i++) {
             producto pro = (producto) listaventa.get(i);
             if (pro.getCodigo() == p.getCodigo()) {
-                if (pro.getCantidad() > 1) {
+       /*         if (pro.getCantidad() > 1) {
                     pro.setCantidad(pro.getCantidad() - 1);
                 } else {
                     listaventa.remove(pro);
-                }
+                }*/
             }
         }
         DefaultTableModel modelo = (DefaultTableModel) Tablaventa.getModel();
@@ -345,39 +349,14 @@ public class AltaVenta extends javax.swing.JInternalFrame {
         PrecioTotal = 0;
         for (int x = 0; x < listaventa.size(); x++) {
             producto produ = (producto) listaventa.get(x);
-            PrecioTotal = PrecioTotal + (produ.getPrecio() * produ.getCantidad());
-            Object[] datos = {produ.getCodigo(), produ.getNombre(), produ.getPrecio(), produ.getCantidad()};
-            modelo.addRow(datos);
+          //  PrecioTotal = PrecioTotal + (produ.getPrecio() * produ.getCantidad());
+       /*    Object[] datos = {produ.getCodigo(), produ.getNombre(), produ.getPrecio(), produ.getCantidad()};
+            modelo.addRow(datos);*/
         }
         this.Preciototal.setText("" + PrecioTotal);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-
-       
-    try { 
-
-        //UIManager.setLookAndFeel("com.jgoodies.looks.windows.WindowsLookAndFeel");
-    } catch(Exception ignored){}
-
-        //</editor-fold>
-
-        /* Create and display the form */
-       java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AltaVenta().setVisible(true);
-            }
-        });
-       
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Preciototal;

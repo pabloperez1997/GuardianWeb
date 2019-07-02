@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
  */
 public class JIF_ingresoDatosServicio extends javax.swing.JInternalFrame {
 
+    private controladorServicios contSrv = controladorServicios.getInstance();
     int tipoServicio = 0;
     ControladorReservas contR = ControladorReservas.getInstance();
     Persistencia.persistencia per = persistencia.getInstance();
@@ -208,6 +209,7 @@ public class JIF_ingresoDatosServicio extends javax.swing.JInternalFrame {
 
                 }
             }
+            contSrv.cargarTiposServicios();
         }
 
     }

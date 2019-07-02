@@ -33,26 +33,13 @@ public class producto implements Serializable {
     private int cantidad;
     @OneToMany
     private List<detalleVenta> detalleVentas;
+
     private String foto;
     private float precio;
     private boolean disponible;
     private String descripcion;
 
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public List<detalleVenta> getDetalleVentas() {
-        return detalleVentas;
-    }
-
-    public void setDetalleVentas(List<detalleVenta> detalleVentas) {
-        this.detalleVentas = detalleVentas;
-    }
+   
 
     public String getFoto() {
         return foto;
@@ -145,8 +132,23 @@ public class producto implements Serializable {
     }
 
     public producto() {
-        
      
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public List<detalleVenta> getDetalleVentas() {
+        return detalleVentas;
+    }
+
+    public void setDetalleVentas(List<detalleVenta> detalleVentas) {
+        this.detalleVentas = detalleVentas;
     }
 
 }

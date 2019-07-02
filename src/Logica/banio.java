@@ -5,11 +5,14 @@
  */
 package Logica;
 
+import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
-
-import org.hibernate.annotations.Entity;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -18,24 +21,49 @@ import org.hibernate.annotations.Entity;
 @Entity
 public class banio extends servicio {
 
-    @ManyToOne
-    private tipoBanio tipoDeBanio;
+    /*implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    
+     */
+
+    @OneToOne
+    private tipoBanio tipoBanio;
+
+    public tipoBanio getTipoDeBanio() {
+        return tipoBanio;
+    }
+
+    public void setTipoDeBanio(tipoBanio tipoBanio) {
+        this.tipoBanio = tipoBanio;
+    }
+
+    @Override
+    public String getTipo() {
+        return this.tipoBanio.getTipo();
+
+    }
 
     public banio() {
     }
 
-    public tipoBanio getTipoDeBanio() {
-        return tipoDeBanio;
+    @Override
+    public Long getId() {
+        return id;
     }
 
-    public void setTipoDeBanio(tipoBanio tipoDeBanio) {
-        this.tipoDeBanio = tipoDeBanio;
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 73 * hash + Objects.hashCode(this.tipoDeBanio);
+        hash = 11 * hash + Objects.hashCode(this.tipoBanio);
         return hash;
     }
 
@@ -51,15 +79,15 @@ public class banio extends servicio {
             return false;
         }
         final banio other = (banio) obj;
-        if (!Objects.equals(this.tipoDeBanio, other.tipoDeBanio)) {
+        if (!Objects.equals(this.tipoBanio, other.tipoBanio)) {
             return false;
         }
         return true;
     }
-
-    @Override
+ //defino el metodo en el hijo, para que imprima lo del padre tambien (herencia)
+   @Override
     public String toString() {
-        return "tipoDeBanio/" + tipoDeBanio;
+        return "Id/" + id + "/Descripcion/" + this.getDescripcion() + "/Precio/"+precio+"/Tipo/"+this.getTipo();
     }
 
 }

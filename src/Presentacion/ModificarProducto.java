@@ -41,17 +41,7 @@ public class ModificarProducto extends javax.swing.JInternalFrame {
     public ModificarProducto(JDesktopPane escritorioV) {
         this.escritorio=escritorioV;
         initComponents();
-    try {
-        UIManager.setLookAndFeel("Nimbus");
-    } catch (ClassNotFoundException ex) {
-        Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-        Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-        Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (UnsupportedLookAndFeelException ex) {
-        Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
-    }
+   
     }
 
 

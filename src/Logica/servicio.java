@@ -7,32 +7,93 @@ package Logica;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author jp
  */
-@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-public abstract class servicio implements Serializable {
+
+public class servicio implements Serializable,iTipo {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    Long id;
+
     private String descripcion;
-    private int duracion;
-    private float precio;
+  
+    float precio;
 
     public servicio() {
+
+    }
+/*
+    @OneToOne(cascade = CascadeType.ALL)
+   
+    private banio tipoBanio = null;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private esquila tipoEsquila = null;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private paseo tipoPaseo = null;
+
+    public servicio(String descripcion, int duracion, float precio) {
+        this.descripcion = descripcion;
+        this.duracion = duracion;
+        this.precio = precio;
     }
 
+    public void setTipoServicio(Object objSrv) {
+        if (objSrv instanceof banio) {
+            this.tipoBanio = (banio) objSrv;
+        }
+        if (objSrv instanceof esquila) {
+            this.tipoEsquila = (esquila) objSrv;
+        }
+        if (objSrv instanceof paseo) {
+            this.tipoPaseo = (paseo) objSrv;
+        }
+    }
+
+    public Object getTipoServicio() {
+        if (isBanio() != null) {
+            return isBanio();
+        }
+        if (isEsquila() != null) {
+            return isEsquila();
+        }
+        if (isPaseo() != null) {
+            return isPaseo();
+        }
+        return null;
+    }
+
+    public banio isBanio() {
+        return this.tipoBanio;
+    }
+
+    public esquila isEsquila() {
+        return this.tipoEsquila;
+    }
+
+    public paseo isPaseo() {
+        return this.tipoPaseo;
+    }
+*/
+    
     public Long getId() {
         return id;
     }
@@ -49,58 +110,19 @@ public abstract class servicio implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public int getDuracion() {
-        return duracion;
-    }
-
-    public void setDuracion(int duracion) {
-        this.duracion = duracion;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + Objects.hashCode(this.id);
-        hash = 97 * hash + Objects.hashCode(this.descripcion);
-        hash = 97 * hash + this.duracion;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final servicio other = (servicio) obj;
-        if (this.duracion != other.duracion) {
-            return false;
-        }
-        if (!Objects.equals(this.descripcion, other.descripcion)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return !Objects.equals(this.precio, other.getPrecio());
-    }
-
-    @Override
-    public String toString() {
-        return "Id/" + id + "/Descripcion/" + descripcion + "/Duracion/" + duracion;
-    }
-
-    public float getPrecio() {
+   public float getPrecio() {
         return precio;
     }
 
     public void setPrecio(float precio) {
         this.precio = precio;
     }
+
+    @Override
+    public String getTipo() {
+       return null;
+    }
+
+   
 
 }

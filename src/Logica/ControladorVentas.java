@@ -126,6 +126,7 @@ public class ControladorVentas implements iControladorVentas {
 
     }
 
+    @Override
     public boolean AltaVenta(List<producto> listaventa) {
          venta v = new venta();
          Date fecha = new Date();

@@ -5,8 +5,11 @@
  */
 package Logica;
 
+import ObjetosParaWeb.reservaWS;
 import Persistencia.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -20,14 +23,16 @@ public class ControladorReservas implements iControladorReservas {
     persistencia per = persistencia.getInstance();
     reservaPersistencia rPer = new reservaPersistencia();
     private String[] horas = {"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
-
+    utilidades util = utilidades.getInstance();
 /////////////////////////////////////////////////////////////
+
     public static ControladorReservas getInstance() {
         if (instance == null) {
             instance = new ControladorReservas();
         }
         return instance;
     }
+    private List<turno> turnosDisponibles;
 
     /////////////////////////////////////////////////////////////////////////////////TURNO////////////////////////////////////
     @Override
@@ -58,13 +63,40 @@ public class ControladorReservas implements iControladorReservas {
     }
 
     @Override
-    public List<turno> getTurnos() {
-        return (List) per.getListaObjetos("select * from turno", turno.class);
+    public List<turno> getTurnos() {//este sql filtra turnos por registro y fecha 
+        return (List) per.getListaObjetos("select * from turno where turno.id not in(select reserva_turno.turno_id from reserva_turno where reserva_id in(select reserva.id from reserva where fechaReserva='" + util.getFechaActualParseoformato("yyyy-MM-dd") + "'))", turno.class);
+    }
+
+    public List<turno> getTurnos(String fecha) {
+        System.out.println(fecha);
+        return (List) per.getListaObjetos("select * from turno where turno.id not in(select reserva_turno.turno_id from reserva_turno where reserva_id in(select reserva.id from reserva where fechaReserva= '" + fecha + "'))", turno.class);
+    }
+
+    public Object[] cargarTurnosDisponibles(Date fecha) {
+        int numTurno = 1;
+
+        String[] turnos = null;
+
+        if (fecha != null) {
+            this.turnosDisponibles = this.getTurnos(util.DateAString(fecha, "yyyy-MM-dd"));
+
+            turnos = new String[turnosDisponibles.size() + 1];
+            turnos[0] = "Seleccionar Turno";
+            Iterator it = turnosDisponibles.iterator();
+            while (it.hasNext()) {
+                turno name = (turno) it.next();
+                turnos[numTurno] = ("Turno: " + numTurno + " -- " + name.getHora() + " Hs");
+                numTurno++;
+            }
+
+        }
+
+        return turnos;
     }
 
     @Override
     public turno getTurno(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return (turno) per.getObjeto(id, turno.class);
     }
 
     @Override
@@ -235,5 +267,48 @@ public class ControladorReservas implements iControladorReservas {
         }
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public List getReservasDelDia() {
+        List<reserva> reservas = new ArrayList<>();
+        try {
+            List reservasObj = per.getListaObjetos("select * from reserva where fechaReserva= '" + util.getFechaActualParseoformato("yyyy-MM-dd") + "'", reserva.class);
+            for (Object obj : reservasObj) {
+                reservas.add((reserva) obj);
+            }
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+        return reservas;
+    }
+
+    @Override
+    public boolean modificarReserva(reserva r) {
+        try {
+            if (per.existe(r)) {
+                return per.modificar(r);
+            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Causa: " + e.getCause());
+        }
+        return false;
+    }
+//////////////////////////////////para webService/////////////////////
+
+    @Override
+    public boolean altaReservaWS(reservaWS r) {
+        return false;
+    }
+
+    @Override
+    public boolean modificarReservaWS(reservaWS r) {
+        return false;
+    }
+
+    @Override
+    public boolean eliminarReservaWS(reservaWS r) {
+        return false;
+    }
 
 }
