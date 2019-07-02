@@ -69,26 +69,34 @@ public class ListarProductos extends javax.swing.JInternalFrame {
 
         TablaProd.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Codigo", "Nombre", "Precio", "Descripcion", "Disponible"
+                "Codigo", "Nombre", "Precio", "Descripcion", "Disponible", "Stock"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         TablaProd.setFocusable(false);
         jScrollPane1.setViewportView(TablaProd);
 
@@ -166,7 +174,7 @@ public class ListarProductos extends javax.swing.JInternalFrame {
         String nombre = model.getValueAt(index, 1).toString();
         String precio = model.getValueAt(index, 2).toString();
         String descripcion = model.getValueAt(index, 3).toString();
-        //String disponible = model.getValueAt(index, 4).toString();
+        String stock = model.getValueAt(index, 5).toString();
 
         try {
             ModificarProducto ModificarProd = new ModificarProducto(this.escritorio);
@@ -181,6 +189,7 @@ public class ListarProductos extends javax.swing.JInternalFrame {
             ModificarProd.jTextField2.setText(nombre);
             ModificarProd.jTextField3.setText(precio);
             ModificarProd.jTextField4.setText(descripcion);
+            ModificarProd.jTextField1.setText(stock);
 
             String disponible;
             disponible = model.getValueAt(index, 4).toString();
@@ -249,7 +258,7 @@ public class ListarProductos extends javax.swing.JInternalFrame {
                 }
 
                 Object[] dat = {listaP.get(i).getCodigo(), listaP.get(i).getNombre(), listaP.get(i).getPrecio(),
-                    listaP.get(i).getDescripcion(), dispo};
+                    listaP.get(i).getDescripcion(), dispo,listaP.get(i).getCantidad()};
 
                 modelo.addRow(dat);
             }

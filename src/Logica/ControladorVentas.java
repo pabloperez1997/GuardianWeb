@@ -61,7 +61,7 @@ public class ControladorVentas implements iControladorVentas {
         productos = ventapersist.getListaproductos();
         for (int x = productos.size() - 1; x >= 0; x--) {
             producto produ = (producto) productos.get(x);
-            produ.setCantidad(1);
+           // produ.setCantidad(1);
         }
     }
 

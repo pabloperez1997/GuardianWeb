@@ -5,6 +5,7 @@
  */
 package Presentacion;
 
+import Logica.detalleVenta;
 import Logica.fabricaElGuardian;
 import Logica.iControladorVentas;
 import Logica.producto;
@@ -26,7 +27,7 @@ public class AltaVenta extends javax.swing.JInternalFrame {
     int altura = 100;
     int panel = 2;
     List<producto> listaproductos;
-    List<producto> listaventa = new ArrayList<>();
+    List<detalleVenta> listaventa = new ArrayList<>();
     float PrecioTotal = 0;
 
     public AltaVenta() {
@@ -40,7 +41,7 @@ public class AltaVenta extends javax.swing.JInternalFrame {
         for (int i = 0; i < listaproductos.size(); i++) {
 
             producto pro = (producto) listaproductos.get(i);
-            Object[] datos = {pro.getCodigo(), pro.getNombre(), pro.getPrecio()};
+            Object[] datos = {pro.getCodigo(), pro.getNombre(), pro.getPrecio(), pro.getCantidad()};
 
             modelo.addRow(datos);
         }
@@ -86,14 +87,17 @@ public class AltaVenta extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(205, 205, 205)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 415, Short.MAX_VALUE)
+                .addGap(205, 698, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(228, 228, 228))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(438, 438, 438)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(438, 438, 438)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(201, 201, 201)
+                        .addComponent(jLabel2)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -101,14 +105,21 @@ public class AltaVenta extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)))
+                .addGap(34, 34, 34)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3))
         );
 
         Tablaventa.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -119,7 +130,7 @@ public class AltaVenta extends javax.swing.JInternalFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class
+                java.lang.Long.class, java.lang.String.class, java.lang.Float.class, java.lang.Float.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, true
@@ -137,20 +148,27 @@ public class AltaVenta extends javax.swing.JInternalFrame {
 
         TablaProductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Codigo", "Nombre", "Precio"
+                "Codigo", "Nombre", "Precio", "Stock"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Float.class
+                java.lang.String.class, java.lang.String.class, java.lang.Float.class, java.lang.Integer.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -226,22 +244,19 @@ public class AltaVenta extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(agregarproducto)
-                            .addComponent(jButton2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(Preciototal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(agregarproducto)
+                        .addComponent(jButton2))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel4)
+                        .addComponent(Preciototal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -253,39 +268,80 @@ public class AltaVenta extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void agregarproductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarproductoActionPerformed
-        boolean esta = false;
+       
         int a = TablaProductos.getSelectedRow();
         if (a == -1) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un producto");
             return;
         }
-        producto p = ICV.obtenerProductoporCodigo((String) TablaProductos.getValueAt(TablaProductos.getSelectedRow(), 0));
-        for (int i = 0; i < listaventa.size(); i++) {
-            producto pro = (producto) listaventa.get(i);
-            if (pro.getCodigo() == p.getCodigo()) {
-                esta = true;
-                //pro.setCantidad(pro.getCantidad() + 1);
-            }
-        }
-        if (!esta) {
-            listaventa.add(p);
-        }
+        producto produ = ICV.ObtenerProducto((Long) TablaProductos.getValueAt(TablaProductos.getSelectedRow(), 0));
+        detalleVenta dv = new detalleVenta();      
+        dv.setProducto(produ);
+        
         DefaultTableModel modelo = (DefaultTableModel) Tablaventa.getModel();
         modelo.setRowCount(0);
-        PrecioTotal = 0;
-        for (int x = 0; x < listaventa.size(); x++) {
-            producto produ = (producto) listaventa.get(x);
-          //  PrecioTotal = PrecioTotal + (produ.getPrecio() * produ.getCantidad());
-         /*   Object[] datos = {produ.getCodigo(), produ.getNombre(), produ.getPrecio(), produ.getCantidad()};
-            modelo.addRow(datos);*/
+       
+        boolean existe=false;
+        for (int x = 0; x < listaventa.size(); x++) {           
+            detalleVenta detv = (detalleVenta) listaventa.get(x);
+            producto pro = detv.getProducto();
+            
+            if(produ.getCodigo()==pro.getCodigo()){
+                if(pro.getCantidad()>detv.getCantidad()){ 
+                 detv.setCantidad(detv.getCantidad()+1);
+                  }
+                 existe=true;
+            }
+               
+        
         }
-        this.Preciototal.setText("" + PrecioTotal);
+        
+        if(!existe)
+        this.listaventa.add(dv);
+        
+        PrecioTotal= 0;
+         for (int x = 0; x < listaventa.size(); x++) {           
+            detalleVenta detv = (detalleVenta) listaventa.get(x);
+            producto pro = detv.getProducto();
+            
+             PrecioTotal = PrecioTotal+detv.getCantidad()*detv.getProducto().getPrecio();
+            Object[] datos = {pro.getCodigo(), pro.getNombre(), pro.getPrecio(), detv.getCantidad()};
+            modelo.addRow(datos);
+            
+        }
+        
+        
+        
+        
+           // PrecioTotal = PrecioTotal + (produ.getPrecio() * produ.getCantidad());
+//////       for (int i = 0; i < listaventa.si
+////       for (int i = 0; i < listaventa.size(); i++) {
+////            
+////            dv.setProducto(p);
+////            producto pro = (producto) listaventa.get(i).getProducto();
+////            if (pro.getCodigo() == p.getCodigo()) {
+////                esta = true;
+////            }
+////        }
+////        if (!esta) {
+////            listaventa.add(dv);
+////        }
+////        DefaultTableModel modelo = (DefaultTableModel) Tablaventa.getModel();
+////        modelo.setRowCount(0);
+////        PrecioTotal = 0;
+////        for (int x = 0; x < listaventa.size(); x++) {
+////            producto produ = (producto) listaventa.get(x).getProducto();
+////            PrecioTotal = PrecioTotal + (produ.getPrecio() * produ.getCantidad());
+////            Object[] datos = {produ.getCodigo(), produ.getNombre(), produ.getPrecio(), produ.getCantidad()};
+////            modelo.addRow(datos);
+////        }
+      this.Preciototal.setText("" + PrecioTotal);
     }//GEN-LAST:event_agregarproductoActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         for (int x = listaventa.size() - 1; x >= 0; x--) {
-            producto produ = (producto) listaventa.get(x);
+            producto produ = (producto) listaventa.get(x).getProducto();
          //   produ.setCantidad(1);
             listaventa.remove(produ);
         }
@@ -315,7 +371,7 @@ public class AltaVenta extends javax.swing.JInternalFrame {
         DefaultTableModel modelo = (DefaultTableModel) Tablaventa.getModel();
         modelo.setRowCount(0);
         for (int x = listaventa.size() - 1; x >= 0; x--) {
-            producto produ = (producto) listaventa.get(x);
+            producto produ = (producto) listaventa.get(x).getProducto();
 //            produ.setCantidad(1);
             listaventa.remove(produ);
         }
@@ -332,28 +388,48 @@ public class AltaVenta extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un producto");
             return;
         }
-        producto p = ICV.obtenerProductoporCodigo((String) Tablaventa.getValueAt(Tablaventa.getSelectedRow(), 0));
+    
+        
+        boolean existe=false;
+       
+        Long cod= (Long) Tablaventa.getValueAt(Tablaventa.getSelectedRow(), 0);
+        producto p = ICV.ObtenerProducto(cod);
         for (int i = 0; i < listaventa.size(); i++) {
-            producto pro = (producto) listaventa.get(i);
-            if (pro.getCodigo() == p.getCodigo()) {
-       /*         if (pro.getCantidad() > 1) {
-                    pro.setCantidad(pro.getCantidad() - 1);
-                } else {
-                    listaventa.remove(pro);
-                }*/
+            detalleVenta detv = (detalleVenta) listaventa.get(i);
+            if (detv.getProducto().getCodigo() == p.getCodigo()) {
+                if(detv.getCantidad()>1){
+                    detv.setCantidad(detv.getCantidad()-1);
+                     existe=true;
+                    }
+                
             }
         }
+        if(!existe){
+            for (int i = 0; i < listaventa.size(); i++) {
+                detalleVenta detv = (detalleVenta) listaventa.get(i);
+                if (detv.getProducto().getCodigo() == p.getCodigo()) 
+                this.listaventa.remove(detv);
+            
+        }
+        }
+            
+            
+       
         DefaultTableModel modelo = (DefaultTableModel) Tablaventa.getModel();
-
         modelo.setRowCount(0);
         PrecioTotal = 0;
         for (int x = 0; x < listaventa.size(); x++) {
-            producto produ = (producto) listaventa.get(x);
-          //  PrecioTotal = PrecioTotal + (produ.getPrecio() * produ.getCantidad());
-       /*    Object[] datos = {produ.getCodigo(), produ.getNombre(), produ.getPrecio(), produ.getCantidad()};
-            modelo.addRow(datos);*/
+            detalleVenta detv = (detalleVenta) listaventa.get(x);
+            producto pro = detv.getProducto(); 
+            PrecioTotal = PrecioTotal+detv.getCantidad()*detv.getProducto().getPrecio();
+            
+            Object[] datos = {pro.getCodigo(), pro.getNombre(), pro.getPrecio(), detv.getCantidad()};
+            modelo.addRow(datos);
         }
         this.Preciototal.setText("" + PrecioTotal);
+        
+        
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
    

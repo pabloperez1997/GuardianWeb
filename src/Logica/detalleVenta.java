@@ -31,7 +31,7 @@ public class detalleVenta implements Serializable {
 //estos dos atributos se pueden calcular de la lista
     private float precioTotalProductos;
 
-    private int cantidad;
+    private int cantidad=1;
     
     
 
