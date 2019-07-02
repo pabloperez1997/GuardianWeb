@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -30,7 +31,7 @@ public class producto implements Serializable {
     
     private String nombre;
     private int cantidad;
-    @ManyToMany(mappedBy = "listaProducto")
+    @OneToMany
     private List<detalleVenta> detalleVentas;
     private String foto;
     private float precio;
@@ -144,7 +145,7 @@ public class producto implements Serializable {
     }
 
     public producto() {
-        this.cantidad = 1;
+        
      
     }
 

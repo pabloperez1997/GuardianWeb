@@ -127,23 +127,32 @@ public class ControladorVentas implements iControladorVentas {
     }
 
     public boolean AltaVenta(List<producto> listaventa) {
-        float preciototal = this.calcularpreciototal(listaventa);
-        int cantidad = 0;
+         venta v = new venta();
+         Date fecha = new Date();
+         v.setFecha(fecha);
+       
         for (int x = listaventa.size() - 1; x >= 0; x--) {
             producto produ = (producto) listaventa.get(x);
-            cantidad = cantidad + produ.getCantidad();
+            detalleVenta dv = new detalleVenta();
+            //dv.setCantidad(produ.getCantidad());
+            dv.setProducto(produ);
+            dv.setPrecioTotalProductos(produ.getPrecio()*produ.getCantidad());
+            v.getDetalles().add(dv);
+            
+            int stock=produ.getCantidad()-dv.getCantidad();
+            produ.setCantidad(stock);
+            
+            if(stock==0)
+            produ.setDisponible(false);
+            
+            
+            Persistencia.persistencia.getInstance().persis(dv);
+            Persistencia.productoPersistencia.getInstance().modificar(produ);
         }
-        detalleVenta dv = new detalleVenta();
-        dv.setCantidad(cantidad);
-        dv.setListaProducto(listaventa);
-        dv.setPrecioTotalProductos(preciototal);
-        Persistencia.persistencia.getInstance().persis(dv);
-        Date fecha = new Date();
-        venta v = new venta();
-        v.setFecha(fecha);
-        v.setDetalles(dv);
+      
         boolean ok = Persistencia.persistencia.getInstance().persis(v);
         return ok;
+        
     }
 
     public String getRutaGuardarimgProductos() {
@@ -158,8 +167,31 @@ public class ControladorVentas implements iControladorVentas {
     public boolean finalizarVenta(cliente c){
         
         try {
-            GenerarPDF gpdf= new GenerarPDF();
-            gpdf.createPdf(c);
+            List<producto> prodsventa = new ArrayList<>();
+            List<detalleVenta> Productosavender= (List<detalleVenta>) c.getCompra().getDetalles();
+            Iterator it = Productosavender.iterator();
+            while (it.hasNext()){
+                detalleVenta dv=(detalleVenta) it.next();
+                producto pr =dv.getProducto();
+                prodsventa.add(pr);
+                
+            int stock=pr.getCantidad()-dv.getCantidad();
+            pr.setCantidad(stock);
+            
+            if(stock==0)
+            pr.setDisponible(false);
+            
+            Persistencia.productoPersistencia.getInstance().modificar(pr);
+                    
+                
+            }
+            
+            AltaVenta(prodsventa);
+            
+                 
+           
+            GenerarPDF gpdf= new GenerarPDF(c);
+            gpdf.createPdf();
             return true;
         } catch (IOException ex) {
             Logger.getLogger(ControladorVentas.class.getName()).log(Level.SEVERE, null, ex);

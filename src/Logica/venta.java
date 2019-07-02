@@ -6,6 +6,7 @@
 package Logica;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -34,14 +35,14 @@ public class venta implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date fecha;
     
-    @OneToOne
-    private detalleVenta detalles;
+    @OneToMany
+    private List<detalleVenta> detalles= new ArrayList<>();
 
-    public detalleVenta getDetalles() {
+    public List<detalleVenta> getDetalles() {
         return detalles;
     }
 
-    public void setDetalles(detalleVenta detalles) {
+    public void setDetalles(List<detalleVenta> detalles) {
         this.detalles = detalles;
     }
     public venta() {

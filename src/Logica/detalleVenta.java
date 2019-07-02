@@ -26,8 +26,8 @@ public class detalleVenta implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany
-    private List<producto> listaProducto;
+    @OneToOne
+    private producto producto;
 //estos dos atributos se pueden calcular de la lista
     private float precioTotalProductos;
 
@@ -46,12 +46,12 @@ public class detalleVenta implements Serializable {
         this.id = id;
     }
 
-    public List<producto> getListaProducto() {
-        return listaProducto;
+    public producto getProducto() {
+        return producto;
     }
 
-    public void setListaProducto(List<producto> listaProducto) {
-        this.listaProducto = listaProducto;
+    public void setProducto(producto producto) {
+        this.producto = producto;
     }
 
     public float getPrecioTotalProductos() {
@@ -74,7 +74,7 @@ public class detalleVenta implements Serializable {
     public int hashCode() {
         int hash = 3;
         hash = 97 * hash + Objects.hashCode(this.id);
-        hash = 97 * hash + Objects.hashCode(this.listaProducto);
+        hash = 97 * hash + Objects.hashCode(this.producto);
         hash = 97 * hash + Float.floatToIntBits(this.precioTotalProductos);
         hash = 97 * hash + this.cantidad;
         return hash;
@@ -101,7 +101,7 @@ public class detalleVenta implements Serializable {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.listaProducto, other.listaProducto)) {
+        if (!Objects.equals(this.producto, other.producto)) {
             return false;
         }
         return true;
@@ -109,7 +109,7 @@ public class detalleVenta implements Serializable {
 
     @Override
     public String toString() {
-        return "detalleVenta{" + "id=" + id + ", listaProducto=" + listaProducto + ", precioTotalProductos=" + precioTotalProductos + ", cantidad=" + cantidad + '}';
+        return "detalleVenta{" + "id=" + id + ", producto=" + producto + ", precioTotalProductos=" + precioTotalProductos + ", cantidad=" + cantidad + '}';
     }
 
 }
