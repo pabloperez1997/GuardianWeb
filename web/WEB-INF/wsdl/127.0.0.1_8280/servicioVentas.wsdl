@@ -14,31 +14,31 @@
 <message name="productosaVenderResponse">
 <part name="return" type="tns:listProductos"></part>
 </message>
-<message name="limpiarVenta"></message>
-<message name="limpiarVentaResponse"></message>
+<message name="eliminaraVender">
+<part name="codigo" type="xsd:long"></part>
+</message>
+<message name="eliminaraVenderResponse"></message>
+<message name="setaVender">
+<part name="codigo" type="xsd:long"></part>
+</message>
+<message name="setaVenderResponse"></message>
 <message name="finalizarVenta">
 <part name="cliente" type="tns:cliente"></part>
 </message>
 <message name="finalizarVentaResponse">
 <part name="return" type="xsd:boolean"></part>
 </message>
-<message name="setaVender">
-<part name="codigo" type="xsd:long"></part>
-</message>
-<message name="setaVenderResponse"></message>
-<message name="eliminaraVender">
-<part name="codigo" type="xsd:long"></part>
-</message>
-<message name="eliminaraVenderResponse"></message>
-<message name="despublicar"></message>
-<message name="despublicarResponse">
-<part name="return" type="xsd:boolean"></part>
-</message>
+<message name="limpiarVenta"></message>
+<message name="limpiarVentaResponse"></message>
 <message name="obtenerProducto">
 <part name="Codigo" type="xsd:long"></part>
 </message>
 <message name="obtenerProductoResponse">
 <part name="return" type="tns:producto"></part>
+</message>
+<message name="despublicar"></message>
+<message name="despublicarResponse">
+<part name="return" type="xsd:boolean"></part>
 </message>
 <portType name="WSContVentas">
 <operation name="obtenerProductos">
@@ -53,29 +53,29 @@
 <input wsam:Action="http://Servicios/WSContVentas/productosaVenderRequest" message="tns:productosaVender"></input>
 <output wsam:Action="http://Servicios/WSContVentas/productosaVenderResponse" message="tns:productosaVenderResponse"></output>
 </operation>
-<operation name="limpiarVenta">
-<input wsam:Action="http://Servicios/WSContVentas/limpiarVentaRequest" message="tns:limpiarVenta"></input>
-<output wsam:Action="http://Servicios/WSContVentas/limpiarVentaResponse" message="tns:limpiarVentaResponse"></output>
-</operation>
-<operation name="finalizarVenta">
-<input wsam:Action="http://Servicios/WSContVentas/finalizarVentaRequest" message="tns:finalizarVenta"></input>
-<output wsam:Action="http://Servicios/WSContVentas/finalizarVentaResponse" message="tns:finalizarVentaResponse"></output>
+<operation name="eliminaraVender">
+<input wsam:Action="http://Servicios/WSContVentas/eliminaraVenderRequest" message="tns:eliminaraVender"></input>
+<output wsam:Action="http://Servicios/WSContVentas/eliminaraVenderResponse" message="tns:eliminaraVenderResponse"></output>
 </operation>
 <operation name="setaVender">
 <input wsam:Action="http://Servicios/WSContVentas/setaVenderRequest" message="tns:setaVender"></input>
 <output wsam:Action="http://Servicios/WSContVentas/setaVenderResponse" message="tns:setaVenderResponse"></output>
 </operation>
-<operation name="eliminaraVender">
-<input wsam:Action="http://Servicios/WSContVentas/eliminaraVenderRequest" message="tns:eliminaraVender"></input>
-<output wsam:Action="http://Servicios/WSContVentas/eliminaraVenderResponse" message="tns:eliminaraVenderResponse"></output>
+<operation name="finalizarVenta">
+<input wsam:Action="http://Servicios/WSContVentas/finalizarVentaRequest" message="tns:finalizarVenta"></input>
+<output wsam:Action="http://Servicios/WSContVentas/finalizarVentaResponse" message="tns:finalizarVentaResponse"></output>
 </operation>
-<operation name="despublicar">
-<input wsam:Action="http://Servicios/WSContVentas/despublicarRequest" message="tns:despublicar"></input>
-<output wsam:Action="http://Servicios/WSContVentas/despublicarResponse" message="tns:despublicarResponse"></output>
+<operation name="limpiarVenta">
+<input wsam:Action="http://Servicios/WSContVentas/limpiarVentaRequest" message="tns:limpiarVenta"></input>
+<output wsam:Action="http://Servicios/WSContVentas/limpiarVentaResponse" message="tns:limpiarVentaResponse"></output>
 </operation>
 <operation name="obtenerProducto">
 <input wsam:Action="http://Servicios/WSContVentas/obtenerProductoRequest" message="tns:obtenerProducto"></input>
 <output wsam:Action="http://Servicios/WSContVentas/obtenerProductoResponse" message="tns:obtenerProductoResponse"></output>
+</operation>
+<operation name="despublicar">
+<input wsam:Action="http://Servicios/WSContVentas/despublicarRequest" message="tns:despublicar"></input>
+<output wsam:Action="http://Servicios/WSContVentas/despublicarResponse" message="tns:despublicarResponse"></output>
 </operation>
 </portType>
 <binding name="WSContVentasPortBinding" type="tns:WSContVentas">
@@ -107,16 +107,7 @@
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
 </output>
 </operation>
-<operation name="limpiarVenta">
-<soap:operation soapAction=""></soap:operation>
-<input>
-<soap:body use="literal" namespace="http://Servicios/"></soap:body>
-</input>
-<output>
-<soap:body use="literal" namespace="http://Servicios/"></soap:body>
-</output>
-</operation>
-<operation name="finalizarVenta">
+<operation name="eliminaraVender">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
@@ -134,7 +125,7 @@
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
 </output>
 </operation>
-<operation name="eliminaraVender">
+<operation name="finalizarVenta">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
@@ -143,7 +134,7 @@
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
 </output>
 </operation>
-<operation name="despublicar">
+<operation name="limpiarVenta">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
@@ -153,6 +144,15 @@
 </output>
 </operation>
 <operation name="obtenerProducto">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal" namespace="http://Servicios/"></soap:body>
+</input>
+<output>
+<soap:body use="literal" namespace="http://Servicios/"></soap:body>
+</output>
+</operation>
+<operation name="despublicar">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>

@@ -39,7 +39,7 @@
 
 <xs:complexType name="venta">
 <xs:sequence>
-<xs:element name="detalles" type="tns:detalleVenta" minOccurs="0"></xs:element>
+<xs:element name="detalles" type="tns:detalleVenta" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="fecha" type="xs:dateTime" minOccurs="0"></xs:element>
 <xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
 </xs:sequence>
@@ -49,8 +49,8 @@
 <xs:sequence>
 <xs:element name="cantidad" type="xs:int"></xs:element>
 <xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
-<xs:element name="listaProducto" type="tns:producto" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="precioTotalProductos" type="xs:float"></xs:element>
+<xs:element name="producto" type="tns:producto" minOccurs="0"></xs:element>
 </xs:sequence>
 </xs:complexType>
 
@@ -87,29 +87,21 @@
 <xs:complexType name="reserva">
 <xs:sequence>
 <xs:element name="bozal" type="xs:boolean"></xs:element>
+<xs:element name="cliente" type="tns:cliente" minOccurs="0"></xs:element>
 <xs:element name="correa" type="xs:boolean"></xs:element>
 <xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
 <xs:element name="fechaReserva" type="xs:dateTime" minOccurs="0"></xs:element>
 <xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
-<xs:element name="listaMascotas" type="tns:mascota" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
-<xs:element name="listaServicios" type="tns:servicio" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
-<xs:element name="listaTurnos" type="tns:turno" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+<xs:element name="mascota" type="tns:mascota" minOccurs="0"></xs:element>
+<xs:element name="servicio" type="tns:servicio" minOccurs="0"></xs:element>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="servicio" abstract="true">
+<xs:complexType name="servicio">
 <xs:sequence>
 <xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
-<xs:element name="duracion" type="xs:int"></xs:element>
 <xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
 <xs:element name="precio" type="xs:float"></xs:element>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="turno">
-<xs:sequence>
-<xs:element name="hora" type="xs:string" minOccurs="0"></xs:element>
-<xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
 </xs:sequence>
 </xs:complexType>
 </xs:schema>

@@ -49,10 +49,10 @@
           <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
                 
-             <%if (producto.getFoto().compareTo("sinfoto")!=0){%>
+             <%if (producto.getFoto().compareTo("default")!=0){%>
              <img class="card-img-top" src="img/imgprod/<%=producto.getFoto()%>.png" alt="">
              <%}else{%>
-             <img class="card-img-top" src="img/default.jpg" alt="">
+             <img class="card-img-top" src="img/imgprod/default.jpg" alt="">
              <%}%>
              
               <div class="card-body">
@@ -65,7 +65,8 @@
               <div class="card-footer">
                   
                   <%if (producto.isDisponible()==true){%>
-                  <p><i class="fa fa-check-circle" style="color:green"></i>Disponible </p>               
+                  <p>Stock: <%=producto.getCantidad()%> </p> 
+                  <p><i class="fa fa-check-circle" style="color:green"></i>Disponible </p>                     
                   <div class="row">
                       <div class="col-sm-12">
                         <div class="text-center">
@@ -79,7 +80,7 @@
                    </div>
                   
                    <%}else{%>
-                  
+                  <p>Sin Stock</p> 
                   <p><i class="fa fa-times-circle" style="color:red"></i>No Disponible</p>
                     <div class="row">
                       <div class="col-sm-12">

@@ -23,8 +23,8 @@
 <xs:sequence>
 <xs:element name="cantidad" type="xs:int"></xs:element>
 <xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
-<xs:element name="listaProducto" type="tns:producto" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="precioTotalProductos" type="xs:float"></xs:element>
+<xs:element name="producto" type="tns:producto" minOccurs="0"></xs:element>
 </xs:sequence>
 </xs:complexType>
 
@@ -45,7 +45,7 @@
 
 <xs:complexType name="venta">
 <xs:sequence>
-<xs:element name="detalles" type="tns:detalleVenta" minOccurs="0"></xs:element>
+<xs:element name="detalles" type="tns:detalleVenta" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="fecha" type="xs:dateTime" minOccurs="0"></xs:element>
 <xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
 </xs:sequence>

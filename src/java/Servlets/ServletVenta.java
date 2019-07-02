@@ -62,8 +62,7 @@ public class ServletVenta extends HttpServlet {
         
        
         
-       RequestDispatcher dispatcher = request.getRequestDispatcher("/Vistas/Venta.jsp");
-       dispatcher.forward(request, response);
+   request.getRequestDispatcher("/Vistas/Venta.jsp").forward(request, response);
         
         
     }
@@ -79,7 +78,26 @@ public class ServletVenta extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
+   Cliente c= (Cliente) request.getSession().getAttribute("usuario_logueado");
+ 
+    List<DetalleVenta> Productosavender= (List<DetalleVenta>) c.getCompra().getDetalles();
+    List<Producto> prodsventa = new ArrayList<>();
+               
+            Iterator it1 = Productosavender.iterator();
+            while (it1.hasNext()){
+                DetalleVenta dv=(DetalleVenta) it1.next();
+                Producto pr=dv.getProducto();
+                prodsventa.add(pr);
+                
+            }
+   
+   
+   request.getSession().setAttribute("CantidadProdVend", c.getCompra().getDetalles().size());
+   request.setAttribute("ProdsVenta", prodsventa);
+   
+   request.getRequestDispatcher("/Vistas/Venta.jsp").forward(request, response);
+  
     }
 
     /**
@@ -119,28 +137,44 @@ public class ServletVenta extends HttpServlet {
             if(c.getCompra()==null){
                 Venta v= new Venta();
                 DetalleVenta dv= new DetalleVenta();
+                //dv.setCantidad(0);
+                dv.setProducto(p);
                 List<Producto> listPr= new ArrayList<>();
                 c.setCompra(v);
-                v.setDetalles(dv); 
+                v.getDetalles().add(dv); 
+            }
+            else{
+                
             }
             
             boolean existelista= false;
-            List<Producto> Productosavender= (List<Producto>) c.getCompra().getDetalles().getListaProducto();
+            List<DetalleVenta> Productosavender= (List<DetalleVenta>) c.getCompra().getDetalles();
             Iterator it = Productosavender.iterator();
-            int i;
             while (it.hasNext()){
-                Producto pr=(Producto) it.next();
-                if(pr.getCodigo().compareTo(codigoprod)==0)
+                DetalleVenta dv=(DetalleVenta) it.next();
+                if(dv.getProducto().getCodigo().compareTo(codigoprod)==0)
                 existelista=true;
                 
             }
-            if(!existelista)
-               c.getCompra().getDetalles().getListaProducto().add(p);
+            if(!existelista){DetalleVenta dv= new DetalleVenta();
+                //dv.setCantidad(p.getCantidad());
+                dv.setProducto(p);
+                c.getCompra().getDetalles().add(dv);}
+              // c.getCompra().getDetalles().add(p);
            
+              List<Producto> prodsventa = new ArrayList<>();
+               
+            Iterator it1 = Productosavender.iterator();
+            while (it1.hasNext()){
+                DetalleVenta dv=(DetalleVenta) it1.next();
+                Producto pr=dv.getProducto();
+                prodsventa.add(pr);
+                
+            }
             
             
-            request.getSession().setAttribute("CantidadProdVend", c.getCompra().getDetalles().getListaProducto().size());
-            request.setAttribute("ProdsVenta", c.getCompra().getDetalles().getListaProducto());
+            request.getSession().setAttribute("CantidadProdVend", c.getCompra().getDetalles().size());
+            request.setAttribute("ProdsVenta", prodsventa);
         }
 
        String codelim = request.getParameter("eliminarprod");
@@ -151,20 +185,29 @@ public class ServletVenta extends HttpServlet {
             Cliente c= (Cliente) request.getSession().getAttribute("usuario_logueado");
                                
             //c.getCompra().getDetalles().getListaProducto().remove(p);
-            
-            List<Producto> Productosavender= (List<Producto>) c.getCompra().getDetalles().getListaProducto();
-            
+             List<DetalleVenta> Productosavender= (List<DetalleVenta>) c.getCompra().getDetalles();
             Iterator it = Productosavender.iterator();
-            int i;
             while (it.hasNext()){
-                Producto pr=(Producto) it.next();
-                if(pr.getCodigo().compareTo(eliminarprod)==0)
+                DetalleVenta dv=(DetalleVenta) it.next();
+                if(dv.getProducto().getCodigo().compareTo(eliminarprod)==0)
                 it.remove();
                 
             }
-            request.getSession().setAttribute("CantidadProdVend", Productosavender.size());
-            request.setAttribute("ProdsVenta", Productosavender);
+             List<Producto> prodsventa = new ArrayList<>();
+               
+            Iterator it1 = Productosavender.iterator();
+            while (it1.hasNext()){
+                DetalleVenta dv=(DetalleVenta) it1.next();
+                Producto pr=dv.getProducto();
+                prodsventa.add(pr);
+                
+            }
+            
+            
+            request.getSession().setAttribute("CantidadProdVend", c.getCompra().getDetalles().size());
+            request.setAttribute("ProdsVenta", prodsventa);
         }
+        
         
         RequestDispatcher dispatcher = request.getRequestDispatcher("Vistas/Venta.jsp");
         dispatcher.forward(request, response);

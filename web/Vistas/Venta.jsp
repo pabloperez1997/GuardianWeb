@@ -55,10 +55,10 @@
                     
                     <div class="row">
                         <div class="col-12 col-sm-12 col-md-2 text-center" >
-                            <%if (producto.getFoto().compareTo("sinfoto")!=0){%>
+                            <%if (producto.getFoto().compareTo("default")!=0){%>
              <img class="img-responsive" src="img/imgprod/<%=producto.getFoto()%>.png" alt="imagen del producto" width="120" height="80">
              <%}else{%>
-             <img class="img-responsive" src="img/default.jpg" alt="imagen del producto" width="120" height="80">
+             <img class="img-responsive" src="img/imgprod/default.jpg" alt="imagen del producto" width="120" height="80">
              <%}%>  
                         </div>
                         <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
@@ -74,8 +74,8 @@
                             
                             <div class="col-4 col-sm-4 col-md-4">
                                 <div class="quantity">
-                                    <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp();calcularTotal(<%=producto.getPrecio()%>);" class="plus">+</button>
-                                    <input form="finalizar" name="<%=producto.getCodigo()%>" id="<%=producto.getCodigo()%>" type="number" max="99" min="1" value="1" title="Cantidad"  class="qty"
+                                    <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepUp();calcularTotal(<%=producto.getPrecio()%>,<%=producto.getCantidad()%>);" class="plus">+</button>
+                                    <input form="finalizar" name="<%=producto.getCodigo()%>" id="<%=producto.getCodigo()%>" type="number" max="<%=producto.getCantidad()%>" min="1" value="1" title="Cantidad"  class="qty"
                                            size="5" readonly>
                                    <button type="button" onclick="this.parentNode.querySelector('input[type=number]').stepDown();calcularTotalrestar(<%=producto.getPrecio()%>);" class="minus"><b>-</b></button>
                                 </div>

@@ -29,19 +29,26 @@ span.onclick = function() {
   modal.style.display = "none";
 }
 
- function calcularTotal(precio){
+ function calcularTotal(precio, canti){
             
            var nodoPadre = document.activeElement.parentNode;
            var inputcant = nodoPadre.querySelector('input[type=number]');
-           inputcant.setAttribute("value", parseInt(inputcant.getAttribute("value"))+1);
+           cant = parseInt(inputcant.getAttribute("value"));
            
+           c=canti;
+ 
+           if(cant==c)return;
+           inputcant.setAttribute("value", parseInt(inputcant.getAttribute("value"))+1);
+
            tot=precio;
            var subtotal= document.getElementById("total").innerHTML;
            value = parseFloat(subtotal);
            var subottal1= tot+value;
            
            document.getElementById("total").innerHTML = subottal1;
+
         }
+        
         function calcularTotalrestar(precio){
            
            var nodoPadre = document.activeElement.parentNode;

@@ -29,6 +29,9 @@
                     </div>
                     <div class="modal-body">
                         <%out.print(request.getAttribute("mensaje"));%>
+                        <%if(request.getAttribute("idVenta")!=null){%>
+                        <a href=" pdfventa/Compra_${idVenta}.pdf" download="Detalles_de_compra.pdf"> click me</a>
+                        <%}%>
                     </div>
                     <div class="modal-footer">
                         <a href="javascript:window.history.back();" class="btn btn-primary"> &laquo; Volver</a>

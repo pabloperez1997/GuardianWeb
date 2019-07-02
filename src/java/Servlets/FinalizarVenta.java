@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import servicios.Cliente;
+import servicios.DetalleVenta;
 import servicios.Producto;
 import servicios.ServicioContVentas;
 import servicios.WSContVentas;
@@ -41,30 +43,41 @@ public class FinalizarVenta extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        ServletContext context;
-        context = request.getServletContext();
-        String ruta = context.getResource("").getPath();
-        URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sVentas", ruta));
-        ServicioContVentas webService = new ServicioContVentas(url);
-        this.port = webService.getWSContVentasPort();
-        
-        Cliente c= (Cliente) request.getSession().getAttribute("usuario_logueado");
-        
-        String parameter = request.getParameter("8");
-        List<Producto> Productosavender= (List<Producto>) c.getCompra().getDetalles().getListaProducto();
-            Iterator it = Productosavender.iterator();
-            int i;
-            while (it.hasNext()){
-               Producto pr=(Producto) it.next();
-               int cantidad= Integer.parseInt(request.getParameter(pr.getCodigo().toString()));
-               pr.setCantidad(cantidad);
-                
-            }
-            
-        this.port.finalizarVenta(c);
-          
-        
+//        response.setContentType("text/html;charset=UTF-8");
+//        ServletContext context;
+//        context = request.getServletContext();
+//        String ruta = context.getResource("").getPath();
+//        URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sVentas", ruta));
+//        ServicioContVentas webService = new ServicioContVentas(url);
+//        this.port = webService.getWSContVentasPort();
+//        
+//        Cliente c= (Cliente) request.getSession().getAttribute("usuario_logueado");
+//        
+//        
+//         List<DetalleVenta> Productosavender= (List<DetalleVenta>) c.getCompra().getDetalles();
+//            Iterator it = Productosavender.iterator();
+//            while (it.hasNext()){
+//                DetalleVenta dv=(DetalleVenta) it.next();
+//                Producto pr = dv.getProducto();
+//                pr.setCantidad(Integer.parseInt(request.getParameter(pr.getCodigo().toString())));
+//                dv.setCantidad(Integer.parseInt(request.getParameter(pr.getCodigo().toString())));
+//                               
+//            }
+//        
+//        //String parameter = request.getParameter("8");
+////        List<Producto> Productosavender= (List<Producto>) c.getCompra().getDetalles().getListaProducto();
+////            Iterator it = Productosavender.iterator();
+////            int i;
+////            while (it.hasNext()){
+////               Producto pr=(Producto) it.next();
+////               int cantidad= Integer.parseInt(request.getParameter(pr.getCodigo().toString()));
+////               pr.setCantidad(cantidad);
+////                
+////            }
+//            
+//        this.port.finalizarVenta(c);
+//          
+//        
     
     }
 
@@ -95,6 +108,7 @@ public class FinalizarVenta extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
          response.setContentType("text/html;charset=UTF-8");
+     
         ServletContext context;
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
@@ -104,20 +118,25 @@ public class FinalizarVenta extends HttpServlet {
         
         Cliente c= (Cliente) request.getSession().getAttribute("usuario_logueado");
         
-        String parameter = request.getParameter("8");
-        List<Producto> Productosavender= (List<Producto>) c.getCompra().getDetalles().getListaProducto();
+        
+         List<DetalleVenta> Productosavender= (List<DetalleVenta>) c.getCompra().getDetalles();
             Iterator it = Productosavender.iterator();
-            int i;
             while (it.hasNext()){
-               Producto pr=(Producto) it.next();
-               int cantidad= Integer.parseInt(request.getParameter(pr.getCodigo().toString()));
-               pr.setCantidad(cantidad);
-                
+                DetalleVenta dv=(DetalleVenta) it.next();
+                Producto pr = dv.getProducto();
+                //pr.setCantidad(Integer.parseInt(request.getParameter(pr.getCodigo().toString())));
+                dv.setCantidad(Integer.parseInt(request.getParameter(pr.getCodigo().toString())));
+                               
             }
-            
+       
         this.port.finalizarVenta(c);
-            
-        processRequest(request, response);
+        c.setCompra(null);
+          
+        request.setAttribute("idVenta",c.getNombre()+c.getApellido());
+        request.setAttribute("mensaje", "Compra Realizada con Éxito, Debe asistir a nuestro "
+                + "local para retirar los productos y realizar el pago, Haciendo click en el siguiente enlace puede descargar los detalles de su compra: ");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("Vistas/Mensaje_Recibido.jsp");
+        dispatcher.forward(request, response);
     }
 
     /**
