@@ -119,11 +119,17 @@ public class reserva implements Serializable {
         this.bozal = bozal;
     }
 
+//    @Override
+//    public String toString() {
+//        return "Id/" + id + "/FechaReserva/" + fechaReserva.toString() + "/Descripcion/"
+//                + descripcion + "/Correa/" + correa + "/bozal/" + bozal + "/mascota/" + mascota.getNombre() + "/Cliente/" + cliente.getCorreo()
+//                + servicio.toString();
+//    }
     @Override
     public String toString() {
-        return "Id/" + id + "/FechaReserva/" + fechaReserva.toString() + "/Descripcion/"
-                + descripcion + "/Correa/" + correa + "/bozal/" + bozal + "/mascota/" + mascota.getNombre() + "/Cliente/" + cliente.getCorreo()
-                + servicio.toString();
+        return "Nro Reserva/" + id + "/FechaReserva/" + fechaReserva.toString() + "/Descripcion/"
+                + descripcion + "/Correa/" + correa + "/Bozal/" + bozal + "/Mascota/" + mascota.getNombre() + "/Cliente/" + cliente.getCorreo()
+                  + "/Nro de turno/" + turno.get(0).getHora()+"/Descripcion/" +servicio.getDescripcion()+ "/Precio/"+"/Tipo/" +servicio.getTipo();
     }
 
     public List getTurno() {

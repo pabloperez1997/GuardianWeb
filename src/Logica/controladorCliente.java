@@ -18,7 +18,11 @@ import ClientesRest.apiCliente;
 import ObjetosParaWeb.clienteWS;
 import ObjetosParaWeb.mascotaWS;
 import Persistencia.animalPersistencia;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
 /**
@@ -35,11 +39,15 @@ public class controladorCliente implements iControladorCliente {
     private animalPersistencia aPer = animalPersistencia.getInstance();
     private clientePersistencia cPer = clientePersistencia.getInstance();
     private apiCliente restCliente = apiCliente.getInstance();
-    private String rutaFotoMascota = "/home/jp/Escritorio/java2019/elGuardianServidor/ImagenesMascotas/";
+    String ruta =System.getProperty("user.dir");
+    String rutaFoto = ruta+"/ImagenesMascotas/";
+    String ruta2=Paths.get(ruta).getParent().getParent().toString();
+    String rutaDestino=ruta2+"/GuardianWeb/GuardianWeb/web/img/ImagenMascota/";
+  
     ////////////Arreglos////////////////
     private HashMap<String, cliente> clientes = new HashMap<>();
-    private HashMap<String, mascota> mascotas = new HashMap<>();
-
+    private List<mascota> mascotas = new ArrayList<>();
+   
     public static controladorCliente getInstance() {
         if (instance == null) {
             instance = new controladorCliente();
@@ -71,6 +79,105 @@ public class controladorCliente implements iControladorCliente {
         return util.emailValido(email);
 
     }
+    
+     @Override
+    public boolean existeMascota(String nombre, String telefono, String Cliente) {
+        mascota mas = new mascota();
+        mas.setNombre(nombre);
+        this.letraMayuscula(mas);
+        String nombrefotoMascota = util.generarNombreFoto(mas.getNombre(), telefono, Cliente) + ".png";
+        Iterator it = this.mascotas.iterator();
+        while (it.hasNext()) {
+            mascota m = (mascota) it.next();
+            if (m.getFoto().equals(nombrefotoMascota)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+ @Override
+ public boolean ModificarMascota(mascota m){
+     boolean funciono= this.aPer.modificar(m);
+     if(funciono){
+         Iterator it=this.mascotas.iterator();
+     while(it.hasNext()){
+         mascota m2=(mascota) it.next();
+         if(m2.getId() == m.getId()){
+             m2=m;
+             break;
+         }
+     }
+         return true;
+     }else{
+         return false;
+     }
+ }
+ 
+    @Override
+     public mascota obtenerMascotaPorId(Long id){
+        mascota m = new mascota();
+        Iterator it=this.mascotas.iterator();
+        while(it.hasNext()){
+            mascota m2=(mascota) it.next();
+                if(m2.getId() == id){
+                m=m2;
+                break;
+            }
+              
+        }
+        return m;
+    }
+     @Override
+    public boolean ModificarMascota2(mascota m) throws IOException {
+        if (!m.getFoto().equals("default.png")) {
+            InputStream is = new ByteArrayInputStream(m.getFoto2());
+            util.salvarImagenV2(is, rutaFoto + util.generarNombreFoto(m.getNombre(), m.getCliente().getTel_cel(), m.getCliente().getCorreo()) + ".png");
+            this.util.copiarArchivo(this.rutaFoto + util.generarNombreFoto(m.getNombre(), m.getCliente().getTel_cel(), m.getCliente().getCorreo()) + ".png", this.rutaDestino + this.util.generarNombreFoto(m.getNombre(), m.getCliente().getTel_cel(), m.getCliente().getCorreo()) + ".png");
+            m.setFoto(util.generarNombreFoto(m.getNombre(), m.getCliente().getTel_cel(), m.getCliente().getCorreo()) + ".png");
+        }
+        boolean funciono = this.aPer.modificar(m);
+        if (funciono) {
+            Iterator it = this.mascotas.iterator();
+            while (it.hasNext()) {
+                mascota m2 = (mascota) it.next();
+                if (m2.getId() == m.getId()) {
+                    it.remove();
+                    this.mascotas.add(m);
+                    break;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+   @Override
+    public boolean altaAnimal2(mascota mascota) {
+        try {
+            this.letraMayuscula(mascota);
+            if (!persistencia.existe(mascota)) {
+                
+                if (persistencia.persis(mascota)) {
+                    if (!mascota.getFoto().equals("default.png")) {
+                        InputStream is = new ByteArrayInputStream(mascota.getFoto2());
+                        util.salvarImagenV2(is, rutaFoto + util.generarNombreFoto(mascota.getNombre(), mascota.getCliente().getTel_cel(),mascota.getCliente().getCorreo()) + ".png");
+                        this.util.copiarArchivo(this.rutaFoto + util.generarNombreFoto(mascota.getNombre(), mascota.getCliente().getTel_cel(),mascota.getCliente().getCorreo()) + ".png", this.rutaDestino + this.util.generarNombreFoto(mascota.getNombre(), mascota.getCliente().getTel_cel(),mascota.getCliente().getCorreo()) + ".png");
+                        mascota.setFoto(util.generarNombreFoto(mascota.getNombre(), mascota.getCliente().getTel_cel(),mascota.getCliente().getCorreo()) + ".png");  
+                    }
+                    this.mascotas.add(mascota);
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage() + " CAUSA: " + e.getCause());
+            return false;
+        }
+    }
+
 
     /**
      * Funcion que elimina un cliente usando la cedula
@@ -81,7 +188,15 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean eliminarCliente(String id) {
         try {
-
+            cliente c=this.getCliente(id);
+if(obtenerMascotasCliente(c).size() > 0){
+    List<mascota> mascotasCliente=obtenerMascotasCliente(c);
+    Iterator it=mascotasCliente.iterator();
+    while(it.hasNext()){
+        mascota m=(mascota) it.next();
+        eliminarAnimal(m.getId());
+    }
+}
             cliente cli = (cliente) persistencia.getObjeto(id, cliente.class);
 
             if (cli != null) {
@@ -109,17 +224,17 @@ public class controladorCliente implements iControladorCliente {
     }
 
     /**
-     * Funcion que retorna un cliente a partir de la cedula, en caso de no
+     * Funcion que retorna un cliente a partir del email, en caso de no
      * encontrar ninguno retorna null
      *
-     * @param id
+     * @param correo
      * @return cliente
      */
     @Override
-    public cliente getCliente(String id) {
+    public cliente getCliente(String correo) {
         try {
             cliente cli = new cliente();
-            cli = (cliente) persistencia.getObjeto(id, cliente.class);
+            cli = (cliente) persistencia.getObjeto(correo, cliente.class);
             return cli;
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -177,22 +292,17 @@ public class controladorCliente implements iControladorCliente {
      */
     @Override
     public boolean altaCliente(cliente clienteNuevo) {
-        try {
-            clienteNuevo.setPassword(this.generarPassword());
+            //clienteNuevo.setPassword(this.generarPassword());
             letraMayuscula(clienteNuevo);
             if (!persistencia.existe(clienteNuevo)) {
                 if (persistencia.persis((Object) clienteNuevo)) {
 
-                    utilidades.enviarConGMail(clienteNuevo.getCorreo(), "Usuario Nuevo", "EL usuario a sido registrado con exito!", null, null);
+                    //utilidades.enviarConGMail(clienteNuevo.getCorreo(), "Usuario Nuevo", "EL usuario a sido registrado con exito!", null, null);
 
                     return true;
 
                 }
             }
-        } catch (AddressException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
         return false;
     }
 
@@ -245,6 +355,7 @@ public class controladorCliente implements iControladorCliente {
         try {
             mascota mascota = (mascota) aPer.getMascota(id);
             eliminarFoto(getRutaFotoImagenesMascotaLevantar() + mascota.getFoto());
+            eliminarReservasMascota(id);
             if (aPer.eliminar((Object) mascota)) {
                 return true;
             }
@@ -465,6 +576,37 @@ public class controladorCliente implements iControladorCliente {
 
         return false;
     }
+    @Override
+    public List<String> obtenerRazas() {
+        return this.getRazasDB();
+    }
+    
+  @Override
+    public List<mascota> obtenerMascotas(){
+       return this.mascotas;
+    }
+    @Override
+    public boolean activarusuario(String email,String pass){
+    cliente c=this.getCliente(email);
+    c.setEstado(true);
+    c.setPassword(pass);
+    return persistencia.modificar(c); 
+}
+@Override
+ public List<mascota> obtenerMascotasCliente(cliente c){
+     
+
+     List<mascota> todas=aPer.getMascotas();
+     List<mascota> mascotascliente= new ArrayList<>();
+     Iterator it=todas.iterator();
+     while(it.hasNext()){
+         mascota m=(mascota) it.next();
+         if(m.getCliente().getCorreo().equals(c.getCorreo())){
+             mascotascliente.add(m);
+         }
+     }
+     return mascotascliente;
+ }
 //////////////////////////////////middleware para WebService///////////////
 
     @Override
@@ -507,19 +649,65 @@ public class controladorCliente implements iControladorCliente {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public String getRutaFotoImagenesWeb() {
+        return this.rutaDestino;
+    }
+
+    @Override
+    public void setRutaFotoImagenesWeb(String ruta) {
+        this.rutaDestino = ruta;
+    }
+
+    
     public String getRutaFotoImagenesMascotaLevantar() {
-        return this.rutaFotoMascota;
+        return this.rutaFoto;
     }
 
+    @Override
     public void setRutaFotoImagenesMascotaLevantar(String ruta) {
-        this.rutaFotoMascota = ruta;
+        this.rutaFoto = ruta;
     }
-
+    
     private void eliminarFoto(String string) {
         File f = new File(string);
         if (f.exists()) {
             f.delete();
         }
+    }
+    
+     @Override
+    public List<mascota> getMascotasClienteid(String idCliente) {
+        List<mascota> misMascotas = new ArrayList<>();
+
+        try {
+            List listaObjetos = persistencia.getListaObjetos("select * from mascota where cliente_correo= '" + idCliente + "'", mascota.class);
+
+            for (Object obj : listaObjetos) {
+                mascota m = (mascota) obj;
+                misMascotas.add(m);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage() + " Causa: " + e.getCause());
+        }
+        return misMascotas;
+    }
+    
+    public boolean eliminarReservasMascota(Long id){
+        iControladorReservas ICR= fabricaElGuardian.getInstance().getInstanceIControladorReservas();
+        mascota m=getMascota(id);
+        if(aPer.existe(m)){
+            List<String> listaid =this.aPer.obtenerReservasMascota(id);
+            Iterator it=listaid.iterator();
+            while(it.hasNext()){
+                String id2= it.next().toString();
+                Long idreserva=Long.parseLong(id2);
+                ICR.eliminarReserva(idreserva);    
+            }
+             return this.aPer.eliminarReservasMascota(id);
+        }else{
+            return false;
+        }         
     }
 
 }

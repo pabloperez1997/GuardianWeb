@@ -87,6 +87,7 @@ public class hiloHijo extends hiloMadre implements iHilo {
             }
             
             getTablaParaLLenar().setModel(dtm);
+            
         }
     }
 //return "Id/" + id + "/Descripcion/" + this.getDescripcion() + "/Duracion/" + this.getDuracion() + "/Precio/"+precio+"/Tipo/"+this.getTipo();

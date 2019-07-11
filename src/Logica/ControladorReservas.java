@@ -1,11 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Logica;
 
+import ObjetosParaWeb.clienteWS;
+import ObjetosParaWeb.mascotaWS;
 import ObjetosParaWeb.reservaWS;
+import ObjetosParaWeb.turnoWS;
 import Persistencia.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,7 +22,10 @@ public class ControladorReservas implements iControladorReservas {
     reservaPersistencia rPer = new reservaPersistencia();
     private String[] horas = {"00:00", "01:00", "02:00", "03:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"};
     utilidades util = utilidades.getInstance();
-/////////////////////////////////////////////////////////////
+    private List<turno> turnosDisponibles;
+    private controladorCliente contCli = (controladorCliente) controladorCliente.getInstance();
+    private controladorServicios contSrv = (controladorServicios) controladorServicios.getInstance();
+/////////////////////////////////////////////////////////////CONSTRUCTOR
 
     public static ControladorReservas getInstance() {
         if (instance == null) {
@@ -32,7 +33,6 @@ public class ControladorReservas implements iControladorReservas {
         }
         return instance;
     }
-    private List<turno> turnosDisponibles;
 
     /////////////////////////////////////////////////////////////////////////////////TURNO////////////////////////////////////
     @Override
@@ -72,6 +72,7 @@ public class ControladorReservas implements iControladorReservas {
         return (List) per.getListaObjetos("select * from turno where turno.id not in(select reserva_turno.turno_id from reserva_turno where reserva_id in(select reserva.id from reserva where fechaReserva= '" + fecha + "'))", turno.class);
     }
 
+    @Override
     public Object[] cargarTurnosDisponibles(Date fecha) {
         int numTurno = 1;
 
@@ -91,6 +92,32 @@ public class ControladorReservas implements iControladorReservas {
 
         }
 
+        return turnos;
+    }
+
+    @Override
+    public List cargarTurnosDisponiblesList(Date fecha) {
+
+        int numTurno = 1;
+
+        List<turnoWS> turnos = new ArrayList<>();
+
+        if (fecha != null) {
+            this.turnosDisponibles = this.getTurnos(util.DateAString(fecha, "yyyy-MM-dd"));
+
+            //    turnos.add("Seleccionar Turno");
+            Iterator it = turnosDisponibles.iterator();
+            while (it.hasNext()) {
+                turno name = (turno) it.next();
+                int indice = Integer.valueOf(String.valueOf(name.getId()));
+                turnoWS nuevoTurnows = new turnoWS();
+                nuevoTurnows.setId(name.getId());
+                nuevoTurnows.setTurno("Turno: " + numTurno + " -- " + name.getHora() + " Hs");
+                numTurno++;
+                turnos.add(nuevoTurnows);
+            }
+
+        }
         return turnos;
     }
 
@@ -298,17 +325,221 @@ public class ControladorReservas implements iControladorReservas {
 
     @Override
     public boolean altaReservaWS(reservaWS r) {
+        try {
+            System.out.println("altaReservaWS");
+            reserva nuevaReserva = (reserva) armarReserva(r);
+            return this.nuevaReserva(nuevaReserva);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Causa: " + e.getCause());
+        }
         return false;
     }
 
     @Override
     public boolean modificarReservaWS(reservaWS r) {
+        try {
+            System.out.println("modificarReservaWS");
+            reserva reservaMod = armarReservaMod(r);
+            return this.modificarReserva(reservaMod);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Causa: " + e.getCause());
+        }
         return false;
     }
 
     @Override
-    public boolean eliminarReservaWS(reservaWS r) {
+    public boolean eliminarReservaWS(long idReserva) {
+        try {
+            System.out.print("eliminarReservaWS");
+            return this.eliminarReserva(idReserva);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Causa: " + e.getCause());
+        }
         return false;
+    }
+
+    @Override
+    public reservaWS getReservaWS(long id) {
+        return (reservaWS) armarReservaWS(getReserva(id));
+    }
+
+    @Override
+    public List<clienteWS> getClientesWS() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<reservaWS> getReservasWS() {
+        List<reservaWS> reservasConvertidas = new ArrayList<>();
+        List reservasDelDia = this.getReservasDelDia();
+        if (reservasDelDia.size() > 0) {
+            for (Object obj : reservasDelDia) {
+                reservasConvertidas
+                        .add(armarReservaWS((reserva) obj));
+            }
+        }
+        return reservasConvertidas;
+    }
+/////////////////////////////////////////MANEJO LOGICA WS--------------------------
+
+    private servicio armarServicio(long idTipoServicio, String tipoServicio) {
+        servicio nuevoServicio = null;
+        try {
+            if (tipoServicio.equals("PASEO")) {
+                nuevoServicio = new paseo();
+                nuevoServicio.setPrecio(contSrv.getPrecioPaseo());
+
+            }
+            if (tipoServicio.equals("BANIO")) {
+                List serviciosXtipobanio = contSrv.getServiciosXtipo("BANIO");
+                for (Object sxt : serviciosXtipobanio) {
+                    String tipo = ((tipoBanio) sxt).getTipo();
+                    Long id = ((tipoBanio) sxt).getId();
+                    if (id == idTipoServicio) {
+                        banio nuevoServicioBanio = new banio();
+                        nuevoServicioBanio.setDescripcion(this.getTipoBanio(id).getDescripcion());
+                        nuevoServicioBanio.setTipoDeBanio(this.getTipoBanio(id));
+                        nuevoServicioBanio.setPrecio(getTipoBanio(id).getPrecio());
+                        nuevoServicio = nuevoServicioBanio;
+                    }
+                }
+            }
+            if (tipoServicio.equals("ESQUILA")) {
+                List serviciosXtipoesquila = contSrv.getServiciosXtipo("ESQUILA");
+
+                for (Object sxt2 : serviciosXtipoesquila) {
+                    String tipoesq = ((tipoEsquila) sxt2).getTipo();
+                    Long idesq = ((tipoEsquila) sxt2).getId();
+                    if (tipoesq.equals(tipoServicio) && idesq == idTipoServicio) {
+                        esquila nuevoServicioEsquila = new esquila();
+                        nuevoServicioEsquila.setDescripcion(this.getTipoEsquila(idesq).getDescripcion());
+                        nuevoServicioEsquila.setTipoDeEsquila(this.getTipoEsquila(idesq));
+                        nuevoServicioEsquila.setPrecio(getTipoBanio(idesq).getPrecio());
+                        nuevoServicio = nuevoServicioEsquila;
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error armarServicio: " + e.getMessage() + " Causa: " + e.getCause());
+        }
+        return nuevoServicio;
+    }
+
+    private reserva armarReserva(reservaWS r) {
+        reserva nuevaReserva = new reserva();
+        try {
+            nuevaReserva.setDescripcion(r.getDescripcion());
+            Date fechaReserva = utilidades.fechaDate(r.getFechaReserva(), null);
+            nuevaReserva.setFechaReserva(fechaReserva);
+            cliente clienteReserva = contCli.getCliente(r.getIdCliente());
+            nuevaReserva.setCliente(clienteReserva);
+            mascota mascotaCliente = contCli.getMascota(r.getIdMascota());
+            nuevaReserva.setMascota(mascotaCliente);
+            servicio armarServicio = armarServicio(r.getIdTipoServicio(), r.getTipoServicio());
+            nuevaReserva.setServicio(armarServicio);
+            turno turno = this.getTurno(r.getIdTurno());
+            nuevaReserva.setTurno(turno);
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage() + " Cause: " + e.getCause());
+        }
+        return nuevaReserva;
+    }
+
+    private reserva armarReservaMod(reservaWS r) {
+        reserva res = getReserva(r.getIdReserva());
+        try {
+            if (!res.getDescripcion().equals(r.getDescripcion())) {
+                res.setDescripcion(r.getDescripcion());
+            }
+            if (!res.getFechaReserva().equals(utilidades.fechaDate(r.getFechaReserva(), null))) {
+                res.setFechaReserva(utilidades.fechaDate(r.getFechaReserva(), null));
+
+            }
+            if (res.getTurno().size() > 0 && res.getTurno().size() < 2) {
+                List turno = res.getTurno();
+                turno t = (turno) turno.get(0);
+                if (!t.getId().equals(r.getIdTurno())) {
+                    turno turnoNuevo = getTurno(r.getIdTurno());
+                    res.getTurno().remove(t);
+                    res.getTurno().add(turnoNuevo);
+                }
+            }
+            if (res.getTurno().size() > 0 && res.getTurno().size() >= 2) {
+            }
+            if (!res.getMascota().getId().equals(r.getIdMascota())) {
+                res.setMascota(contCli.getMascota(r.getIdMascota()));
+            }
+            if (res.getServicio() instanceof banio) {
+                banio ban = (banio) res.getServicio();
+                if (!ban.getTipoDeBanio().getId().equals(r.getIdTipoServicio())) {
+                    res.setServicio(armarServicio(r.getIdTipoServicio(), r.getTipoServicio()));
+                }
+            }
+            if (res.getServicio() instanceof esquila) {
+                esquila esq = (esquila) res.getServicio();
+                if (!esq.getTipoDeEsquila().getId().equals(r.getIdTipoServicio())) {
+                    res.setServicio(armarServicio(r.getIdTipoServicio(), r.getTipoServicio()));
+                }
+            }
+            if (res.getServicio() instanceof paseo) {
+                if (!r.getTipoServicio().equals("PASEO")) {
+                    res.setServicio(armarServicio(r.getIdTipoServicio(), r.getTipoServicio()));
+                }
+
+            }
+        } catch (Exception e) {
+            System.err.println("Error armarReservaMod: " + e.getMessage() + " Causa: " + e.getCause());
+        }
+
+        return res;
+    }
+
+    private reservaWS armarReservaWS(reserva res) {
+        reservaWS nuevaReservaWS = new reservaWS();
+        try {
+
+            res.getTurno();
+            nuevaReservaWS.setIdReserva(res.getId());
+            nuevaReservaWS.setIdCliente(res.getCliente().getCorreo());
+            nuevaReservaWS.setDescripcion(res.getDescripcion());
+            nuevaReservaWS.setFechaReserva(util.DateAString(res.getFechaReserva(), "yyyy-MM-dd"));
+            nuevaReservaWS.setIdMascota(res.getMascota().getId());
+            if (res.getServicio() instanceof banio) {
+                banio ban = (banio) res.getServicio();
+                nuevaReservaWS.setIdTipoServicio(ban.getTipoDeBanio().getId());
+                nuevaReservaWS.setTipoServicio("BANIO");
+            }
+            if (res.getServicio() instanceof esquila) {
+                esquila esq = (esquila) res.getServicio();
+                nuevaReservaWS.setIdTipoServicio(esq.getTipoDeEsquila().getId());
+                nuevaReservaWS.setTipoServicio("ESQUILA");
+            }
+            if (res.getServicio() instanceof paseo) {
+                nuevaReservaWS.setTipoServicio("PASEO");
+            }
+            turno get = (turno) res.getTurno().get(0);
+            nuevaReservaWS.setIdTurno(get.getId());
+
+        } catch (Exception e) {
+            System.err.println("Error armarReservaWS: " + e.getMessage() + " Causa: " + e.getCause());
+        }
+
+        return nuevaReservaWS;
+    }
+
+    @Override
+    public List<mascotaWS> getMascotasCliente(String idCliente) {
+        List<mascota> mascotasCliente = contCli.getMascotasClienteid(idCliente);
+        List<mascotaWS> mascotasReturn = new ArrayList<>();
+        for (mascota m : mascotasCliente) {
+            mascotaWS nuevaMascotaWS = new mascotaWS();
+            nuevaMascotaWS.setId(m.getId());
+            nuevaMascotaWS.setNombre(m.getNombre());
+            mascotasReturn.add(nuevaMascotaWS);
+
+        }
+        return mascotasReturn;
     }
 
 }

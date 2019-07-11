@@ -16,5 +16,6 @@ public interface iControladorServicios {
     public boolean cargarTiposServicios();
     public boolean setPrecioPaseo(float precio);
     public float getPrecioPaseo();
+    public void crearPaseo();
     
 }

@@ -12,10 +12,14 @@ import Logica.hiloHijo;
 import Logica.hiloMadre;
 import Logica.iControladorCliente;
 import Logica.iControladorReservas;
+import Logica.iControladorServicios;
 import Logica.iControladorVentas;
 import Logica.reserva;
+import Logica.turno;
 import Logica.utilidades;
 import Servicios.WSContCliente;
+import Servicios.WSContReserva;
+import Servicios.WSContServicios;
 import Servicios.WSContVentas;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -31,19 +35,21 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import javax.swing.*;
 
 /**
  *
  * @author jp
  */
-public class Principal extends javax.swing.JFrame {
+public final class Principal extends javax.swing.JFrame {
     
     private utilidades util = utilidades.getInstance();
     private EntityManager eM;
     String cuerpo = "coso", asunto = "cospe";
     iControladorCliente ICC = fabricaElGuardian.getInstance().getInstanceIControladorCliente();
     iControladorVentas ICV = fabricaElGuardian.getInstance().getInstanceIControladorVentas();
-    
+    iControladorServicios ICS = fabricaElGuardian.getInstance().getInstanceIControladorServicios();
         //ICC.cargarMascotas();
     iControladorReservas ICR = fabricaElGuardian.getInstance().getInstanceIControladorReservas();
     //ICC.cargarMascotas();
@@ -54,25 +60,34 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     public Principal() throws AddressException, UnsupportedLookAndFeelException {
-        this.setExtendedState(MAXIMIZED_BOTH);
-        this.setLocationRelativeTo(null);
+        //this.setExtendedState(MAXIMIZED_BOTH);
+        setExtendedState(java.awt.Frame.MAXIMIZED_BOTH);
+        //this.setLocationRelativeTo(null);
         eM = Persistencia.persistencia.getInstance().getEm();
         eM.getTransaction().begin();
         eM.flush();
         eM.getTransaction().commit();
-        UIManager.LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
-        for (UIManager.LookAndFeelInfo laf : installedLookAndFeels) {
-        }
-        try {
-            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
-            System.err.println(e.getMessage());
-        }
+//        UIManager.LookAndFeelInfo[] installedLookAndFeels = UIManager.getInstalledLookAndFeels();
+//        for (UIManager.LookAndFeelInfo laf : installedLookAndFeels) {
+//        }
+//        try {
+//            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+//        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | UnsupportedLookAndFeelException e) {
+//            System.err.println(e.getMessage());
+//        }
+
         initComponents();
         this.PublicarServicios();
         cargarInicio();
+        cargarReservas();
+     if(ICS.getPrecioPaseo() == 0){
+         ICS.crearPaseo();
+     }
+        int lines = 2;
+        jTableReservas.setRowHeight( jTableReservas.getRowHeight() * lines);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+     
 
-        // eM= controladorCliente.getEm();
     }
 
     /**
@@ -90,6 +105,8 @@ public class Principal extends javax.swing.JFrame {
         btn_eliminarReserva = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableReservas = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
         jM_cliente = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -104,8 +121,13 @@ public class Principal extends javax.swing.JFrame {
         jMenuListarProductos = new javax.swing.JMenuItem();
         jMenuVentas = new javax.swing.JMenu();
         jMenuIAltaVenta = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        escritorioPrincipal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 51)));
+        escritorioPrincipal.setAutoscrolls(true);
 
         btn_reservar.setText("Reservar");
         btn_reservar.addActionListener(new java.awt.event.ActionListener() {
@@ -128,6 +150,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jTableReservas.setAutoCreateRowSorter(true);
         jTableReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -138,47 +161,72 @@ public class Principal extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTableReservas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTableReservasMouseClicked(evt);
             }
         });
         jScrollPane2.setViewportView(jTableReservas);
+        if (jTableReservas.getColumnModel().getColumnCount() > 0) {
+            jTableReservas.getColumnModel().getColumn(0).setMinWidth(20);
+            jTableReservas.getColumnModel().getColumn(0).setPreferredWidth(20);
+        }
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setFont(new java.awt.Font("MS UI Gothic", 0, 18)); // NOI18N
+        jTextArea1.setRows(5);
+        jScrollPane3.setViewportView(jTextArea1);
 
         escritorioPrincipal.setLayer(btn_reservar, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorioPrincipal.setLayer(btn_modReserva, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorioPrincipal.setLayer(btn_eliminarReserva, javax.swing.JLayeredPane.DEFAULT_LAYER);
         escritorioPrincipal.setLayer(jScrollPane2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        escritorioPrincipal.setLayer(jScrollPane3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout escritorioPrincipalLayout = new javax.swing.GroupLayout(escritorioPrincipal);
         escritorioPrincipal.setLayout(escritorioPrincipalLayout);
         escritorioPrincipalLayout.setHorizontalGroup(
             escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioPrincipalLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(btn_modReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
-                .addComponent(btn_eliminarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(813, 813, 813))
             .addGroup(escritorioPrincipalLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE)
+                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioPrincipalLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 546, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(424, 424, 424)
+                        .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btn_reservar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_modReserva, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btn_eliminarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1170, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(59, Short.MAX_VALUE))
         );
         escritorioPrincipalLayout.setVerticalGroup(
             escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, escritorioPrincipalLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_modReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_eliminarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(escritorioPrincipalLayout.createSequentialGroup()
+                .addContainerGap(43, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 338, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGroup(escritorioPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(escritorioPrincipalLayout.createSequentialGroup()
+                        .addComponent(btn_reservar, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addComponent(btn_modReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(escritorioPrincipalLayout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(347, Short.MAX_VALUE))
+                .addComponent(btn_eliminarReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         jM_cliente.setText("Cliente");
@@ -265,21 +313,29 @@ public class Principal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuVentas);
 
+        jMenu1.setText("Galeria");
+
+        jMenuItem3.setText("Nueva Foto");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu1);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(escritorioPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 32, Short.MAX_VALUE))
+            .addComponent(escritorioPrincipal)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(escritorioPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(escritorioPrincipal)
         );
 
         pack();
@@ -293,6 +349,12 @@ public class Principal extends javax.swing.JFrame {
         JIF_clientes altaCliente = new JIF_clientes(escritorioPrincipal);
         this.escritorioPrincipal.add(altaCliente);
         //this.getContentPane().add(altaCliente);
+        
+         
+        Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = altaCliente.getSize();
+        altaCliente.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        
         altaCliente.setVisible(true);
 
         // TODO add your handling code here:
@@ -301,12 +363,25 @@ public class Principal extends javax.swing.JFrame {
     private void jMenConfRazaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenConfRazaActionPerformed
         JIF_raza raza = new JIF_raza(escritorioPrincipal);
         this.escritorioPrincipal.add(raza);
+        
+        
+        Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = raza.getSize();
+        raza.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        
+                
         raza.setVisible(true);
     }//GEN-LAST:event_jMenConfRazaActionPerformed
 
     private void jMenConfTurnoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenConfTurnoActionPerformed
         JIF_turnos turno = new JIF_turnos();
         this.escritorioPrincipal.add(turno);
+        
+            
+        Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = turno.getSize();
+        turno.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        
         turno.setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenConfTurnoActionPerformed
@@ -315,6 +390,13 @@ public class Principal extends javax.swing.JFrame {
         JIF_animal animal;
         animal = new JIF_animal(escritorioPrincipal);
         this.escritorioPrincipal.add(animal);
+        
+            
+        Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = animal.getSize();
+        animal.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        
+        
         animal.setVisible(true);
 
         // TODO add your handling code here:
@@ -323,12 +405,26 @@ public class Principal extends javax.swing.JFrame {
     private void btn_reservarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_reservarActionPerformed
         JIF_reservarTurno reservaTurno = new JIF_reservarTurno(escritorioPrincipal);
         this.escritorioPrincipal.add(reservaTurno);
+        
+            
+        Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = reservaTurno.getSize();
+        reservaTurno.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        
+        
         reservaTurno.setVisible(true);
     }//GEN-LAST:event_btn_reservarActionPerformed
 
     private void jMenItem_banioEsquilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenItem_banioEsquilaActionPerformed
         JIF_esquilaBaño banioEsquila = new JIF_esquilaBaño(this.escritorioPrincipal);
         this.escritorioPrincipal.add(banioEsquila);
+        
+        
+         Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = banioEsquila.getSize();
+        banioEsquila.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        
+        
         banioEsquila.setVisible(true);
 // TODO add your handling code here:
     }//GEN-LAST:event_jMenItem_banioEsquilaActionPerformed
@@ -337,18 +433,35 @@ public class Principal extends javax.swing.JFrame {
                 
         AltaProducto altaP = new AltaProducto();
         this.escritorioPrincipal.add(altaP);
+         
+         Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = altaP.getSize();
+        altaP.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        
+        
         altaP.setVisible(true);       // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuIAltaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuIAltaVentaActionPerformed
         AltaVenta altv = new AltaVenta();
         this.escritorioPrincipal.add(altv);
+         Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = altv.getSize();
+        altv.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        
+        
         altv.setVisible(true);       // TODO add your handling code here:
     }//GEN-LAST:event_jMenuIAltaVentaActionPerformed
 
     private void jMenuListarProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuListarProductosActionPerformed
               ListarProductos lsProd = new ListarProductos(this.escritorioPrincipal);
         this.escritorioPrincipal.add(lsProd);
+        
+         Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = lsProd.getSize();
+        lsProd.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        
+        
         lsProd.setVisible(true);
 // TODO add your handling code here:
     }//GEN-LAST:event_jMenuListarProductosActionPerformed
@@ -358,6 +471,13 @@ public class Principal extends javax.swing.JFrame {
             if (JOptionPane.showConfirmDialog(this, "Desea modificar la reserva?") == 0) {
                 JIF_modificarReserva nuevoModificarReserva = new JIF_modificarReserva(this.escritorioPrincipal, this.idReserva);
                 escritorioPrincipal.add(nuevoModificarReserva);
+                
+                 Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = nuevoModificarReserva.getSize();
+        nuevoModificarReserva.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        
+        
+        
                 nuevoModificarReserva.setVisible(true);
             }
         }
@@ -366,6 +486,16 @@ public class Principal extends javax.swing.JFrame {
     private void jTableReservasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableReservasMouseClicked
         int row = jTableReservas.rowAtPoint(evt.getPoint());
         this.idReserva = (Long) jTableReservas.getValueAt(row, 0);
+        
+        
+         
+        jTextArea1.setText((String) jTableReservas.getValueAt(row, 8));
+        
+       // jTextArea1.setFont(new Font("Serif", Font.BOLD, 16));
+        jTextArea1.setLineWrap(true);
+        jTextArea1.setWrapStyleWord(true);
+         
+         
         // TODO add your handling code here:
     }//GEN-LAST:event_jTableReservasMouseClicked
 
@@ -385,22 +515,70 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_eliminarReservaActionPerformed
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        
+        NuevaImagen nv = new NuevaImagen();
+        this.escritorioPrincipal.add(nv);
+        
+        Dimension desktopSize = escritorioPrincipal.getSize();
+        Dimension FrameSize = nv.getSize();
+        nv.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        //m.show();
+        
+        nv.setVisible(true);              // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws InterruptedException{
         
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new Principal().setVisible(true);
+        
+  Thread thread2 = new Thread() {
+    public void run() {
+        try {
+            iniciarSplashScreen();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+};
+
+Thread thread1 = new Thread() {
+    public void run() {
+       for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                    try {
+                        UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (InstantiationException ex) {
+                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IllegalAccessException ex) {
+                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (UnsupportedLookAndFeelException ex) {
+                        Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+            }
+           
+                try {   
+                    Principal p = new Principal();
+                    p.setVisible(true);
+                   
                 } catch (AddressException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (UnsupportedLookAndFeelException ex) {
                     Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+                }                  
+        
+    }
+};
+
+            thread1.start();
+            thread2.start();
+
+            thread1.join();
+            thread2.join();
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -415,15 +593,19 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenConfRaza;
     private javax.swing.JMenuItem jMenConfTurno;
     private javax.swing.JMenuItem jMenItem_banioEsquila;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuIAltaVenta;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuListarProductos;
     private javax.swing.JMenu jMenuProductos;
     private javax.swing.JMenu jMenuVentas;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTableReservas;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 
     public JDesktopPane getEscritorioPrincipal() {
@@ -440,7 +622,7 @@ public class Principal extends javax.swing.JFrame {
 
         InputStream archivo = null;
 
-        try { //C:\\Users\\Martin\\Documents\\PA\\Tarea 1\\culturarte
+        try { 
             archivo = new FileInputStream(System.getProperty("user.dir") + "\\config\\config.properties");
             prop.load(archivo);
 
@@ -466,13 +648,13 @@ public class Principal extends javax.swing.JFrame {
         WSContVentas WSCV = new WSContVentas(URL);
         WSCV.publicar();
        
-//        URL = this.LeerProperties("ConsultaUsuario");
-//        WSContVentas WSCV = new WSContVentas(URL);
-//        WSCV.publicar();
-//        
-//        URL = this.LeerProperties("ConsultaUsuario");
-//        WSContVentas WSCV = new WSContVentas(URL);
-//        WSCV.publicar();
+        URL = this.LeerProperties("Reserva");
+        WSContReserva WSCR = new WSContReserva(URL);
+        WSCR.publicar();
+        
+        URL = this.LeerProperties("Servicios");
+        WSContServicios WSCS = new WSContServicios(URL);
+        WSCS.publicar();
     }
 
     
@@ -484,6 +666,7 @@ public class Principal extends javax.swing.JFrame {
         hiloMadre m = new hiloMadre();
         m.start();
         jTableReservas.setEnabled(true);
+        
         hiloHijo hhijo = new hiloHijo();
         //  cargarReservas();
         hhijo.setTablaParaLLenar(this.jTableReservas);
@@ -493,11 +676,13 @@ public class Principal extends javax.swing.JFrame {
             } catch (Exception e) {
             }*/
         // m.pararHilo("h1");
+        
 
     }
     
     public void cargarModelo(DefaultTableModel model) {
         jTableReservas.setModel(model);
+        
     }
     
     private void cargarReservas() {
@@ -512,6 +697,7 @@ public class Principal extends javax.swing.JFrame {
                 }
                 //jTableReservas.setEnabled(true);
                 this.jTableReservas.setModel(dtm);
+                
             } else {
                 //  jTableReservas.setModel(new DefaultTableModel(0, 0));
                 this.jTableReservas.setEnabled(false);
@@ -520,4 +706,37 @@ public class Principal extends javax.swing.JFrame {
             System.err.println(e.getMessage());
         }
     }
+    
+ public static void iniciarSplashScreen() throws InterruptedException{
+     
+       int width = 556;
+        int height =650;
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (screen.width-width)/2;
+        int y = (screen.height-height)/2;
+        
+        
+        SplashScreen sp= new SplashScreen();
+        
+          sp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Already there
+    //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    //sp.setUndecorated(true);
+    
+        sp.setBounds(x,y,width,height);
+        int i;
+       for(i=0;i<100;i++){
+            Thread.sleep(30);
+            sp.setVisible(true);
+            sp.Cargando.setText("Cargando.."+i);
+            sp.Carg.setValue(i);
+      
+            if(i==99){
+                sp.dispose();
+            }
+                
+        }
+     
+ }
+  
+
 }

@@ -5,6 +5,10 @@
  */
 package Logica;
 
+import ListServicios.ListTipoBanio;
+import ListServicios.ListTipoEsquila;
+import ObjetosParaWeb.tipoBanioWS;
+import ObjetosParaWeb.tipoEsquilaWS;
 import Persistencia.persistencia;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +39,8 @@ public class controladorServicios implements iControladorServicios {
     public List getServiciosXtipo(String srv) {
         ArrayList listaSRV = new ArrayList();// inicializar siempre si no no tiene una lista para cargar
         try {
-            if (listaSRV != null) {
-                listaSRV.clear();
-            }
+            cargarTiposServicios();
+           
             if (srv.equals("BANIO")) {
                 if (!tipoBanios.isEmpty()) {
                     listaSRV.addAll(this.tipoBanios);
@@ -104,27 +107,60 @@ public class controladorServicios implements iControladorServicios {
         return false;
     }
 
+    @Override
     public float getPrecioPaseo() {
         float precio = 0;
         try {
             precio = (float) per.ejecutarSqlConRes("Select precio from precioPaseo where id=1");
-    
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
         return precio;
     }
-    
-    @Override
-    public boolean setPrecioPaseo(float precio){
+    public void crearPaseo() {
         try {
-        return per.ejecutarSql("update precioPaseo set precio='"+precio+"' where id=1");
-        
+             per.ejecutarSql("INSERT INTO preciopaseo (id, precio) VALUES ('1', '1')");
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Override
+    public boolean setPrecioPaseo(float precio) {
+        try {
+            return per.ejecutarSql("UPDATE preciopaseo set precio=" + precio/* + "' where id=1"*/);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
-    
+
+    }
+
+    public ListTipoBanio getListaTipoBanioWS() {
+        ListTipoBanio nuevaLista = new ListTipoBanio();
+        List serviciosXtipo = this.getServiciosXtipo("BANIO");
+        for (Object SXT : serviciosXtipo) {
+            tipoBanioWS nuevoTipo = new tipoBanioWS();
+            nuevoTipo.setId(((tipoBanio) SXT).getId());
+            nuevoTipo.setTipobanio(((tipoBanio) SXT).getTipoBanio());
+            nuevaLista.addItem(nuevoTipo);
+        }
+        return nuevaLista;
+    }
+
+    public ListTipoEsquila getListaTipoEsquilaWS() {
+        ListTipoEsquila nuevaLista = new ListTipoEsquila();
+        List serviciosXtipo = this.getServiciosXtipo("ESQUILA");
+        for (Object SXT : serviciosXtipo) {
+            tipoEsquilaWS nuevobanio = new tipoEsquilaWS();
+            nuevobanio.setId(((tipoEsquila) SXT).getId());
+            nuevobanio.setTipoEsquila(((tipoEsquila) SXT).getTipoEsquila());
+            nuevaLista.addItem(nuevobanio);
+        }
+        return nuevaLista;
     }
 
 }

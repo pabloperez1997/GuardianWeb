@@ -12,9 +12,13 @@ import Logica.raza;
 import Logica.utilidades;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -39,6 +43,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     private DefaultListModel modelo = null;
     private HashMap<String, String> clientes = new HashMap<>();
     String rutaFoto = contC.getRutaFotoImagenesMascotaLevantar();
+    String rutaDestino=contC.getRutaFotoImagenesWeb();
 ///////////////GET-SET////////////////
 
     public HashMap<String, String> getClientes() {
@@ -93,6 +98,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
         btn_cancelar = new javax.swing.JButton();
         jText_buscarRaza = new javax.swing.JTextField();
         jComboClientes = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
 
         jLabel1.setText("Cliente:");
 
@@ -149,6 +155,8 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
 
         jComboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel3.setText("Buscar Raza:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -156,38 +164,31 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(JLab_nomMascota)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(JText_nomMascota, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(JLab_descripcion)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addGap(17, 17, 17)
-                                            .addComponent(jLabel2)))
-                                    .addGap(15, 15, 15)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jText_buscarRaza, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(243, 243, 243)))
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel3)
                             .addComponent(jLabel1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(102, 102, 102)
-                                .addComponent(jComboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(JLab_nomMascota)
+                            .addComponent(jLabel2))
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(JLab_descripcion)
+                        .addGap(35, 35, 35)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(JText_nomMascota, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jText_buscarRaza, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(91, 91, 91)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(412, 412, 412)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JLAB_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btn_aceptar)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn_cancelar))
-                            .addComponent(btn_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(btn_cancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(JLAB_foto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btn_foto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(24, 77, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -199,34 +200,33 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
                     .addComponent(jComboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_foto))
                 .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(JLab_nomMascota)
-                    .addComponent(JText_nomMascota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JLab_nomMascota)
+                            .addComponent(JText_nomMascota, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(33, 33, 33)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jText_buscarRaza, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(12, 12, 12)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
-                                .addComponent(JLab_descripcion)
-                                .addGap(60, 60, 60))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(JLAB_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_aceptar)
-                    .addComponent(btn_cancelar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(24, 24, 24)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(60, 60, 60)
+                                .addComponent(jLabel2))))
+                    .addComponent(JLAB_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(JLab_descripcion)
+                        .addGap(54, 54, 54))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btn_aceptar)
+                        .addComponent(btn_cancelar)))
+                .addGap(0, 33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -259,8 +259,16 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
 
     private void btn_aceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_aceptarActionPerformed
 
-        altaMascota();
-        // TODO add your handling code here:
+        try {
+            altaMascota();
+        } catch (IOException ex) {
+            Logger.getLogger(JIF_animalAlta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JIF_animal mp = new JIF_animal(escritorio);
+        this.escritorio.add(mp);
+         mp.setVisible(true);
+         mp.toFront();
+         this.setVisible(false);
     }//GEN-LAST:event_btn_aceptarActionPerformed
 
     private void jText_buscarRazaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jText_buscarRazaActionPerformed
@@ -279,6 +287,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     private javax.swing.JComboBox<String> jComboClientes;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JList<String> jListRaza;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -361,37 +370,41 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
 
     }
 
-    private void altaMascota() {
+    private void altaMascota() throws IOException{
         if (validarDatos()) {
             int res = JOptionPane.showConfirmDialog(this, "Desea dar de alta la mascota: " + JText_nomMascota.getText() + " ?");
             if (res == 0) {
                 boolean altaAnimal = contC.altaAnimal(this.construirMascota());
                 if (altaAnimal) {
-                    if (fotoMascota != null) {
-                        util.salvarImagen(fotoMascota, rutaFoto, generarNombreFoto(), 0);
+                    if(fotoMascota != null){
+                    util.salvarImagen(fotoMascota, rutaFoto, util.generarNombreFoto(JText_nomMascota.getText(),contC.getCliente(this.getId()).getTel_cel(),contC.getCliente(this.getId()).getCorreo()), 0);
+                    this.util.copiarArchivo(this.rutaFoto + util.generarNombreFoto(JText_nomMascota.getText(),contC.getCliente(this.getId()).getTel_cel(),contC.getCliente(this.getId()).getCorreo()) + ".png", this.rutaDestino + util.generarNombreFoto(JText_nomMascota.getText(),contC.getCliente(this.getId()).getTel_cel(),contC.getCliente(this.getId()).getCorreo()) + ".png");
                     }
                     JOptionPane.showMessageDialog(this, "La mascota: " + JText_nomMascota.getText() + " fue dada de alta con exito!");
                     limpiar();
-                    recargarMascota();
-                    this.dispose();
                 }
-
+                
             }
         }
     }
 
-    private mascota construirMascota() {
+    private mascota construirMascota() throws IOException {
         mascota msctNew = new mascota();
         msctNew.setNombre(JText_nomMascota.getText());
         if (!jTextArea1.getText().isEmpty()) {
             msctNew.setDescripcion(jTextArea1.getText());
+        }else{
+            msctNew.setDescripcion("");
         }
         if (fotoMascota != null) {
-            msctNew.setFoto(generarNombreFoto() + ".png");
-        } else {
-            msctNew.setFoto("N/A");
+           
+            msctNew.setFoto(util.generarNombreFoto(JText_nomMascota.getText(),contC.getCliente(this.getId()).getTel_cel(),contC.getCliente(this.getId()).getCorreo()) + ".png");
+        }else{
+             msctNew.setFoto("default.png");
         }
         msctNew.setRaza((raza) contC.getRaza((String) jListRaza.getSelectedValue()));
+        int index = jComboClientes.getSelectedIndex();
+        String cortar1 = jComboClientes.getItemAt(index);
         msctNew.setCliente(contC.getCliente(this.getId()));
         return msctNew;
     }

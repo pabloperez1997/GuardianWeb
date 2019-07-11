@@ -24,6 +24,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -45,12 +46,12 @@ public class GenerarPDF {
     public static final String NEWLINE = "\n";
     public final PdfFont regular;
     public final PdfFont bold;
-    
+    String ruta=Paths.get(System.getProperty("user.dir")).getParent().getParent().toString();
 
  
     public GenerarPDF(cliente c) throws IOException {
       this.cliente = c;
-      this.DEST = "C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/pdfventa/"+"Compra_"+c.getNombre()+c.getApellido()+".pdf";
+      this.DEST = ruta+"/GuardianWeb/GuardianWeb/web/pdfventa/"+"Compra_"+c.getNombre()+c.getApellido()+".pdf";
       this.regular = PdfFontFactory.createFont(FontConstants.TIMES_ROMAN);
       this.bold = PdfFontFactory.createFont(FontConstants.TIMES_BOLD);
         
@@ -63,7 +64,7 @@ public class GenerarPDF {
         PdfDocument pdf = new PdfDocument(new PdfWriter(DEST));
         Document document = new Document(pdf);
         
-        String imageFile = "C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/img/logoguardian.jpg"; 
+        String imageFile = ruta+"/GuardianWeb/GuardianWeb/web/img/logoguardian.jpg"; 
         ImageData data = ImageDataFactory.create(imageFile);
         Image img = new Image(data); 
         

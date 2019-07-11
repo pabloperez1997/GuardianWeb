@@ -34,9 +34,28 @@ public class cliente implements Serializable {
     private String apellido;
     private String direccion;
     private String tel_cel;
+    private String token;
+    private boolean estado;
+    
+    public boolean isEstado() {
+        return estado;
+    }
+
+    public void setEstado(boolean estado) {
+        this.estado = estado;
+    }
+    
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+    
     
     @OneToOne
-    private venta compra;
+    private venta compra=null;
 
     public venta getCompra() {
            return compra;
@@ -49,10 +68,11 @@ public class cliente implements Serializable {
     
     public cliente() {
     }
-    @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<reserva> reservasCliente;
     
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+  
+    @OneToMany
     private List<mascota> mascotasCliente;
     
     public String getCorreo() {

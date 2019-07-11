@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.SecureRandom;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -336,6 +337,36 @@ public class utilidades {
         return listaAretornar;
 
     }
+      public String generarNombreFoto(String mascota,String tel,String cliente) {
+        String nombre;
+        nombre = "MASCOTA" + mascota +cliente+ "CLIENTE" + tel;
+        return nombre;
+    }
+    
+    public static String GenerarToken(){
+        SecureRandom random = new SecureRandom();
+        byte bytes[] = new byte[20];
+        random.nextBytes(bytes);
+        String token = bytes.toString();
+        return token;
+    }
+    public boolean salvarImagenV2(InputStream inp, String ruta) throws IOException {
+ try {
+                OutputStream out = new FileOutputStream(ruta);
+                byte[] bufer = new byte[1024];
+                int largo;
+                while ((largo = inp.read(bufer)) > 0) {
+                    out.write(bufer, 0, largo);
+                }
+                inp.close();
+                out.close();
+                return true;
+            } catch (FileNotFoundException e) {
+                System.err.println(e.getMessage());
+                return false;
+            }
+
+    }
 
     public File levantarArchivo(String ruta) {
         File archivo = null;
@@ -466,22 +497,22 @@ public class utilidades {
         return filtradas;
     }
 
-    public void resizeColumnWidth(JTable table) {
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        final TableColumnModel columnModel = table.getColumnModel();
-        for (int column = 0; column < table.getColumnCount(); column++) {
-            int width = 15; // Min width
-            for (int row = 0; row < table.getRowCount(); row++) {
-                TableCellRenderer renderer = table.getCellRenderer(row, column);
-                Component comp = table.prepareRenderer(renderer, row, column);
-                width = Math.max(comp.getPreferredSize().width + 3, width);
-            }
-            if (width > 300) {
-                width = 300;
-            }
-            columnModel.getColumn(column).setPreferredWidth(width);
-        }
-    }
+//    public void resizeColumnWidth(JTable table) {
+//        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+//        final TableColumnModel columnModel = table.getColumnModel();
+//        for (int column = 0; column < table.getColumnCount(); column++) {
+//            int width = 15; // Min width
+//            for (int row = 0; row < table.getRowCount(); row++) {
+//                TableCellRenderer renderer = table.getCellRenderer(row, column);
+//                Component comp = table.prepareRenderer(renderer, row, column);
+//                width = Math.max(comp.getPreferredSize().width + 3, width);
+//            }
+//            if (width > 300) {
+//                width = 300;
+//            }
+//            columnModel.getColumn(column).setPreferredWidth(width);
+//        }
+//    }
 
     public static String primeraLetraMayuscula(String str) {
         if (str == null || str.isEmpty()) {

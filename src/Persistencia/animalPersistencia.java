@@ -5,9 +5,12 @@
  */
 package Persistencia;
 
+import Logica.fabricaElGuardian;
+import Logica.iControladorReservas;
 import Logica.mascota;
 import Logica.raza;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -19,6 +22,7 @@ public class animalPersistencia extends persistencia {
 
     private static final EntityManager em = Persistencia.persistencia.getInstance().getEm();
     private static animalPersistencia instance;
+   
 
     public static animalPersistencia getInstance() {
         if (instance == null) {
@@ -76,5 +80,31 @@ public class animalPersistencia extends persistencia {
 
         }
         return obj;
+    }
+    
+    public List<String> obtenerReservasMascota(Long id){
+    List<String> listaid = new ArrayList<>();
+
+        try {
+            em.getTransaction().begin();
+            listaid= em.createNativeQuery("SELECT id FROM reserva WHERE mascota_id="+id).getResultList();
+            em.getTransaction().commit();
+            return listaid;
+        } catch (Exception e) {
+            System.err.println("Error getRazas: Mensaje: " + e.getMessage() + "Causa: " + e.getCause());
+            return null;
+        }
+}
+    
+    public boolean eliminarReservasMascota(Long id){
+         try {
+            em.getTransaction().begin();
+           em.createNativeQuery("DELETE FROM reserva WHERE mascota_id="+id);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error getRazas: Mensaje: " + e.getMessage() + "Causa: " + e.getCause());
+            return false;
+        }
     }
 }

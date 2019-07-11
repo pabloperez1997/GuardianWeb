@@ -1,4 +1,4 @@
-/*
+ /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -78,7 +78,15 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTab_Animal.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTab_AnimalMouseClicked(evt);
@@ -159,21 +167,18 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(33, 33, 33)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btn_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
-                                    .addComponent(btn_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btn_nuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(33, 33, 33)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btn_modificar, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                            .addComponent(btn_eliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btn_nuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btn_cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jLab_foto, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -211,9 +216,10 @@ public class JIF_animal extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevoActionPerformed
+        this.setVisible(false);
         JIF_animalAlta animalAlta = new JIF_animalAlta(this.escritorio);
         escritorio.add(animalAlta);
-        animalAlta.setVisible(true);      // TODO add your handling code here:
+        animalAlta.setVisible(true);     // TODO add your handling code here:
     }//GEN-LAST:event_btn_nuevoActionPerformed
 
     private void btn_cancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelarActionPerformed
@@ -233,6 +239,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
                 JIF_animalModificar animalModificar = new JIF_animalModificar(this.idMascota, this.escritorio);
                 escritorio.add(animalModificar);
                 animalModificar.setVisible(true);
+                this.setVisible(false);
             }
         }
 
@@ -273,7 +280,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             }
             //jTab_Animal.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
             jTab_Animal.setModel(dtm);
-            util.resizeColumnWidth(jTab_Animal);
+            //util.resizeColumnWidth(jTab_Animal);
         } else {
             JOptionPane.showMessageDialog(this, "No existen mascotas en el sistema!");
             jTab_Animal.setEnabled(false);
@@ -285,8 +292,12 @@ public class JIF_animal extends javax.swing.JInternalFrame {
             if (JOptionPane.showConfirmDialog(this, "Desea eliminar la Mascota: " + this.idMascota + "?") == 0) {
                 if (contCliente.eliminarAnimal(this.idMascota)) {
                     JOptionPane.showMessageDialog(this, "Se ha eliminado la mascota!");
-                    cargarMascotas();
-                    this.idMascota = null;
+                    //cargarMascotas();
+                   this.idMascota = null;
+                    this.setVisible(false);
+                    JIF_animal ja=new JIF_animal(escritorio);
+                    this.escritorio.add(ja);
+                    ja.setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(this, "Ocurrio un problema al eliminar la mascota!");
                     cargarMascotas();
@@ -307,5 +318,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         }
 
     }
+    
+    
 
 }

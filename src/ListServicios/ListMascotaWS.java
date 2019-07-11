@@ -5,8 +5,8 @@
  */
 package ListServicios;
 
-import Logica.mascota;
 import ObjetosParaWeb.mascotaWS;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -16,20 +16,20 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * @author jp
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ListMascota {
-    private List<mascota> mascotasLista;
+public class ListMascotaWS {
 
-    public ListMascota() {
+    private List<mascotaWS> mascotas = new ArrayList<>();
+
+    public ListMascotaWS() {
     }
 
-    public List<mascota> getMascotasLista() {
-        return mascotasLista;
+    public List<mascotaWS> getMascotas() {
+        return mascotas;
     }
 
-    public void setMascotasLista(List<mascota> mascotasLista) {
-        this.mascotasLista = mascotasLista;
+    public void setMascotas(List<mascotaWS> mascotas) {
+        this.mascotas = mascotas;
     }
-    
     
     
 }

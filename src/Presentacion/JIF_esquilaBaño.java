@@ -560,7 +560,7 @@ public class JIF_esquilaBaño extends javax.swing.JInternalFrame {
     private void agregarPrecio() {
         int res = JOptionPane.showConfirmDialog(this, "Desea agregar el nuevo precio?");
         if (res == 0) {
-
+String a =jtxt_precio.getText();
             if (contSrv.setPrecioPaseo(Float.valueOf(jtxt_precio.getText()))) {
                 JOptionPane.showMessageDialog(this, "Se ha cambiado el precio de los paseos!");
 

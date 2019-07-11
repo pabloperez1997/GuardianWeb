@@ -153,12 +153,12 @@ public class JIF_turnos extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panelTurno, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelTurno, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelTurno, javax.swing.GroupLayout.DEFAULT_SIZE, 312, Short.MAX_VALUE)
+            .addComponent(panelTurno, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
         );
 
         panelTurno.getAccessibleContext().setAccessibleName("");
@@ -221,7 +221,7 @@ public class JIF_turnos extends javax.swing.JInternalFrame {
             }
             jTab_turnos.setModel(nuevoModelo);
             jTab_turnos.setEnabled(true);
-            util.resizeColumnWidth(jTab_turnos);
+           // util.resizeColumnWidth(jTab_turnos);
             
         } else {
             JOptionPane.showMessageDialog(this, "No existen turnos en el sistema!");

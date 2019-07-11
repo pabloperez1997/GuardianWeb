@@ -169,7 +169,15 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTabla_mascotas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTabla_mascotasMouseClicked(evt);
@@ -248,10 +256,10 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
             }
         });
         JDTFechaReserva.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 JDTFechaReservaCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         JDTFechaReserva.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -410,7 +418,7 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
         int res = JOptionPane.showConfirmDialog(this, "Desea reservar un turno?");
         if (res == 0) {
             crearReserva();
-
+            this.setVisible(false);
         }
     }//GEN-LAST:event_btn_aceptarActionPerformed
 
@@ -507,8 +515,8 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
     private void cargarCliente(String idCorreo) {
         setCliente((cliente) contC.getCliente(idCorreo));
         jTabla_mascotas.setModel(new DefaultTableModel(0, 0));//limpio el modelo de la tabla antes de cargar el nuevo
-        cargarMascotasCliente(getCliente().getMascotasCliente());
-        this.mascotasCli = (List<mascota>) getCliente().getMascotasCliente();
+        cargarMascotasCliente(contC.obtenerMascotasCliente(getCliente()));
+        this.mascotasCli = (List<mascota>) contC.obtenerMascotasCliente(getCliente());
 
     }
 
@@ -529,7 +537,7 @@ public class JIF_reservarTurno extends javax.swing.JInternalFrame {
             dtm.addRow(data);
         }
         jTabla_mascotas.setModel(dtm);
-        util.resizeColumnWidth(jTabla_mascotas);
+        //util.resizeColumnWidth(jTabla_mascotas);
     }
 
     private void seleccionarMascota(long id) {

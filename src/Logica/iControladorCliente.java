@@ -7,6 +7,7 @@ package Logica;
 
 import ObjetosParaWeb.clienteWS;
 import ObjetosParaWeb.mascotaWS;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +79,28 @@ public interface iControladorCliente {
     
     public abstract boolean altaClienteWeb(cliente clienteNuevo);
     
+    public abstract List<mascota> obtenerMascotasCliente(cliente c);
+
+    public abstract List<mascota> obtenerMascotas();
+
+    public abstract List<String> obtenerRazas();
+
+    public abstract boolean altaAnimal2(mascota m);
+
+    public abstract mascota obtenerMascotaPorId(Long id);
+
+    public abstract boolean ModificarMascota(mascota m);
+
+    public abstract boolean activarusuario(String email, String pass);
     
+    public abstract boolean existeMascota(String nombre, String telefono, String Cliente);
     
+    public abstract boolean ModificarMascota2(mascota m) throws IOException ;
     
+    public abstract String getRutaFotoImagenesWeb();
+
+    
+    public abstract void setRutaFotoImagenesWeb(String ruta);
+    
+    public abstract List<mascota> getMascotasClienteid(String idCliente);
 }

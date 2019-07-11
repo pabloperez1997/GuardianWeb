@@ -9,7 +9,9 @@ import Logica.fabricaElGuardian;
 import Logica.iControladorVentas;
 import Logica.producto;
 import Logica.utilidades;
+import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -17,6 +19,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -31,6 +34,7 @@ public class AltaProducto extends javax.swing.JInternalFrame {
     iControladorVentas ICV=fabricaElGuardian.getInstance().getInstanceIControladorVentas();
     String path = "";
     String ruta = ICV.getRutaGuardarimgProductos();
+    String rutasrv = ICV.getRutaGuardarimgProductosSrv();
     BufferedImage fotoProducto = null;
     utilidades util = new utilidades();
 
@@ -40,20 +44,18 @@ public class AltaProducto extends javax.swing.JInternalFrame {
     public AltaProducto() {
         
         initComponents();
+        
+       
+  
+      
+        
+          
+    //frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    //sp.setUndecorated(true);
+    
+       
 
-         try {
-        UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-    } catch (ClassNotFoundException ex) {
-        Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-        Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-        Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (UnsupportedLookAndFeelException ex) {
-        Logger.getLogger(ModificarProducto.class.getName()).log(Level.SEVERE, null, ex);
     }
-    }
-
    
     
 
@@ -256,6 +258,7 @@ public class AltaProducto extends javax.swing.JInternalFrame {
         
         if (fotoProducto != null) {
             util.salvarImagen(fotoProducto, ruta, generarNombreFoto(), 0);
+            util.salvarImagen(fotoProducto, rutasrv, generarNombreFoto(), 0);
             p.setFoto(generarNombreFoto());
         } else {
             p.setFoto("default");

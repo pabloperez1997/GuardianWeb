@@ -30,7 +30,7 @@ public interface iControladorVentas {
 
     public abstract producto ObtenerProducto(Long codigo);
 
-    public abstract boolean AltaVenta(List<producto> listaventa);
+    public abstract boolean AltaVenta(List<detalleVenta> listaventa, cliente c);
 
     public abstract List<producto> productosaVender();
 
@@ -40,9 +40,17 @@ public interface iControladorVentas {
 
     public abstract void limpiarVenta();
 
-    public void setRutaGuardarimgProductos(String rutaGuardarimgProductos);
+    public abstract void setRutaGuardarimgProductos(String rutaGuardarimgProductos);
 
     public String getRutaGuardarimgProductos();
     
     public abstract boolean finalizarVenta(cliente c);
+    
+    public abstract String getRutaGuardarimgProductosSrv();
+    
+    public abstract void setRutaGuardarimgProductosSrv(String rutaGuardarimgProductosSrv);
+    
+    public abstract String getRutaGuardarimgGaleria();
+    
+    public abstract void setRutaGuardarimgGaleria(String rutagaleria);
 }

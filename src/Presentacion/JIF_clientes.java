@@ -6,6 +6,7 @@
 package Presentacion;
 
 import Logica.cliente;
+import Logica.codificador;
 import Logica.controladorCliente;
 import Logica.fabricaElGuardian;
 import Logica.utilidades;
@@ -27,6 +28,7 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
     utilidades util = utilidades.getInstance();
     private final JDesktopPane escritorio;
     private String idCorreo=null;
+    
 
     /**
      * Creates new form JIF_clientes
@@ -102,7 +104,15 @@ public class JIF_clientes extends javax.swing.JInternalFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jTab_clientes.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTab_clientesMouseClicked(evt);

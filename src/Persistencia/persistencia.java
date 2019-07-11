@@ -5,6 +5,8 @@
  */
 package Persistencia;
 
+import Logica.fabricaElGuardian;
+import Logica.iControladorReservas;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -21,6 +23,7 @@ public class persistencia {
     private static String unidadPersistencia = "GuardianSrvPU";
     private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory(unidadPersistencia);
     private static final EntityManager em = emf.createEntityManager();
+     
 
     /**
      * @return retorna un manejador de entidades
@@ -145,8 +148,9 @@ public class persistencia {
 
     public boolean ejecutarSql(String sql) {
         try {
-
+if(!em.getTransaction().isActive()){
             em.getTransaction().begin();
+}
             Query resultQuery = em.createNativeQuery(sql);
             resultQuery.executeUpdate();
             em.getTransaction().commit();

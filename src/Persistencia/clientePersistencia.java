@@ -84,7 +84,9 @@ public class clientePersistencia extends persistencia {
         List<cliente> listaClientes = null;
 
         try {
+            if(!em.getTransaction().isActive()){
             em.getTransaction().begin();
+            }
             listaClientes = em.createNativeQuery("Select * from cliente", cliente.class).getResultList();
             em.getTransaction().commit();
         } catch (Exception e) {
