@@ -5,9 +5,8 @@
  */
 package Servlets;
 
-import Logica.configuracion;
+import clases.configuracion;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -132,6 +131,9 @@ public class FinalizarVenta extends HttpServlet {
         this.port.finalizarVenta(c);
         c.setCompra(null);
           
+        
+        request.getSession().setAttribute("CantidadProdVend", null);
+        //request.setAttribute("ProdsVenta", prodsventa);
         request.setAttribute("idVenta",c.getNombre()+c.getApellido());
         request.setAttribute("mensaje", "Compra Realizada con Éxito, Debe asistir a nuestro "
                 + "local para retirar los productos y realizar el pago, Haciendo click en el siguiente enlace puede descargar los detalles de su compra: ");

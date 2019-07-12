@@ -5,25 +5,16 @@
  */
 package Servlets;
 
-import Logica.cliente;
-import Logica.configuracion;
+import clases.configuracion;
 import clases.codificador;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 import servicios.Cliente;
 import servicios.ServicioContCliente;
 import servicios.WSContCliente;
@@ -91,7 +82,7 @@ public class Registrarse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        
-         ServletContext context;
+        ServletContext context;
         context = request.getServletContext();
         String ruta = context.getResource("").getPath();
         URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
@@ -99,7 +90,7 @@ public class Registrarse extends HttpServlet {
         this.port = webService.getWSContClientePort();
         
         
-        cliente usuLogeado = (cliente) request.getSession().getAttribute("usuario_logueado");
+        Cliente usuLogeado = (Cliente) request.getSession().getAttribute("usuario_logueado");
 //        URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
        
         codificador a = new codificador();

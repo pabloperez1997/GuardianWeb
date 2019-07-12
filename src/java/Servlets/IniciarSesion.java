@@ -5,8 +5,7 @@
  */
 package Servlets;
 
-import Logica.cliente;
-import Logica.configuracion;
+import clases.configuracion;
 import clases.codificador;
 import clases.EstadoSesion;
 import java.io.IOException;

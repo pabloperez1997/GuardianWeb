@@ -20,7 +20,7 @@
         <p>
           <i class="fas fa-home mr-3"></i> Zorrilla de San Martín 1851, Ciudad De Paysandú, Paysandu, Uruguay</p>
         <p>
-          <i class="fas fa-envelope mr-3"></i> Email: info@example.com</p>
+          <i class="fas fa-envelope mr-3"></i> Email: elguardianesteticacanina@gmail.com</p>
         <p>
           <i class="fas fa-phone mr-3"></i> Celular:  091 815 175</p>
         

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is JAX-WS RI 2.2.9-b130926.1035 svn-revision#5f6196f2b90e9460065a4c2f4e30e065b245e51e. --><xs:schema xmlns:tns="http://Servicios/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://Servicios/">
+
+<xs:complexType name="reservaWS">
+<xs:sequence>
+<xs:element name="bozal" type="xs:boolean"></xs:element>
+<xs:element name="correa" type="xs:boolean"></xs:element>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="fechaReserva" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="idCliente" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="idMascota" type="xs:long"></xs:element>
+<xs:element name="idReserva" type="xs:long"></xs:element>
+<xs:element name="idTipoServicio" type="xs:long"></xs:element>
+<xs:element name="idTurno" type="xs:long"></xs:element>
+<xs:element name="tipoServicio" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listTipoBanio">
+<xs:sequence>
+<xs:element name="listaTiposBanios" type="tns:tipoBanioWS" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="tipoBanioWS">
+<xs:sequence>
+<xs:element name="id" type="xs:long"></xs:element>
+<xs:element name="tipobanio" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listTipoEsquila">
+<xs:sequence>
+<xs:element name="listaTipoEsquila" type="tns:tipoEsquilaWS" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="tipoEsquilaWS">
+<xs:sequence>
+<xs:element name="id" type="xs:long"></xs:element>
+<xs:element name="tipoEsquila" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listTurnos">
+<xs:sequence>
+<xs:element name="listTurnosWS" type="tns:turnoWS" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="turnoWS">
+<xs:sequence>
+<xs:element name="id" type="xs:long"></xs:element>
+<xs:element name="turno" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listMascotaWS">
+<xs:sequence>
+<xs:element name="mascotas" type="tns:mascotaWS" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="mascotaWS">
+<xs:sequence>
+<xs:element name="cliente" type="tns:clienteWS" minOccurs="0"></xs:element>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="foto" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="id" type="xs:long" minOccurs="0"></xs:element>
+<xs:element name="idCliente" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>
+<xs:element name="raza" type="xs:string" minOccurs="0"></xs:element>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="clienteWS">
+<xs:sequence></xs:sequence>
+</xs:complexType>
+</xs:schema>

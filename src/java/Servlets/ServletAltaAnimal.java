@@ -5,7 +5,7 @@
  */
 package Servlets;
 
-import Logica.configuracion;
+import clases.configuracion;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -38,7 +38,7 @@ import servicios.WSContCliente;
 public class ServletAltaAnimal extends HttpServlet {
 int contador =0;
 private WSContCliente port;
-     configuracion conf = new configuracion();
+configuracion conf = new configuracion();
 
    /* private PublicadorAnimal port;
     configuracion conf = new configuracion();

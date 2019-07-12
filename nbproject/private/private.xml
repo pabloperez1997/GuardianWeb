@@ -3,11 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Venta.jsp</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/ServletVenta.java</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/bootstrap/js/myjs.js</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/src/java/Servlets/FinalizarVenta.java</file>
-            <file>file:/C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/Vistas/Mensaje_Recibido.jsp</file>
+            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/GuardianWeb/GuardianWeb/src/java/Servlets/ServletProductos.java</file>
+            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/GuardianWeb/GuardianWeb/web/Vistas/Venta.jsp</file>
+            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/GuardianWeb/GuardianWeb/src/java/Servlets/ServletVenta.java</file>
         </group>
     </open-files>
 </project-private>

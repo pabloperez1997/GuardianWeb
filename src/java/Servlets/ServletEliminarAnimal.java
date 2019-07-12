@@ -5,7 +5,7 @@
  */
 package Servlets;
 
-import Logica.configuracion;
+import clases.configuracion;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;

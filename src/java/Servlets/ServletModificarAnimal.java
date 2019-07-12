@@ -5,10 +5,9 @@
  */
 package Servlets;
 
-import Logica.configuracion;
+import clases.configuracion;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
@@ -98,13 +97,17 @@ public class ServletModificarAnimal extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-         Part filePart = request.getPart("file"); // obtengo <input type="file" name="file">
-       String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        
+        Part filePart = request.getPart("file"); // obtengo <input type="file" name="file"> 
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                byte[] targetArray;
-    try (InputStream fileContent = filePart.getInputStream()) {
-        targetArray = new byte[fileContent.available()];
-        fileContent.read(targetArray);
-    }
+        try (InputStream fileContent = filePart.getInputStream()) {
+            targetArray = new byte[fileContent.available()];
+            fileContent.read(targetArray);
+        }
+        
+        
+        
         String nombre = request.getParameter("nombre");
         String raza = request.getParameter("raza");
         Raza r = new Raza();
@@ -120,6 +123,8 @@ public class ServletModificarAnimal extends HttpServlet {
         if(!fileName.equals("")){
         mascotacliente.setFoto(fileName);
         }
+        else mascotacliente.setFoto("default.png");
+                
         mascotacliente.setFoto2(targetArray);
         if(this.port.existeMascota(mascotacliente.getNombre(), mascotacliente.getCliente().getTelCel(), mascotacliente.getCliente().getCorreo())){
              request.getRequestDispatcher("Vistas/ModificarAnimal.jsp").forward(request, response);

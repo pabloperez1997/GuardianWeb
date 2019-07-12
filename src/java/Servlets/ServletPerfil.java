@@ -5,15 +5,14 @@
  */
 package Servlets;
 
-import Logica.configuracion;
-import clases.EstadoSesion;
+
+import clases.configuracion;
+import clases.codificador;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URL;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -88,8 +87,51 @@ public class ServletPerfil extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
    
-            
         
+        
+        ServletContext context;
+        context = request.getServletContext();
+        String ruta = context.getResource("").getPath();
+        URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
+        ServicioContCliente webService = new ServicioContCliente(url);
+        this.port = webService.getWSContClientePort();
+        
+        
+        Cliente usuLogeado = (Cliente) request.getSession().getAttribute("usuario_logueado");
+//        URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
+       
+        codificador a = new codificador();
+        Boolean ok = false;
+        String cedula = request.getParameter("cedula");
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        String correo = request.getParameter("email");
+        String telefono = request.getParameter("telefono");
+        String direccion = request.getParameter("direccion");
+        
+        usuLogeado.setNombre(nombre);
+        usuLogeado.setApellido(apellido);
+        usuLogeado.setCedula(cedula);;
+        usuLogeado.getTelCel();
+        usuLogeado.setDireccion(direccion);
+        
+      
+
+//        if (!pass.equals(pass2)) {
+//            request.setAttribute("malPass", "Sus contraseñas no coinciden");
+//            request.getRequestDispatcher("/Vistas/altaUsuario.jsp").forward(request, response);
+//            return;
+//        }
+        
+        boolean ok1;
+        ok1 = port.modificarCliente(usuLogeado);
+
+            if (ok1) {
+            request.setAttribute("mensaje", "Perfil Modificado con Exito");
+            request.getRequestDispatcher("/Vistas/Mensaje_Recibido.jsp").forward(request, response);
+            }
+        request.setAttribute("mensaje", "Ocurrio algun error, reintente luego");
+        request.getRequestDispatcher("/Vistas/Mensaje_Recibido.jsp").forward(request, response);
     }
 
     /**

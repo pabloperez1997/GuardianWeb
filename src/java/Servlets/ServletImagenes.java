@@ -7,7 +7,8 @@ package Servlets;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -34,17 +35,20 @@ public class ServletImagenes extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-     
-        List<String> imagenes= new ArrayList<>();
-        File imageDir = new File("C:/Users/PabloP/Documents/NetBeansProjects/GuardianWeb/web/img/galeria");  
-        for(File imageFile : imageDir.listFiles()){  
-        String imageFileName = imageFile.getName();  
 
-        // add this images name to the list we are building up  
-        imagenes.add(imageFileName);  
+        List<String> imagenes = new ArrayList<>();
+        String path = this.getClass().getClassLoader().getResource("").getPath();
+        path = path.substring(1);
+String ruta = Paths.get(path).getParent().getParent().getParent().getParent().toString();
+        File imageDir = new File(ruta + "/web/img/galeria");
+        for (File imageFile : imageDir.listFiles()) {
+            String imageFileName = imageFile.getName();
 
-        }  
-        request.setAttribute("imageUrlList", imagenes);  
+            // add this images name to the list we are building up  
+            imagenes.add(imageFileName);
+
+        }
+        request.setAttribute("imageUrlList", imagenes);
         request.getRequestDispatcher("Vistas/GaleriaFotos.jsp").forward(request, response);
     }
 

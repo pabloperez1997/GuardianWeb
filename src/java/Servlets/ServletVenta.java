@@ -5,11 +5,8 @@
  */
 package Servlets;
 
-import Logica.cliente;
-import Logica.configuracion;
-import Logica.producto;
+import clases.configuracion;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;

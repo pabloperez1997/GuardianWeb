@@ -53,7 +53,6 @@
 <xs:element name="cantidad" type="xs:int"></xs:element>
 <xs:element name="codigo" type="xs:long" minOccurs="0"></xs:element>
 <xs:element name="descripcion" type="xs:string" minOccurs="0"></xs:element>
-<xs:element name="detalleVentas" type="tns:detalleVenta" nillable="true" minOccurs="0" maxOccurs="unbounded"></xs:element>
 <xs:element name="disponible" type="xs:boolean"></xs:element>
 <xs:element name="foto" type="xs:string" minOccurs="0"></xs:element>
 <xs:element name="nombre" type="xs:string" minOccurs="0"></xs:element>

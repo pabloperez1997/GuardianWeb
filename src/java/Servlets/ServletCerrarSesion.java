@@ -6,9 +6,6 @@
 package Servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

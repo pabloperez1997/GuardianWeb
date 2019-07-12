@@ -33,14 +33,14 @@
                     <a class="nav-link" href="reserva">Nueva Reserva</a>
                 </li>
                 <%}%>
-                <li class="nav-item dropdown">
+               <!-- <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-5" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Servicios </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-info" aria-labelledby="navbarDropdownMenuLink-4">
                 <a class="dropdown-item" href="#">Baño</a>
                 <a class="dropdown-item" href="#">Esquila</a>
                 <a class="dropdown-item" href="#">Paseos</a>
                 </div>
-                </li>
+                </li>-->
                  <% if ((Cliente) request.getSession().getAttribute("usuario_logueado") != null) {%>
                 <li class="nav-item">
                     <a class="nav-link" href="ServletAltaAnimal">Mis mascotas</a>
