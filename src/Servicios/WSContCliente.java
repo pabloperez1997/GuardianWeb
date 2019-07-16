@@ -12,6 +12,7 @@ import Logica.cliente;
 import Logica.fabricaElGuardian;
 import Logica.mascota;
 import java.io.IOException;
+import java.util.ArrayList;
 import javax.annotation.Resource;
 import javax.annotation.Resources;
 import javax.jws.WebMethod;
@@ -66,6 +67,7 @@ public class WSContCliente {
     public cliente obtenerCliente(@WebParam(name = "email") String email) {
         cliente c= new cliente();
         c= fabricaElGuardian.getInstance().getInstanceIControladorCliente().getCliente(email);
+        c.setMascotasCliente(new ArrayList<>());
         return c;
     }
     
@@ -121,7 +123,7 @@ public class WSContCliente {
     }
 //    
     @WebMethod
-    public void AgregarCliente(@WebParam(name = "cedula") String cedula, @WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "correo") String correo, @WebParam(name = "telefono") String telefono, @WebParam(name = "direccion") String direccion, @WebParam(name = "hash") String hash) {
+    public boolean AgregarCliente(@WebParam(name = "cedula") String cedula, @WebParam(name = "nombre") String nombre, @WebParam(name = "apellido") String apellido, @WebParam(name = "correo") String correo, @WebParam(name = "telefono") String telefono, @WebParam(name = "direccion") String direccion, @WebParam(name = "hash") String hash,@WebParam(name = "mascotas") ListMascota mascotas) {
 
         cliente clie = new cliente();
         clie.setCedula(cedula);
@@ -131,8 +133,9 @@ public class WSContCliente {
         clie.setTel_cel(telefono);
         clie.setDireccion(direccion);
         clie.setPassword(hash);
+        clie.setMascotasCliente(mascotas.getMascotasLista());
 
-        fabricaElGuardian.getInstance().getInstanceIControladorCliente().altaClienteWeb(clie);
+       return fabricaElGuardian.getInstance().getInstanceIControladorCliente().altaClienteWeb(clie);
     }
     
     @WebMethod
@@ -151,6 +154,21 @@ public class WSContCliente {
     public ListMascota getMascotas(){
     
         return null;
+    }
+    
+    @WebMethod
+    public void AgregarMascotaCliente(mascota m){
+    fabricaElGuardian.getInstance().getInstanceIControladorCliente().obtenerMascotaCliente().add(m);
+    }
+    
+     @WebMethod
+    public ListMascota ObtenerMascotaCliente(){
+    return new ListMascota(fabricaElGuardian.getInstance().getInstanceIControladorCliente().obtenerMascotaCliente());
+    }
+    
+    @WebMethod
+    public void LimpiarMascotasCliente(){
+    fabricaElGuardian.getInstance().getInstanceIControladorCliente().limpiarMascotaCliente();
     }
     
     ////++++++//////////////+++++++++++++////////////+++++++++++///////////+++++/

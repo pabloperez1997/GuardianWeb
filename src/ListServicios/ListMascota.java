@@ -15,11 +15,14 @@ import javax.xml.bind.annotation.XmlAccessorType;
  *
  * @author jp
  */
-@XmlAccessorType(XmlAccessType.FIELD)
 public class ListMascota {
     private List<mascota> mascotasLista;
 
     public ListMascota() {
+    }
+
+    public ListMascota(List<mascota> mascotasLista) {
+        this.mascotasLista = mascotasLista;
     }
 
     public List<mascota> getMascotasLista() {

@@ -337,9 +337,9 @@ public class utilidades {
         return listaAretornar;
 
     }
-      public String generarNombreFoto(String mascota,String tel,String cliente) {
+      public String generarNombreFoto(String mascota,String tel) {
         String nombre;
-        nombre = "MASCOTA" + mascota +cliente+ "CLIENTE" + tel;
+        nombre = "MASCOTA" + mascota + "CLIENTE" + tel;
         return nombre;
     }
     

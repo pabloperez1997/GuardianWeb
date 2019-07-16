@@ -17,6 +17,10 @@ import java.util.List;
  * @author jp
  */
 public interface iControladorCliente {
+    
+    public abstract List<mascota> obtenerMascotaCliente();
+
+    public abstract void limpiarMascotaCliente();
 
     public abstract boolean emailValido(String email);
 

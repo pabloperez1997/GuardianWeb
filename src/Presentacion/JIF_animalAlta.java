@@ -12,6 +12,7 @@ import Logica.raza;
 import Logica.utilidades;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -43,7 +45,9 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     private DefaultListModel modelo = null;
     private HashMap<String, String> clientes = new HashMap<>();
     String rutaFoto = contC.getRutaFotoImagenesMascotaLevantar();
-    String rutaDestino=contC.getRutaFotoImagenesWeb();
+    int opcion2;
+    JIF_clientesAlta ca2;
+    String rutaDestino = contC.getRutaFotoImagenesWeb();
 ///////////////GET-SET////////////////
 
     public HashMap<String, String> getClientes() {
@@ -65,9 +69,20 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     /**
      * Creates new form JIF_animalAlta
      */
-    JIF_animalAlta(JDesktopPane escritorioRecibido) {
+    JIF_animalAlta(JDesktopPane escritorioRecibido, int opcion, JIF_clientesAlta ca) {
         this.escritorio = escritorioRecibido;
         initComponents();
+        this.btn_Agregar.setVisible(false);
+        opcion2 = opcion;
+        if (ca != null) {
+            ca2 = ca;
+        }
+        if (opcion == 0) {
+            this.jPanel1.remove(this.btn_aceptar);
+            this.jPanel1.remove(this.jComboClientes);
+            this.jPanel1.remove(this.jLabel1);
+            this.btn_Agregar.setVisible(true);
+        }
         cargarRazas();
         cargarComboClientes();
 
@@ -99,6 +114,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
         jText_buscarRaza = new javax.swing.JTextField();
         jComboClientes = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
+        btn_Agregar = new javax.swing.JButton();
 
         jLabel1.setText("Cliente:");
 
@@ -157,6 +173,13 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Buscar Raza:");
 
+        btn_Agregar.setText("Agregar");
+        btn_Agregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_AgregarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -183,8 +206,11 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
                 .addGap(91, 91, 91)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(btn_aceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
+                        .addGap(55, 55, 55)
+                        .addComponent(btn_Agregar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_aceptar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_cancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(JLAB_foto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -225,8 +251,9 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
                         .addGap(54, 54, 54))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(btn_aceptar)
-                        .addComponent(btn_cancelar)))
-                .addGap(0, 33, Short.MAX_VALUE))
+                        .addComponent(btn_cancelar)
+                        .addComponent(btn_Agregar)))
+                .addGap(0, 37, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -266,14 +293,26 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
         }
         JIF_animal mp = new JIF_animal(escritorio);
         this.escritorio.add(mp);
-         mp.setVisible(true);
-         mp.toFront();
-         this.setVisible(false);
+        mp.setVisible(true);
+        mp.toFront();
+        this.setVisible(false);
     }//GEN-LAST:event_btn_aceptarActionPerformed
 
     private void jText_buscarRazaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jText_buscarRazaActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jText_buscarRazaActionPerformed
+
+    private void btn_AgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_AgregarActionPerformed
+        try {
+            mascota m = this.construirMascota();
+            this.contC.obtenerMascotaCliente().add(m);
+            JOptionPane.showMessageDialog(this, "Mascota agregada con exito");
+            ca2.cargarListaAnimal();
+            this.setVisible(false);
+        } catch (IOException ex) {
+            Logger.getLogger(JIF_animalAlta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btn_AgregarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -281,6 +320,7 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
     private javax.swing.JLabel JLab_descripcion;
     private javax.swing.JLabel JLab_nomMascota;
     private javax.swing.JTextField JText_nomMascota;
+    private javax.swing.JButton btn_Agregar;
     private javax.swing.JButton btn_aceptar;
     private javax.swing.JButton btn_cancelar;
     private javax.swing.JButton btn_foto;
@@ -370,20 +410,20 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
 
     }
 
-    private void altaMascota() throws IOException{
+    private void altaMascota() throws IOException {
         if (validarDatos()) {
             int res = JOptionPane.showConfirmDialog(this, "Desea dar de alta la mascota: " + JText_nomMascota.getText() + " ?");
             if (res == 0) {
                 boolean altaAnimal = contC.altaAnimal(this.construirMascota());
                 if (altaAnimal) {
-                    if(fotoMascota != null){
-                    util.salvarImagen(fotoMascota, rutaFoto, util.generarNombreFoto(JText_nomMascota.getText(),contC.getCliente(this.getId()).getTel_cel(),contC.getCliente(this.getId()).getCorreo()), 0);
-                    this.util.copiarArchivo(this.rutaFoto + util.generarNombreFoto(JText_nomMascota.getText(),contC.getCliente(this.getId()).getTel_cel(),contC.getCliente(this.getId()).getCorreo()) + ".png", this.rutaDestino + util.generarNombreFoto(JText_nomMascota.getText(),contC.getCliente(this.getId()).getTel_cel(),contC.getCliente(this.getId()).getCorreo()) + ".png");
+                    if (fotoMascota != null) {
+                        util.salvarImagen(fotoMascota, rutaFoto, util.generarNombreFoto(JText_nomMascota.getText(), contC.getCliente(this.getId()).getTel_cel()), 0);
+                        this.util.copiarArchivo(this.rutaFoto + util.generarNombreFoto(JText_nomMascota.getText(), contC.getCliente(this.getId()).getTel_cel() + ".png"), this.rutaDestino + util.generarNombreFoto(JText_nomMascota.getText(), contC.getCliente(this.getId()).getTel_cel() + ".png"));
                     }
                     JOptionPane.showMessageDialog(this, "La mascota: " + JText_nomMascota.getText() + " fue dada de alta con exito!");
                     limpiar();
                 }
-                
+
             }
         }
     }
@@ -393,19 +433,30 @@ public class JIF_animalAlta extends javax.swing.JInternalFrame {
         msctNew.setNombre(JText_nomMascota.getText());
         if (!jTextArea1.getText().isEmpty()) {
             msctNew.setDescripcion(jTextArea1.getText());
-        }else{
+        } else {
             msctNew.setDescripcion("");
         }
         if (fotoMascota != null) {
-           
-            msctNew.setFoto(util.generarNombreFoto(JText_nomMascota.getText(),contC.getCliente(this.getId()).getTel_cel(),contC.getCliente(this.getId()).getCorreo()) + ".png");
-        }else{
-             msctNew.setFoto("default.png");
+            if (opcion2 == 0) {
+                msctNew.setFoto(util.generarNombreFoto(JText_nomMascota.getText(), "") + ".png");
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ImageIO.write(fotoMascota, "png", baos);
+                baos.flush();
+                byte[] imageInByte = baos.toByteArray();
+                baos.close();
+                msctNew.setFoto2(imageInByte);
+            } else {
+                msctNew.setFoto(util.generarNombreFoto(JText_nomMascota.getText(), contC.getCliente(this.getId()).getTel_cel()) + ".png");
+            }
+        } else {
+            msctNew.setFoto("default.png");
         }
         msctNew.setRaza((raza) contC.getRaza((String) jListRaza.getSelectedValue()));
         int index = jComboClientes.getSelectedIndex();
         String cortar1 = jComboClientes.getItemAt(index);
-        msctNew.setCliente(contC.getCliente(this.getId()));
+        if (opcion2 != 0) {
+            msctNew.setCliente(contC.getCliente(this.getId()));
+        }
         return msctNew;
     }
 

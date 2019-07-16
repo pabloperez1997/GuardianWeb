@@ -217,7 +217,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
 
     private void btn_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nuevoActionPerformed
         this.setVisible(false);
-        JIF_animalAlta animalAlta = new JIF_animalAlta(this.escritorio);
+        JIF_animalAlta animalAlta = new JIF_animalAlta(this.escritorio,1,null);
         escritorio.add(animalAlta);
         animalAlta.setVisible(true);     // TODO add your handling code here:
     }//GEN-LAST:event_btn_nuevoActionPerformed
@@ -308,7 +308,7 @@ public class JIF_animal extends javax.swing.JInternalFrame {
         }
     }
 
-    private void cargarFoto(Long idMascota) {
+    public void cargarFoto(Long idMascota) {
         mascota mascota = (mascota) contCliente.getMascota(idMascota);
         if (!mascota.getFoto().equals("N/A")) {
             BufferedImage image = (BufferedImage) util.dameEstaImagen(rutaFoto + mascota.getFoto());
