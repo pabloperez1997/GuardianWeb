@@ -107,4 +107,16 @@ public class animalPersistencia extends persistencia {
             return false;
         }
     }
+    
+    public boolean eliminarMascotaCliente(Long id){
+         try {
+            em.getTransaction().begin();
+           em.createNativeQuery("DELETE FROM cliente_mascota WHERE mascotasCliente_id="+id);
+            em.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error getRazas: Mensaje: " + e.getMessage() + "Causa: " + e.getCause());
+            return false;
+        }
+    }
 }

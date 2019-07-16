@@ -72,7 +72,7 @@ public class cliente implements Serializable {
     private List<reserva> reservasCliente;
     
   
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<mascota> mascotasCliente;
     
     public String getCorreo() {

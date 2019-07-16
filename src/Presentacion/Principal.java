@@ -86,7 +86,7 @@ public final class Principal extends javax.swing.JFrame {
         int lines = 2;
         jTableReservas.setRowHeight( jTableReservas.getRowHeight() * lines);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-     
+     //this.ICC.agregarcontroladorReserva();
 
     }
 

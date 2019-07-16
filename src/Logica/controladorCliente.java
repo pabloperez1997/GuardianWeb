@@ -46,7 +46,7 @@ public class controladorCliente implements iControladorCliente {
     String ruta2 = Paths.get(ruta).getParent().getParent().toString();
     String rutaDestino = ruta2 + "/GuardianWeb/GuardianWeb/web/img/ImagenMascota/";
     List<mascota> mascotacliente = new ArrayList<>();
-
+ iControladorReservas ICR ;
     ////////////Arreglos////////////////
     private HashMap<String, cliente> clientes = new HashMap<>();
     private List<mascota> mascotas = new ArrayList<>();
@@ -69,6 +69,9 @@ public class controladorCliente implements iControladorCliente {
 
         return (ArrayList<cliente>) cPer.getArregloClientes();
 
+    }
+    public void agregarcontroladorReserva(){
+         ICR = fabricaElGuardian.getInstance().getInstanceIControladorReservas();
     }
 
     /**
@@ -170,7 +173,7 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean altaAnimal2(mascota mascota) {
         try {
-            this.letraMayuscula(mascota);
+            //this.letraMayuscula(mascota);
             if (!persistencia.existe(mascota)) {
 
                 if (persistencia.persis(mascota)) {
@@ -318,6 +321,7 @@ public class controladorCliente implements iControladorCliente {
             }
         }
         if (!persistencia.existe(clienteNuevo)) {
+
             if (persistencia.persis((Object) clienteNuevo)) {
 
                 //utilidades.enviarConGMail(clienteNuevo.getCorreo(), "Usuario Nuevo", "EL usuario a sido registrado con exito!", null, null);
@@ -326,17 +330,21 @@ public class controladorCliente implements iControladorCliente {
                     while (it.hasNext()) {
                         mascota m = (mascota) it.next();
                         m.setCliente(clienteNuevo);
+                        if(!m.getFoto().equals("default.png")){
                         InputStream is = new ByteArrayInputStream(m.getFoto2());
                         try {
                             util.salvarImagenV2(is, rutaFoto + util.generarNombreFoto(m.getNombre(), m.getCliente().getTel_cel()) + ".png");
                             //this.util.copiarArchivo(this.rutaFoto + util.generarNombreFoto(m.getNombre(), m.getCliente().getTel_cel()) + ".png", this.rutaDestino + this.util.generarNombreFoto(m.getNombre(), m.getCliente().getTel_cel()) + ".png");
                             m.setFoto(util.generarNombreFoto(m.getNombre(), m.getCliente().getTel_cel()) + ".png");
+                        
                         } catch (IOException ex) {
                             Logger.getLogger(controladorCliente.class.getName()).log(Level.SEVERE, null, ex);
                         }
-
+                        }
                         this.modificarAnimal(m);
                     }
+                                clienteNuevo.setMascotasCliente(new ArrayList<>());
+                                persistencia.modificar((Object) clienteNuevo);
                 }
                 return true;
 
@@ -371,7 +379,7 @@ public class controladorCliente implements iControladorCliente {
     @Override
     public boolean altaAnimal(mascota mascota) {
         try {
-            this.letraMayuscula(mascota);
+            //this.letraMayuscula(mascota);
             if (!persistencia.existe(mascota)) {
                 return persistencia.persis(mascota);
             } else {
@@ -396,7 +404,8 @@ public class controladorCliente implements iControladorCliente {
             if (!mascota.getFoto().equals("default.png")) {
                 eliminarFoto(getRutaFotoImagenesMascotaLevantar() + mascota.getFoto());
             }
-            eliminarReservasMascota(id);
+            aPer.eliminarMascotaCliente(id);
+           // eliminarReservasMascota(mascota);
             if (aPer.eliminar((Object) mascota)) {
                 Iterator it = this.mascotas.iterator();
                 while (it.hasNext()) {
@@ -765,21 +774,24 @@ public class controladorCliente implements iControladorCliente {
         return misMascotas;
     }
 
-    public boolean eliminarReservasMascota(Long id) {
-        iControladorReservas ICR = fabricaElGuardian.getInstance().getInstanceIControladorReservas();
-        mascota m = getMascota(id);
-        if (aPer.existe(m)) {
-            List<String> listaid = this.aPer.obtenerReservasMascota(id);
+    public boolean eliminarReservasMascota(mascota m) {  
+        //if (aPer.existe(m)) {
+            List<String> listaid = this.aPer.obtenerReservasMascota(m.getId());
+            if(listaid.size()>0){
             Iterator it = listaid.iterator();
             while (it.hasNext()) {
                 String id2 = it.next().toString();
                 Long idreserva = Long.parseLong(id2);
                 ICR.eliminarReserva(idreserva);
             }
-            return this.aPer.eliminarReservasMascota(id);
-        } else {
+            return this.aPer.eliminarReservasMascota(m.getId());
+            }else{
+                return false;
+            }
+                  
+      /* } else {
             return false;
-        }
+        }*/
     }
 
 }

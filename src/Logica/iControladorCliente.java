@@ -18,6 +18,8 @@ import java.util.List;
  */
 public interface iControladorCliente {
     
+    public abstract void agregarcontroladorReserva();
+    
     public abstract List<mascota> obtenerMascotaCliente();
 
     public abstract void limpiarMascotaCliente();
