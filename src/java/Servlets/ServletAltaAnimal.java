@@ -6,6 +6,8 @@
 package Servlets;
 
 import clases.configuracion;
+import clases.utilidades;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -36,13 +38,15 @@ import servicios.WSContCliente;
 @WebServlet(name = "ServletAltaAnimal", urlPatterns = {"/ServletAltaAnimal"})
 @MultipartConfig
 public class ServletAltaAnimal extends HttpServlet {
-int contador =0;
-private WSContCliente port;
-configuracion conf = new configuracion();
 
-   /* private PublicadorAnimal port;
+    int contador = 0;
+    private WSContCliente port;
     configuracion conf = new configuracion();
-*/
+    utilidades util = new utilidades();
+
+    /* private PublicadorAnimal port;
+    configuracion conf = new configuracion();
+     */
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -56,17 +60,23 @@ configuracion conf = new configuracion();
             throws ServletException, IOException {
         ServletContext context;
         context = request.getServletContext();
+
         String ruta = context.getResource("").getPath();
         URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
         ServicioContCliente webService = new ServicioContCliente(url);
         this.port = webService.getWSContClientePort();
         List<String> razas = (List<String>) this.port.obtenerRazas().getLista();
         request.setAttribute("Razas", razas);
-
-        List<Mascota> mascotascliente = (List<Mascota>) this.port.obtenerMascotasCliente((Cliente) request.getSession().getAttribute("usuario_logueado")).getMascotasLista();
-        request.setAttribute("MascotasCliente", mascotascliente);
-        if(request.getParameter("descripcion") == null){
-        request.getRequestDispatcher("Vistas/AltaAnimal.jsp").forward(request, response);
+        if (request.getParameter("agregarMascotas") != null) {
+            if (request.getParameter("agregarMascotas").equals("1")) {
+                request.setAttribute("agregarMascotas", 1);
+            }
+        } else {
+            List<Mascota> mascotascliente = (List<Mascota>) this.port.obtenerMascotasCliente((Cliente) request.getSession().getAttribute("usuario_logueado")).getMascotasLista();
+            request.setAttribute("MascotasCliente", mascotascliente);
+        }
+        if (request.getParameter("descripcion") == null) {
+            request.getRequestDispatcher("Vistas/AltaAnimal.jsp").forward(request, response);
         }
     }
 
@@ -96,45 +106,73 @@ configuracion conf = new configuracion();
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //processRequest(request, response);
+        ServletContext context;
+        context = request.getServletContext();
 
-       Part filePart = request.getPart("file"); // obtengo <input type="file" name="file">
+        String ruta = context.getResource("").getPath();
+        URL url = new URL("http://" + conf.obtenerServer("servidor", ruta) + conf.leerProp("sConsultaUsuario", ruta));
+        ServicioContCliente webService = new ServicioContCliente(url);
+        this.port = webService.getWSContClientePort();
+
+        Part filePart = request.getPart("file"); // obtengo <input type="file" name="file">
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
         byte[] targetArray;
-    try (InputStream fileContent = filePart.getInputStream()) {
-        targetArray = new byte[fileContent.available()];
-        fileContent.read(targetArray);
-    }
+        try (InputStream fileContent = filePart.getInputStream()) {
+            targetArray = new byte[fileContent.available()];
+            fileContent.read(targetArray);
+        }
+        String ruta2 = Paths.get(ruta.substring(1)).getParent().getParent().toString() ;
+        String rutafoto = ruta2 + "/web/img/ImagenMascota/";
         String nombre = request.getParameter("nombre");
         String raza = request.getParameter("raza");
         Raza r = new Raza();
         r.setRaza(raza);
         String desc = request.getParameter("descripcion");
-        Cliente usuLogeado = (Cliente) request.getSession().getAttribute("usuario_logueado");
+
         Mascota m = new Mascota();
         m.setNombre(nombre);
         m.setRaza(r);
         m.setDescripcion(desc);
-        if(fileName.equals("")){
-            fileName="default.png";
+        if (fileName.equals("")) {
+            fileName = "default.png";
         }
         m.setFoto(fileName);
         m.setFoto2(targetArray);
-        m.setCliente(usuLogeado);
-        if(this.port.existeMascota(m.getNombre(), m.getCliente().getTelCel(), m.getCliente().getCorreo())){
-           request.getRequestDispatcher("Vistas/AltaAnimal.jsp").forward(request, response); 
-        }
-       boolean funciono = this.port.ingresarAnimal(m);
-    try {
-        TimeUnit.SECONDS.sleep(5);
-    } catch (InterruptedException ex) {
-        Logger.getLogger(ServletAltaAnimal.class.getName()).log(Level.SEVERE, null, ex);
-    }
+        if (request.getParameter("mascotaagregada") == null) {
+            Cliente usuLogeado = (Cliente) request.getSession().getAttribute("usuario_logueado");
+            m.setCliente(usuLogeado);
+            if (this.port.existeMascota(m.getNombre(), m.getCliente().getTelCel(), m.getCliente().getCorreo())) {
                 List<Mascota> mascotascliente = (List<Mascota>) this.port.obtenerMascotasCliente((Cliente) request.getSession().getAttribute("usuario_logueado")).getMascotasLista();
-        request.setAttribute("MascotasCliente", mascotascliente);
-        
+                request.setAttribute("MascotasCliente", mascotascliente);
+                List<String> razas = (List<String>) this.port.obtenerRazas().getLista();
+                request.setAttribute("Razas", razas);
+                request.getRequestDispatcher("Vistas/AltaAnimal.jsp").forward(request, response);
+            }
+            InputStream is = new ByteArrayInputStream(m.getFoto2());
+            util.salvarImagenV2(is, rutafoto + util.generarNombreFoto(m.getNombre(), m.getCliente().getTelCel()) + ".png");
+            m.setFoto(util.generarNombreFoto(m.getNombre(), m.getCliente().getTelCel()) + ".png");
+            boolean funciono = this.port.ingresarAnimal(m);
+            
+            try {
+                TimeUnit.SECONDS.sleep(5);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ServletAltaAnimal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            List<Mascota> mascotascliente = (List<Mascota>) this.port.obtenerMascotasCliente((Cliente) request.getSession().getAttribute("usuario_logueado")).getMascotasLista();
+            request.setAttribute("MascotasCliente", mascotascliente);
+            List<String> razas = (List<String>) this.port.obtenerRazas().getLista();
+            request.setAttribute("Razas", razas);
             request.getRequestDispatcher("Vistas/AltaAnimal.jsp").forward(request, response);
-
+        } else {
+            util.salvarImagenV2(filePart.getInputStream(), rutafoto + util.generarNombreFoto(m.getNombre(), m.getCliente().getTelCel()) + ".png");
+            m.setFoto(util.generarNombreFoto(m.getNombre(), m.getCliente().getTelCel()) + ".png");
+            this.port.agregarMascotaCliente(m);
+            
+            List<Mascota> mascotacliente = this.port.obtenerMascotaCliente().getMascotasLista();
+            request.setAttribute("MascotasCliente", mascotacliente);
+            request.getRequestDispatcher("Vistas/Registrarse.jsp").forward(request, response);
+        }
     }
 
     /**

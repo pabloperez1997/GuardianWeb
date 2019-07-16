@@ -56,7 +56,9 @@
                                 <input type="text" name="descripcion" id="descripcion" class="form-control mb-4" placeholder="Descripcion">
                                 <label>Ingresar Foto</label>
                                 <input type="file" name="file"/>
-
+                                <%if (request.getAttribute("agregarMascotas") != null) {%>
+                                <input type="hidden" value="1" name="mascotaagregada">
+                                <%}%>
                                 <!-- Boton Registrarse -->
 
                                 <button class="btn btn-dark my-4 btn-block" type="submit">Registrar Animal</button>  
@@ -80,7 +82,7 @@
 
                                         <div class="divTableCell"><%=m.getNombre()%></div>
                                         <div class="divTableCell"><%=m.getRaza().getRaza()%></div>
-                                        <div class="divTableCell"><img  src="img/ImagenMascota/<%=m.getFoto()%>" width="200" height="200" alt=""></div>
+                                        <div class="divTableCell"><img  src="img/ImagenMascota/<%=m.getFoto()%>" alt=""></div>
                                         <div class="divTableCell" style="width: 200px">
                                             <form action="${pageContext.request.contextPath}/ServletModificarAnimal">
                                                 <input type="hidden" value="<%=m.getId()%>" name="IdMascota">
@@ -103,7 +105,7 @@
             </div>
 
         </main>
-        
+
         <jsp:include page="/Vistas/Footer.jsp" />
         <style type="text/css">
 

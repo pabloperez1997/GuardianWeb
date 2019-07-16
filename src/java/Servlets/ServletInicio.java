@@ -77,7 +77,7 @@ public class ServletInicio extends HttpServlet {
                 session.setAttribute("usuario_logueado", null);
             }
         }
-        
+        this.port.limpiarMascotasCliente();
          request.getRequestDispatcher("Vistas/Inicio.jsp").forward(request, response);
     }
 

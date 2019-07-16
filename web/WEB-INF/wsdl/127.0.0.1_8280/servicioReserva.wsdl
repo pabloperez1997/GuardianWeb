@@ -4,10 +4,6 @@
 <xsd:import namespace="http://Servicios/" schemaLocation="http://127.0.0.1:8280/servicioReserva?xsd=1"></xsd:import>
 </xsd:schema>
 </types>
-<message name="getTipoBanio"></message>
-<message name="getTipoBanioResponse">
-<part name="return" type="tns:listTipoBanio"></part>
-</message>
 <message name="getPrecioPaseo"></message>
 <message name="getPrecioPaseoResponse">
 <part name="precio" type="xsd:float"></part>
@@ -20,6 +16,10 @@
 </message>
 <message name="publicar"></message>
 <message name="publicarResponse"></message>
+<message name="getTipoBanio"></message>
+<message name="getTipoBanioResponse">
+<part name="return" type="tns:listTipoBanio"></part>
+</message>
 <message name="modificarReserva">
 <part name="reserva" type="tns:reservaWS"></part>
 </message>
@@ -32,6 +32,16 @@
 <message name="getMascotasClienteResponse">
 <part name="return" type="tns:listMascotaWS"></part>
 </message>
+<message name="altaReserva">
+<part name="reserva" type="tns:reservaWS"></part>
+</message>
+<message name="altaReservaResponse">
+<part name="return" type="xsd:boolean"></part>
+</message>
+<message name="getTipoEsquilas"></message>
+<message name="getTipoEsquilasResponse">
+<part name="return" type="tns:listTipoEsquila"></part>
+</message>
 <message name="despublicar"></message>
 <message name="despublicarResponse">
 <part name="return" type="xsd:boolean"></part>
@@ -42,21 +52,7 @@
 <message name="getTurnosDisponiblesResponse">
 <part name="return" type="tns:listTurnos"></part>
 </message>
-<message name="getTipoEsquilas"></message>
-<message name="getTipoEsquilasResponse">
-<part name="return" type="tns:listTipoEsquila"></part>
-</message>
-<message name="altaReserva">
-<part name="reserva" type="tns:reservaWS"></part>
-</message>
-<message name="altaReservaResponse">
-<part name="return" type="xsd:boolean"></part>
-</message>
 <portType name="WSContReserva">
-<operation name="getTipoBanio">
-<input wsam:Action="http://Servicios/WSContReserva/getTipoBanioRequest" message="tns:getTipoBanio"></input>
-<output wsam:Action="http://Servicios/WSContReserva/getTipoBanioResponse" message="tns:getTipoBanioResponse"></output>
-</operation>
 <operation name="getPrecioPaseo">
 <input wsam:Action="http://Servicios/WSContReserva/getPrecioPaseoRequest" message="tns:getPrecioPaseo"></input>
 <output wsam:Action="http://Servicios/WSContReserva/getPrecioPaseoResponse" message="tns:getPrecioPaseoResponse"></output>
@@ -69,6 +65,10 @@
 <input wsam:Action="http://Servicios/WSContReserva/publicarRequest" message="tns:publicar"></input>
 <output wsam:Action="http://Servicios/WSContReserva/publicarResponse" message="tns:publicarResponse"></output>
 </operation>
+<operation name="getTipoBanio">
+<input wsam:Action="http://Servicios/WSContReserva/getTipoBanioRequest" message="tns:getTipoBanio"></input>
+<output wsam:Action="http://Servicios/WSContReserva/getTipoBanioResponse" message="tns:getTipoBanioResponse"></output>
+</operation>
 <operation name="modificarReserva">
 <input wsam:Action="http://Servicios/WSContReserva/modificarReservaRequest" message="tns:modificarReserva"></input>
 <output wsam:Action="http://Servicios/WSContReserva/modificarReservaResponse" message="tns:modificarReservaResponse"></output>
@@ -76,6 +76,14 @@
 <operation name="getMascotasCliente">
 <input wsam:Action="http://Servicios/WSContReserva/getMascotasClienteRequest" message="tns:getMascotasCliente"></input>
 <output wsam:Action="http://Servicios/WSContReserva/getMascotasClienteResponse" message="tns:getMascotasClienteResponse"></output>
+</operation>
+<operation name="altaReserva">
+<input wsam:Action="http://Servicios/WSContReserva/altaReservaRequest" message="tns:altaReserva"></input>
+<output wsam:Action="http://Servicios/WSContReserva/altaReservaResponse" message="tns:altaReservaResponse"></output>
+</operation>
+<operation name="getTipoEsquilas">
+<input wsam:Action="http://Servicios/WSContReserva/getTipoEsquilasRequest" message="tns:getTipoEsquilas"></input>
+<output wsam:Action="http://Servicios/WSContReserva/getTipoEsquilasResponse" message="tns:getTipoEsquilasResponse"></output>
 </operation>
 <operation name="despublicar">
 <input wsam:Action="http://Servicios/WSContReserva/despublicarRequest" message="tns:despublicar"></input>
@@ -85,26 +93,9 @@
 <input wsam:Action="http://Servicios/WSContReserva/getTurnosDisponiblesRequest" message="tns:getTurnosDisponibles"></input>
 <output wsam:Action="http://Servicios/WSContReserva/getTurnosDisponiblesResponse" message="tns:getTurnosDisponiblesResponse"></output>
 </operation>
-<operation name="getTipoEsquilas">
-<input wsam:Action="http://Servicios/WSContReserva/getTipoEsquilasRequest" message="tns:getTipoEsquilas"></input>
-<output wsam:Action="http://Servicios/WSContReserva/getTipoEsquilasResponse" message="tns:getTipoEsquilasResponse"></output>
-</operation>
-<operation name="altaReserva">
-<input wsam:Action="http://Servicios/WSContReserva/altaReservaRequest" message="tns:altaReserva"></input>
-<output wsam:Action="http://Servicios/WSContReserva/altaReservaResponse" message="tns:altaReservaResponse"></output>
-</operation>
 </portType>
 <binding name="WSContReservaPortBinding" type="tns:WSContReserva">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc"></soap:binding>
-<operation name="getTipoBanio">
-<soap:operation soapAction=""></soap:operation>
-<input>
-<soap:body use="literal" namespace="http://Servicios/"></soap:body>
-</input>
-<output>
-<soap:body use="literal" namespace="http://Servicios/"></soap:body>
-</output>
-</operation>
 <operation name="getPrecioPaseo">
 <soap:operation soapAction=""></soap:operation>
 <input>
@@ -132,6 +123,15 @@
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
 </output>
 </operation>
+<operation name="getTipoBanio">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal" namespace="http://Servicios/"></soap:body>
+</input>
+<output>
+<soap:body use="literal" namespace="http://Servicios/"></soap:body>
+</output>
+</operation>
 <operation name="modificarReserva">
 <soap:operation soapAction=""></soap:operation>
 <input>
@@ -150,16 +150,7 @@
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
 </output>
 </operation>
-<operation name="despublicar">
-<soap:operation soapAction=""></soap:operation>
-<input>
-<soap:body use="literal" namespace="http://Servicios/"></soap:body>
-</input>
-<output>
-<soap:body use="literal" namespace="http://Servicios/"></soap:body>
-</output>
-</operation>
-<operation name="getTurnosDisponibles">
+<operation name="altaReserva">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
@@ -177,7 +168,16 @@
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>
 </output>
 </operation>
-<operation name="altaReserva">
+<operation name="despublicar">
+<soap:operation soapAction=""></soap:operation>
+<input>
+<soap:body use="literal" namespace="http://Servicios/"></soap:body>
+</input>
+<output>
+<soap:body use="literal" namespace="http://Servicios/"></soap:body>
+</output>
+</operation>
+<operation name="getTurnosDisponibles">
 <soap:operation soapAction=""></soap:operation>
 <input>
 <soap:body use="literal" namespace="http://Servicios/"></soap:body>

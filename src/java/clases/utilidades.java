@@ -94,4 +94,28 @@ public class utilidades {
         }
         return retorno;
     }
+    
+    public boolean salvarImagenV2(InputStream inp, String ruta) throws IOException {
+ try {
+                OutputStream out = new FileOutputStream(ruta);
+                byte[] bufer = new byte[1024];
+                int largo;
+                while ((largo = inp.read(bufer)) > 0) {
+                    out.write(bufer, 0, largo);
+                }
+                inp.close();
+                out.close();
+                return true;
+            } catch (FileNotFoundException e) {
+                System.err.println(e.getMessage());
+                return false;
+            }
+
+    }
+    
+    public String generarNombreFoto(String mascota,String tel) {
+        String nombre;
+        nombre = "MASCOTA" + mascota + "CLIENTE" + tel;
+        return nombre;
+    }
 }
